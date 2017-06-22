@@ -1,0 +1,14 @@
+.bg{
+	background-image: url("../img/header/header.jpg");
+	height: 100%;
+	background-position: center top;
+}
+
+.title {
+	font-size: 5em;
+	width: 20%;
+	height: auto;
+	margin: 0 auto;
+	top: 25%;
+	text-align: center;
+}

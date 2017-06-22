@@ -1,0 +1,369 @@
+<!doctype=html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>To Boldly Go</title>
+		<link rel="stylesheet" href="css/template.css" />
+		<link rel="stylesheet" href="css/main-header.css" />
+		<link rel="stylesheet" href="css/tiles.css" />
+		<link rel="stylesheet" href="css/menu-bar.css" />
+		<link rel="stylesheet" href="css/photo-modal.css" />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="script/script.js"></script>
+	</head>
+	<body>
+		<div class='bg'>
+			<div class='title'>
+				To Boldly Go
+			</div>
+			<div class='menu-bar'>
+				<nav class='menu-bar-content'>
+					<ul>
+						<li class="menu-left"><a href="#">Home</a></li>
+						<li class="menu-left"><a href="#">About</a></li>
+						<li class="menu-left">
+							<a href="#" class="drop">Regions <span class="arrow">&#x25BD;</span></a>
+							<ul class="dropdown-content regions">
+								<li><a href="continent.html">South America</a></i>
+								<li><a href="continent.html">North and Central America</a></li>
+								<li><a href="continent.html">East Asia</a></li>
+								<li><a href="continent.html">South East Asia</a></li>
+								<li><a href="#">South Asia</a></li>
+								<li><a href="#">East Africa</a></li>							
+							</ul>
+						</li>
+						<li class="menu-left">
+							<a href="#" class="drop">Categories <span class="arrow">&#x25BD;</span></a>
+							<ul class="dropdown-content categories">
+								<li><a href="#">Sights</a></i>
+								<li><a href="#">Food</a></li>
+								<li><a href="#">Trains</a></li>
+								<li><a href="#">Journal</a></li>
+								<li><a href="#">Soccer</a></li>
+								<li><a href="#">Cities</a></li>							
+							</ul>
+						</li>
+						<li class="menu-right">
+							<form>
+								<span class="search-icon"><a href="#"><i class="material-icons">search</i></a></span>
+								<input type="text" name="search" placeholder="Search..."/>
+							</form>
+						</li>						
+					</ul>
+				</nav>
+			</div>
+		</div>
+		<div class='main-content'>
+			<div id="south-america" class="continent-tile-container">
+				<div class="row">
+					<div id="south-america-main" class="rectangle">
+						<div class="box-inner">
+							<img src="img/south-america/machu-picchu.jpg" class="image portrait"/>
+							<div class="continent-title">South America</div>
+							<div class="overlay-bottom">
+								<div class="overlay-text">Explore the photos from South America</div>
+							</div>
+						</div>
+					</div>
+					<div id="south-america-1" class="square" onclick="openModal('modal-south-america-1'); currentSlide(1)">
+						<div class="box-inner">
+							<img src="img/south-america/ceviche-plate.jpg" class="image"/>
+							<div class="overlay-bottom">
+								<div class="overlay-text">Peruvian Cuisine</div>
+							</div>
+						</div>
+					</div>
+					<div id="south-america-6" class="square">
+						<div class="box-inner">
+							<img src="img/south-america/pelourinho.jpg" class="image"/>
+							<div class="overlay-bottom">
+								<div class="overlay-text">Salvador, Brazil</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div id="south-america-2" class="square">
+						<div class="box-inner">
+							<img src="img/south-america/uyuni.jpg" class="image portrait"/>
+							<div class="overlay-bottom">
+								<div class="overlay-text">Salar de Uyuni</div>
+							</div>
+						</div>
+					</div>
+					<div id="south-america-3" class="square">
+						<div class="box-inner">
+							<img src="img/south-america/pedro-do-sal.jpg" class="image"/>
+							<div class="overlay-bottom">
+								<div class="overlay-text">Live Samba in Rio</div>
+							</div>
+						</div>
+					</div>
+					<div id="south-america-4" class="square">
+						<div class="box-inner">
+							<img src="img/south-america/express-del-sol.jpg" class="image"/>
+							<div class="overlay-bottom">
+								<div class="overlay-text">Train to Uyuni</div>
+							</div>
+						</div>
+					</div>
+					<div id="south-america-5" class="square">
+						<div class="box-inner">
+							<img src="img/south-america/ipanema.jpg" class="image"/>
+							<div class="overlay-bottom">
+								<div class="overlay-text">Magnificent Ipanema</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="north-central-america" class="continent-tile-container">
+				<div class="row">
+					<div id="north-central-am-main" class="rectangle">
+						<div class="box-inner">
+							<img src="img/north-central-am/lake-atitlan.jpg" class="image portrait"/>
+							<div class="continent-title">North and Central America</div>
+							<div class="overlay-bottom">
+								<div class="overlay-text">Explore the photos from North and Central America</div>
+							</div>
+						</div>
+					</div>
+					<div id="north-central-am-1" class="square">
+						<div class="box-inner">
+							<img src="img/north-central-am/smoked-meat.jpg" class="image"/>
+							<div class="overlay-bottom">
+								<div class="overlay-text">Montreal Food</div>
+							</div>
+						</div>
+					</div>
+					<div id="north-central-am-6" class="square">
+						<div class="box-inner">
+							<img src="img/north-central-am/grouse-mountain.jpg" class="image"/>
+							<div class="overlay-bottom">
+								<div class="overlay-text">Vancouver</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div id="north-central-am-2" class="square">
+						<div class="box-inner">
+							<img src="img/north-central-am/via-rail.jpg" class="image"/>
+							<div class="overlay-bottom">
+								<div class="overlay-text">Train Travel in the North East</div>
+							</div>
+						</div>
+					</div>
+					<div id="north-central-am-3" class="square">
+						<div class="box-inner">
+							<img src="img/north-central-am/xelaju.jpg" class="image"/>
+							<div class="overlay-bottom">
+								<div class="overlay-text">Xelaju MC</div>
+							</div>
+						</div>
+					</div>
+					<div id="north-central-am-4" class="square">
+						<div class="box-inner">
+							<img src="img/north-central-am/santa-monica.jpg" class="image"/>
+							<div class="overlay-bottom">
+								<div class="overlay-text">Layover in L.A.</div>
+							</div>
+						</div>
+					</div>
+					<div id="north-central-am-5" class="square">
+						<div class="box-inner">
+							<img src="img/north-central-am/tikal.jpg" class="image"/>
+							<div class="overlay-bottom">
+								<div class="overlay-text">Tikal Ruins</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="east-asia" class="continent-tile-container">
+				<div class="row">
+					<div id="east-asia-main" class="rectangle">
+						<div class="box-inner">
+							<img src="img/east-asia/hong-kong.jpg" class="image portrait"/>
+							<div class="continent-title">East Asia</div>
+							<div class="overlay-bottom">
+								<div class="overlay-text">Explore the photos from East Asia</div>
+							</div>
+						</div>
+					</div>
+					<div id="east-asia-1" class="square">
+						<div class="box-inner">
+							<img src="img/east-asia/guanzhou.jpg" class="image portrait"/>
+							<div class="overlay-bottom">
+								<div class="overlay-text">Dining in Guanzhou</div>
+							</div>
+						</div>
+					</div>
+					<div id="east-asia-6" class="square">
+						<div class="box-inner">
+							<img src="img/east-asia/sunrise.jpg" class="image"/>
+							<div class="overlay-bottom">
+								<div class="overlay-text">Trains in Japan</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div id="east-asia-2" class="square">
+						<div class="box-inner">
+							<img src="img/east-asia/okinawa.jpg" class="image"/>
+							<div class="overlay-bottom">
+								<div class="overlay-text">Zamami Island, Okinawa</div>
+							</div>
+						</div>
+					</div>
+					<div id="east-asia-3" class="square">
+						<div class="box-inner">
+							<img src="img/east-asia/ramen.jpg" class="image"/>
+							<div class="overlay-bottom">
+								<div class="overlay-text">All About Ramen</div>
+							</div>
+						</div>
+					</div>
+					<div id="east-asia-4" class="square">
+						<div class="box-inner">
+							<img src="img/east-asia/sushi.jpg" class="image"/>
+							<div class="overlay-bottom">
+								<div class="overlay-text">Japanese Cuisine</div>
+							</div>
+						</div>
+					</div>
+					<div id="east-asia-5" class="square">
+						<div class="box-inner">
+							<img src="img/east-asia/kyoto.jpg" class="image portrait"/>
+							<div class="overlay-bottom">
+								<div class="overlay-text">Lost in Kyoto</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="south-east-asia" class="continent-tile-container">
+				<div class="row">
+					<div id="south-east-asia-main" class="rectangle">
+						<div class="box-inner">
+							<img src="img/south-east-asia/tet.jpg" class="image portrait"/>
+							<div class="continent-title">South East Asia</div>
+							<div class="overlay-bottom">
+								<div class="overlay-text">Explore the photos from East Asia</div>
+							</div>
+						</div>
+					</div>
+					<div id="south-east-asia-1" class="square">
+						<div class="box-inner">
+							<img src="img/south-east-asia/bun-cha.jpg" class="image"/>
+							<div class="overlay-bottom">
+								<div class="overlay-text">Vietnamese Cuisine</div>
+							</div>
+						</div>
+					</div>
+					<div id="south-east-asia-6" class="square">
+						<div class="box-inner">
+							<img src="img/south-east-asia/ankor.jpg" class="image"/>
+							<div class="overlay-bottom">
+								<div class="overlay-text">Angkor Wat</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div id="south-east-asia-2" class="square">
+						<div class="box-inner">
+							<img src="img/south-east-asia/thai-trains.jpg" class="image"/>
+							<div class="overlay-bottom">
+								<div class="overlay-text">Train Travel in Thailand</div>
+							</div>
+						</div>
+					</div>
+					<div id="south-east-asia-3" class="square">
+						<div class="box-inner">
+							<img src="img/south-east-asia/penang.jpg" class="image"/>
+							<div class="overlay-bottom">
+								<div class="overlay-text">Exploring Penang</div>
+							</div>
+						</div>
+					</div>
+					<div id="south-east-asia-4" class="square">
+						<div class="box-inner">
+							<img src="img/south-east-asia/hanoi.jpg" class="image"/>
+							<div class="overlay-bottom">
+								<div class="overlay-text">Navigating Hanoi Streets</div>
+							</div>
+						</div>
+					</div>
+					<div id="south-east-asia-5" class="square">
+						<div class="box-inner">
+							<img src="img/south-east-asia/tet-feast.jpg" class="image"/>
+							<div class="overlay-bottom">
+								<div class="overlay-text">Travels During Lunar New Year</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="modal-south-america-1" class="modal">
+			<span class="close cursor" onclick="closeModal('modal-south-america-1')">&times;</span>
+			<div class="modal-content">
+				<div id="slide-header">
+					<div id="slide-header-content">
+						<div id="slide-title">Peruvian Cuisine</div>
+						<div id="slide-count">1 / 4</div>
+					</div>
+				</div>
+				<div class="slides">
+					<div class="photo-wrapper">
+						<img src="img/south-america/peruvian-food/ceviche-plate.jpg" />
+					</div>
+					<div class="photo-description">
+						<div class="photo-text">
+							Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.
+							Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.
+						</div>
+					</div>
+				</div>
+				<div class="slides">
+					<div class="photo-wrapper">
+						<img src="img/south-america/peruvian-food/anticucho.jpg" />
+					</div>
+					<div class="photo-description">
+						<div class="photo-text">
+							anticucho
+						</div>
+					</div>
+				</div>
+				<div class="slides">
+					<div class="photo-wrapper">
+						<img src="img/south-america/peruvian-food/causa.jpg" />
+					</div>
+					<div class="photo-description">
+						<div class="photo-text">
+							causa
+						</div>
+					</div>
+				</div>
+				<div class="slides">
+					<div class="photo-wrapper">
+						<img src="img/south-america/peruvian-food/seafood-soup.jpg" />
+					</div>
+					<div class="photo-description">
+						<div class="photo-text">
+							seafood soup
+						</div>
+					</div>
+				</div>
+				<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+				<a class="next" onclick="plusSlides(1)">&#10095;</a>
+			</div>
+		</div>
+		<div class="footer">
+			<div class="footer-text">&copy; 2015-2017, Minoru Nakano, All Rights Reserved</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,10 @@
+.bg{
+	background-image: url("../img/header/header-narrow-5.jpg");
+	height: 30%;
+}
+
+.title {
+	font-size: 4em;
+	top: 10%;
+	left: 13%;
+}

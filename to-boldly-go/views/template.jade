@@ -1,0 +1,62 @@
+doctype html
+html
+	head
+		title= title
+		block stylesheets
+			link(rel="stylesheet" href="/stylesheets/template.css")
+			link(rel="stylesheet" href="/stylesheets/menu-bar.css")
+			link(rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons")
+		block jscripts
+			script(type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js")
+			script(type="text/javascript" src="/javascripts/script.js")
+	body
+		div(class='bg')
+			div(class='title')
+				="To Boldly Go"
+			div(class='menu-bar')
+				nav(class='menu-bar-content')
+					ul
+						li(class="menu-left")
+							a(href="/") Home
+						li(class="menu-left")
+							a(href="#") About
+						li(class="menu-left")
+							a(href="#") Regions <span class="arrow">&#x25BD;</span>
+							
+							ul(class="dropdown-content regions")
+									li 
+										a(href="/south-america") South America 
+									li
+										a(href="#") North and Central America
+									li
+										a(href="#") East Asia
+									li
+										a(href="#") South East Asia
+									li
+										a(href="#") South Asia
+									li
+										a(href="#") East Africa
+
+						li(class="menu-left")
+							a(href="#") Categories <span class="arrow">&#x25BD;</span>
+							ul(class="dropdown-content categories")
+								li 
+									a(href="#") Sights 
+								li
+									a(href="#") Food
+								li
+									a(href="#") Trains
+								li
+									a(href="#") Journal
+								li
+									a(href="#") Soccer
+								li
+									a(href="#") Cities
+						li(class="menu-right")
+							<span class="search-icon"><a href="#"><i class="material-icons">search</i></a></span>
+							input(type="text" name="search" placeholder="Search...")
+		div(class='main-content')
+			block content
+		div(class="footer")
+			div(class="footer-text")
+				&copy; 2015-2017, Minoru Nakano, All Rights Reserved

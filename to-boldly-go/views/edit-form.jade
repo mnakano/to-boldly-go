@@ -1,0 +1,50 @@
+extends template
+append stylesheets
+	link(rel="stylesheet" href="/stylesheets/template-header.css")
+	link(rel="stylesheet" href="/stylesheets/forms.css")
+block content
+	div(class='form-wrapper')
+		h1.
+			Edit #{album.albumTitle}
+		form(id='new-album', method='POST', action='/editAlbum/#{album._id}')
+			div(class='input-group')
+				label(for='albumTitle') Album Title:
+				input(id='albumTitle', type='text', placeholder='Title', name='albumTitle', value="#{album.albumTitle}")
+			div(class='input-group')
+				label(for='albumCategory') Album Category:
+				input(id='albumCategory', list='categories', type='text', placeholder='Category', name='albumCategory', value="#{album.albumCategory}")
+				datalist(id='categories')
+					option(value='Sights')
+					option(value='Food')
+					option(value='Soccer')
+			div(class='input-group')
+				label(for='albumCountry') Country:
+				input(id='albumCountry', list='countries', type='text', placeholder='Country', name='country', value="#{album.country}")
+				datalist(id='countries')
+					option(value='Peru')
+					option(value='Brazil')
+					option(value='Canada')
+			div(class='input-group')
+				label(for='albumContinent') Continent:
+				input(id='albumContinent', list='continents', type='text', placeholder='Continent', name='continent', value="#{album.continent}")
+				datalist(id='continents')
+					option(value='South America')
+					option(value='North and Central America')
+					option(value='East Asia')
+			div(class='input-group')
+				label(for='albumDate') Date:
+				input(id='albumDate', type='date', placeholder='Date', name='albumDate', value="#{album.albumDate}")
+			div(id='photo-entry-group')
+				each photo, p in album.photos
+					div(class='photo-entry')
+						div(class='input-group')
+							label(for='photo') Upload Photo:
+							input(class='photo', type='text', placeholder='Photo URL', name='photo' value="#{photo.photo.split('/').slice(-1)[0]}")
+						div(class='input-group')
+							label(for='photo-description') Photo Journal:
+							textarea(class='photo-description', type='text' rows='10', cols='30' name='photoDescription')=photo.photoDescription
+						if p > 0
+							input(class='removePhoto', type='button', value='Remove Photo Entry')
+			div(class='input-group buttons')
+				input(id='btnAddPhoto', type='button', onClick='addPhotoEntry()', value='Add more photos')
+				input(id='btnSubmit', type='submit', value='Submit')

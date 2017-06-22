@@ -1,0 +1,75 @@
+extends template
+append stylesheets
+	link(rel="stylesheet" href="/stylesheets/main-header.css")
+	link(rel="stylesheet" href="/stylesheets/tiles.css")
+	link(rel="stylesheet" href="/stylesheets/photo-modal.css")
+block content
+	div(id="south-america" class="continent-tile-container")
+		div(class="row")
+			div(id="south-america-main" class="rectangle")
+				div(class="box-inner")
+					img(src="/images/south-america/machu-picchu.jpg" class="image portrait")
+					div(class="continent-title")="South America"
+					div(class="overlay-bottom")
+						div(class="overlay-text")="Explore the photos from South America"
+			div(id="south-america-1" class="square" onclick="openModal('modal-south-america-1'); currentSlide(1)")
+				div(class="box-inner")
+					img(src="/images/south-america/ceviche-plate.jpg" class="image")
+					div(class="overlay-bottom")
+						div(class="overlay-text")="Peruvian Cuisine"
+			div(id="south-america-6" class="square")
+				div(class="box-inner")
+					img(src="/images/south-america/pelourinho.jpg" class="image")
+					div(class="overlay-bottom")
+						div(class="overlay-text")="Salvador, Brazil"
+		div(class="row")
+			div(id="south-america-2" class="square")
+				div(class="box-inner")
+					img(src="/images/south-america/uyuni.jpg" class="image portrait")
+					div(class="overlay-bottom")
+						div(class="overlay-text")="Salar de Uyuni"
+			div(id="south-america-3" class="square")
+				div(class="box-inner")
+					img(src="/images/south-america/pedro-do-sal.jpg" class="image")
+					div(class="overlay-bottom")
+						div(class="overlay-text")="Live Samba in Rio"
+			div(id="south-america-4" class="square")
+				div(class="box-inner")
+					img(src="/images/south-america/express-del-sol.jpg" class="image")
+					div(class="overlay-bottom")
+						div(class="overlay-text")="Train to Uyuni"
+			div(id="south-america-5" class="square")
+				div(class="box-inner")
+					img(src="/images/south-america/ipanema.jpg" class="image")
+					div(class="overlay-bottom")
+						div(class="overlay-text")="Magnificent Ipanema"
+
+	div(id="modal-south-america-1" class="modal")
+		<span class="close cursor" onclick="closeModal('modal-south-america-1')">&times;</span>
+		div(class="modal-content")
+			div(id="slide-header")
+				div(id="slide-header-content")
+					div(id="slide-title")="Peruvian Cuisine"
+					div(id="slide-count")="1 / 4"
+			div(class="slides")
+				div(class="photo-wrapper")
+					img(src="/images/south-america/peruvian-food/ceviche-plate.jpg")
+				div(class="photo-description")
+					div(class="photo-text")="ceviche"
+			div(class="slides")
+				div(class="photo-wrapper")
+					img(src="/images/south-america/peruvian-food/anticucho.jpg")
+				div(class="photo-description")
+					div(class="photo-text")="anticucho"
+			div(class="slides")
+				div(class="photo-wrapper")
+					img(src="/images/south-america/peruvian-food/causa.jpg")
+				div(class="photo-description")
+					div(class="photo-text")="causa"
+			div(class="slides")
+				div(class="photo-wrapper")
+					img(src="/images/south-america/peruvian-food/seafood-soup.jpg")
+				div(class="photo-description")
+					div(class="photo-text")="seafood soup"
+			<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+			<a class="next" onclick="plusSlides(1)">&#10095;</a>
