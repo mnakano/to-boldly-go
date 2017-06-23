@@ -1,4 +1,6 @@
 var express = require('express');
+var mkdirp = require('mkdirp');
+var rimraf = require('rimraf');
 var router = express.Router();
 
 /* GET home page. */
@@ -23,13 +25,25 @@ router.get('/new-album', function(req, res){
 	res.render('new-album', {title : 'To Boldly Go'});
 });
 
-router.get('/deleteAlbum/:id', function(req, res){
+router.get('/deleteAlbum/:id/:continent/:title', function(req, res){
 	var album = req.db.get('album');
+	
+	//gets an album directory to be deleted.
+	var directory = './public/images/' + req.params.continent + '/' + req.params.title;
+	
 	album.remove({_id:req.params.id}, 
 		function(err, doc){
 			if(err){
 				res.send("There was an error deleting a record from the database.");
 			}else{
+				//deletes the album directory. (CHECK if this is a good place to do it.)
+				rimraf(directory, function(err){
+					if(err){
+						console.log('There was an error deleting ' + directory);
+					}else{
+						console.log(directory + ' has been successfully deleted.');
+					}
+				});
 				res.redirect("/south-america");
 			}
 	});
@@ -46,8 +60,17 @@ router.post('/addAlbum', function(req, res){
 	var continentFolder = continent.toLowerCase().split(' ').join('-');
 	//get album folder name
 	var albumFolder = albumTitle.toLowerCase().split(' ').join('-');
-	//get photo URL
-	var photoURL = "/images" + "/" + continentFolder + "/" + albumFolder + "/";
+	//build photo directory
+	var photoDirectory = "/images/" + continentFolder + "/" + albumFolder + "/";
+	
+	//create the directory if it does not exist
+	mkdirp('./public' + photoDirectory, function(err){
+		if(err){
+			console.error(err);
+		}else{
+			console.log(photoDirectory + ' exists or has been created.');
+		}
+	});
 	
 	//handle the photo array
 	var photos = req.body.photo;
@@ -55,10 +78,10 @@ router.post('/addAlbum', function(req, res){
 	var photoArray = [];
 	if(photos.constructor === Array){	
 		for(var i = 0; i < photos.length; i++){
-			photoArray.push({"photo" : photoURL + photos[i], "photoDescription" : descriptions[i]});
+			photoArray.push({"photo" : photoDirectory + photos[i], "photoDescription" : descriptions[i]});
 		}
 	}else{
-		photoArray.push({"photo" : photoURL + photos, "photoDescription" : descriptions});
+		photoArray.push({"photo" : photoDirectory + photos, "photoDescription" : descriptions});
 	}
 
 	var newEntry = {
@@ -113,8 +136,17 @@ router.post('/editAlbum/:id', function(req, res){
 	var continentFolder = continent.toLowerCase().split(' ').join('-');
 	//get album folder name
 	var albumFolder = albumTitle.toLowerCase().split(' ').join('-');
-	//get photo URL
-	var photoURL = "/images" + "/" + continentFolder + "/" + albumFolder + "/";
+	//build photo directory
+	var photoDirectory = "/images/" + continentFolder + "/" + albumFolder + "/";
+	
+	//create the directory if it does not exist
+	mkdirp('./public' + photoDirectory, function(err){
+		if(err){
+			console.error(err);
+		}else{
+			console.log(photoDirectory + ' exists or has been created.');
+		}
+	});
 	
 	//handle the photo array
 	var photos = req.body.photo;
@@ -122,10 +154,10 @@ router.post('/editAlbum/:id', function(req, res){
 	var photoArray = [];
 	if(photos.constructor === Array){	
 		for(var i = 0; i < photos.length; i++){
-			photoArray.push({"photo" : photoURL + photos[i], "photoDescription" : descriptions[i]});
+			photoArray.push({"photo" : photoDirectory + photos[i], "photoDescription" : descriptions[i]});
 		}
 	}else{
-		photoArray.push({"photo" : photoURL + photos, "photoDescription" : descriptions});
+		photoArray.push({"photo" : photoDirectory + photos, "photoDescription" : descriptions});
 	}
 	
 	var updatedEntry = {

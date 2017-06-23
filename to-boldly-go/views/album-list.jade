@@ -27,5 +27,7 @@ block content
 							=photo.photoDescription
 				div
 					=album.publishedDate
-				a(href="/deleteAlbum/#{album._id}") Delete
+					- var continent = album.continent.toLowerCase().split(' ').join('-');
+					- var albumTitle = album.albumTitle.toLowerCase().split(' ').join('-');
+				a(href="/deleteAlbum/#{album._id}/#{continent}/#{albumTitle}") Delete
 				a(href="/edit-form/#{album._id}") Edit
