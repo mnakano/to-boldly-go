@@ -58,7 +58,7 @@ function addPhotoEntry(){
 	var photoInputDiv = document.createElement("div");
 	var photoInput = document.createElement("input");
 	photoInput.className = 'input-group photo';
-	photoInput.type = 'text';
+	photoInput.type = 'file';
 	photoInput.name = 'photo';
 	photoInput.placeholder = 'Photo URL';
 	photoInputDiv.appendChild(photoInput);

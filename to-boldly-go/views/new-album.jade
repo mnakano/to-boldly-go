@@ -6,7 +6,7 @@ block content
 	div(class='form-wrapper')
 		h1.
 			New Album
-		form(id='new-album', method='POST', action='/addAlbum')
+		form(id='new-album', method='POST', enctype="multipart/form-data", action='/addAlbum')
 			div(class='input-group')
 				label(for='albumTitle') Album Title:
 				input(id='albumTitle', type='text', placeholder='Title', name='albumTitle')
@@ -38,7 +38,7 @@ block content
 				div(class='photo-entry')
 					div(class='input-group')
 						label(for='photo') Upload Photo:
-						input(class='photo', type='text', placeholder='Photo URL', name='photo')
+						input(class='photo', type='file', placeholder='Photo URL', name='photo')
 					div(class='input-group')
 						label(for='photo-description') Photo Journal:
 						textarea(class='photo-description', type='text' rows='10', cols='30' name='photoDescription')

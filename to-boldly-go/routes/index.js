@@ -1,7 +1,20 @@
 var express = require('express');
 var mkdirp = require('mkdirp');
 var rimraf = require('rimraf');
+var multer = require('multer');
 var router = express.Router();
+
+//configure multer upload object
+var storage = multer.diskStorage({
+	destination: function(req, file, cd){
+		cd(null, './public/images/tmp/');
+	},
+	filename: function(req, file, cd){
+		cd(null, file.originalname);
+	}
+});
+
+var upload = multer({storage : storage});
 
 /* GET home page. */
 router.get('/', function(req, res, net) {
@@ -50,9 +63,9 @@ router.get('/deleteAlbum/:id/:continent/:title', function(req, res){
 });
 
 /*POST to Add Album Service*/
-router.post('/addAlbum', function(req, res){
+router.post('/addAlbum', upload.single('photo'), function(req, res){
 	var db = req.db;
-	
+
 	var albumTitle = req.body.albumTitle;
 	var continent = req.body.continent;
 	
@@ -76,13 +89,13 @@ router.post('/addAlbum', function(req, res){
 	var photos = req.body.photo;
 	var descriptions = req.body.photoDescription;
 	var photoArray = [];
-	if(photos.constructor === Array){	
-		for(var i = 0; i < photos.length; i++){
-			photoArray.push({"photo" : photoDirectory + photos[i], "photoDescription" : descriptions[i]});
-		}
-	}else{
-		photoArray.push({"photo" : photoDirectory + photos, "photoDescription" : descriptions});
-	}
+	//if(photos.constructor === Array){	
+		//for(var i = 0; i < photos.length; i++){
+			//photoArray.push({"photo" : photoDirectory + photos[i], "photoDescription" : descriptions[i]});
+		//}
+	//}else{
+		photoArray.push({"photo" : photoDirectory + req.file.originalname, "photoDescription" : descriptions});
+	//}
 
 	var newEntry = {
 		"albumTitle" : albumTitle,
