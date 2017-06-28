@@ -2,6 +2,7 @@ var express = require('express');
 var mkdirp = require('mkdirp');
 var rimraf = require('rimraf');
 var multer = require('multer');
+var fs = require('fs');
 var router = express.Router();
 
 //configure multer upload object
@@ -14,7 +15,7 @@ var storage = multer.diskStorage({
 	}
 });
 
-var upload = multer({storage : storage});
+var upload = multer({storage : storage}).array('photo');
 
 /* GET home page. */
 router.get('/', function(req, res, net) {
@@ -63,60 +64,82 @@ router.get('/deleteAlbum/:id/:continent/:title', function(req, res){
 });
 
 /*POST to Add Album Service*/
-router.post('/addAlbum', upload.single('photo'), function(req, res){
-	var db = req.db;
-
-	var albumTitle = req.body.albumTitle;
-	var continent = req.body.continent;
-	
-	//get continent folder name
-	var continentFolder = continent.toLowerCase().split(' ').join('-');
-	//get album folder name
-	var albumFolder = albumTitle.toLowerCase().split(' ').join('-');
-	//build photo directory
-	var photoDirectory = "/images/" + continentFolder + "/" + albumFolder + "/";
-	
-	//create the directory if it does not exist
-	mkdirp('./public' + photoDirectory, function(err){
+router.post('/addAlbum', function(req, res){
+	//upload the photos then perform directory manipulation and DB operation.
+	upload(req, res, function(err){
 		if(err){
-			console.error(err);
+			console.log('There was an error uploading a photo.');
+		}
+		
+		//set request field values
+		var albumTitle = req.body.albumTitle;
+		var albumCategory = req.body.albumCategory;
+		var continent = req.body.continent;
+		var country = req.body.country;
+		var albumDate = req.body.albumDate;
+		var photoArray = [];
+		
+		//get continent folder name
+		var continentFolder = continent.toLowerCase().split(' ').join('-');
+		
+		//get album folder name
+		var albumFolder = albumTitle.toLowerCase().split(' ').join('-');
+		
+		//build album directory
+		var photoDirectory = "/images/" + continentFolder + "/" + albumFolder + "/";
+		var descriptions = req.body.photoDescription;
+				
+		mkdirp('./public' + photoDirectory, function(err){
+			if(err){
+				console.error(err);
+			}else{
+				console.log(photoDirectory + ' exists or has been created.');
+			}
+		});
+		
+		//set photo location and description
+		if(req.files.length > 1){	
+			for(var i = 0; i < req.files.length; i++){
+				photoArray.push({"photo" : photoDirectory + req.files[i].originalname, "photoDescription" : descriptions[i]});
+			}
 		}else{
-			console.log(photoDirectory + ' exists or has been created.');
+			photoArray.push({"photo" : photoDirectory + req.files[0].originalname, "photoDescription" : descriptions});
 		}
-	});
-	
-	//handle the photo array
-	var photos = req.body.photo;
-	var descriptions = req.body.photoDescription;
-	var photoArray = [];
-	//if(photos.constructor === Array){	
-		//for(var i = 0; i < photos.length; i++){
-			//photoArray.push({"photo" : photoDirectory + photos[i], "photoDescription" : descriptions[i]});
-		//}
-	//}else{
-		photoArray.push({"photo" : photoDirectory + req.file.originalname, "photoDescription" : descriptions});
-	//}
-
-	var newEntry = {
-		"albumTitle" : albumTitle,
-		"albumCategory" : req.body.albumCategory,
-		"country" : req.body.country,
-		"continent" : continent,
-		"albumDate" : req.body.albumDate,
-		"photos" : photoArray,
-		"publishedDate" : new Date().toISOString()
-	};
-	
-	//set collection
-	var collection = db.get('album');
-	
-	//submit to the database
-	collection.insert(newEntry, function(err, doc){ //error handling
-		if(err){
-			res.send("There was a problem adding the record to the database.");
-		} else {
-			res.redirect("south-america");
+		
+		//move the photos from 'tmp' directory to album directory
+		var oldPath = req.files[0].destination + '/';
+		var newPath = './public' + photoDirectory;
+		for(var i = 0; i < req.files.length; i++){
+			fs.rename(oldPath + req.files[i].originalname, newPath + req.files[i].originalname, function(err){
+				if(err){
+					console.log('Error attempting to move a photo. ' + err);
+				}else{
+					console.log('File has been moved.');
+				}
+			});
 		}
+		
+		var newEntry = {
+			"albumTitle" : albumTitle,
+			"albumCategory" : albumCategory,
+			"country" : country,
+			"continent" : continent,
+			"albumDate" : albumDate,
+			"photos" : photoArray,
+			"publishedDate" : new Date().toISOString()
+		};
+	
+		//set collection
+		var collection = req.db.get('album');
+	
+		//submit to the database
+		collection.insert(newEntry, function(err, doc){ //error handling
+			if(err){
+				res.send("There was a problem adding the record to the database.");
+			} else {
+				res.redirect("south-america");
+			}
+		});
 	});
 });
 
