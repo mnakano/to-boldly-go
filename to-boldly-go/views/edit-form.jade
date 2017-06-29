@@ -6,7 +6,7 @@ block content
 	div(class='form-wrapper')
 		h1.
 			Edit #{album.albumTitle}
-		form(id='new-album', method='POST', action='/editAlbum/#{album._id}')
+		form(id='new-album', method='POST', enctype="multipart/form-data", action='/editAlbum/#{album._id}')
 			div(class='input-group')
 				label(for='albumTitle') Album Title:
 				input(id='albumTitle', type='text', placeholder='Title', name='albumTitle', value="#{album.albumTitle}")
@@ -39,7 +39,7 @@ block content
 					div(class='photo-entry')
 						div(class='input-group')
 							label(for='photo') Upload Photo:
-							input(class='photo', type='text', placeholder='Photo URL', name='photo' value="#{photo.photo.split('/').slice(-1)[0]}")
+							input(class='photo', type='file', placeholder='Photo URL', name='photo' value="#{photo.photo.split('/').slice(-1)[0]}")
 						div(class='input-group')
 							label(for='photo-description') Photo Journal:
 							textarea(class='photo-description', type='text' rows='10', cols='30' name='photoDescription')=photo.photoDescription
