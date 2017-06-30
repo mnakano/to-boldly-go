@@ -3,19 +3,11 @@ var mkdirp = require('mkdirp');
 var rimraf = require('rimraf');
 var multer = require('multer');
 var fs = require('fs');
+var async = require('async');
 var router = express.Router();
 
-//configure multer upload object
-var storage = multer.diskStorage({
-	destination: function(req, file, cd){
-		cd(null, './public/images/tmp/');
-	},
-	filename: function(req, file, cd){
-		cd(null, file.originalname);
-	}
-});
-
-var upload = multer({storage : storage});
+//get multer instance for uploading photo(s).
+var upload = getMulterUploadInstance('./public/images/tmp/');
 
 /* GET home page. */
 router.get('/', function(req, res, net) {
@@ -39,71 +31,36 @@ router.get('/new-album', function(req, res){
 	res.render('new-album', {title : 'To Boldly Go'});
 });
 
+/* DELETE an album */
 router.get('/deleteAlbum/:id/:continent/:title', function(req, res){
-	var album = req.db.get('album');
-	
-	//gets an album directory to be deleted.
-	var directory = './public/images/' + req.params.continent + '/' + req.params.title;
-
-	album.remove({_id:req.params.id}, function(err, doc){
-			if(err){
-				res.send("There was an error deleting a record from the database.");
-			}else{
-				//deletes the album directory. (CHECK if this is a good place to do it.)
-				deleteDirectory(directory);
-				res.redirect("/south-america");
-			}
+	async.series([
+		function(callback){
+			dbDeleteTask(req.db.get('album'), req.params.id, callback);
+		},
+		function(callback){
+			deleteDirectoryTask('./public/images/' + req.params.continent + '/' + req.params.title, callback);
+		}
+	], function(err){
+		finalTaskRedirect(err, ['dbDelete', 'deleteDirectory'], res, '/south-america');
 	});
 });
 
 /*POST to Add Album Service*/
 router.post('/addAlbum', upload.array('photo'), function(req, res){
-	//set request field values
-	var albumTitle = req.body.albumTitle;
-	var albumCategory = req.body.albumCategory;
-	var continent = req.body.continent;
-	var country = req.body.country;
-	var albumDate = req.body.albumDate;
-	var photoArray = [];
 	
-	//get continent folder name
-	var continentFolder = continent.toLowerCase().split(' ').join('-');
-		
-	//get album folder name
-	var albumFolder = albumTitle.toLowerCase().split(' ').join('-');
-		
-	//build album directory
-	var photoDirectory = "/images/" + continentFolder + "/" + albumFolder + "/";
-	var descriptions = req.body.photoDescription;
+	//set request values and return a DB entry.
+	var newEntry = createDBEntry(req);
 	
-	var newEntry = {
-		"albumTitle" : albumTitle,
-		"albumCategory" : albumCategory,
-		"country" : country,
-		"continent" : continent,
-		"albumDate" : albumDate,
-		"photos" : photoArray,
-		"publishedDate" : new Date().toISOString()
-	};
-	
-	//set photo location and description
-	if(req.files.length > 1){	
-		for(var i = 0; i < req.files.length; i++){
-			photoArray.push({"photo" : photoDirectory + req.files[i].originalname, "photoDescription" : descriptions[i]});
+	//handle directory creation and photo relocation in series.
+	async.series([
+		function(callback){
+			createDirectoryTask('./public' + newEntry.photoDirectory, callback);
+		},
+		function(callback){
+			movePhotosTask(req.files[0].destination + '/', './public' + newEntry.photoDirectory, req.files, callback)
 		}
-	}else{
-		photoArray.push({"photo" : photoDirectory + req.files[0].originalname, "photoDescription" : descriptions});
-	}
-	
-	//createDirectory('./public/' + photoDirectory);
-	mkdirp('./public' + photoDirectory, function(err){
-		if(err){
-			console.error(err);
-		}else{
-			console.log(photoDirectory + ' exists or has been created.');
-			//move the photos from 'tmp' directory to album directory
-			movePhotos(req.files[0].destination + '/', './public' + photoDirectory, req.files);
-		}
+	], function(err){
+		finalTask(err, ['createDirectory', 'movePhotos']);
 	});
 	
 	//set collection
@@ -139,6 +96,52 @@ router.get('/edit-form/:id', function(req, res){
 /*UPDATE an album data*/
 router.post('/editAlbum/:id', upload.array('photo'), function(req, res){
 	
+	//set request values and return a DB entry.
+	var updatedEntry = createDBEntry(req);
+	
+	//handle directory and photo updates.
+	async.series([
+		function(callback){
+			createDirectoryTask('./public' + updatedEntry.photoDirectory, callback);
+		},
+		function(callback){
+			deletePhotosTask('./public' + updatedEntry.photoDirectory, callback)
+		},
+		function(callback){
+			movePhotosTask(req.files[0].destination + '/', './public' + updatedEntry.photoDirectory, req.files, callback)
+		}
+	], function(err){
+		finalTask(err, ['createDirectory', 'deletePhotos', 'movePhotos']);
+	});
+	
+	var collection = req.db.get('album');
+	
+	collection.update({_id:req.params.id}, {$set:updatedEntry}, function(err){
+		if(err){
+			res.send("There was a problem updating a record.");
+		}else{
+			res.redirect('/south-america');
+		}
+	});
+});
+
+function getMulterUploadInstance(destinationPath){
+	//configure multer upload object
+	var storage = multer.diskStorage({
+		destination: function(req, file, cd){
+			cd(null, destinationPath);
+		},
+		filename: function(req, file, cd){
+			cd(null, file.originalname);
+		}
+	});
+
+	return multer({storage : storage});
+}
+
+function createDBEntry(req){
+	var entry = {};
+	
 	//set request field values
 	var albumTitle = req.body.albumTitle;
 	var albumCategory = req.body.albumCategory;
@@ -165,100 +168,90 @@ router.post('/editAlbum/:id', upload.array('photo'), function(req, res){
 		photoArray.push({"photo" : photoDirectory + req.files[0].originalname, "photoDescription" : descriptions});
 	}
 	
-	var updatedEntry = {
+	var entry = {
 		"albumTitle" : albumTitle,
 		"albumCategory" : albumCategory,
 		"country" : country,
 		"continent" : continent,
 		"albumDate" : albumDate,
 		"photos" : photoArray,
-		"publishedDate" : new Date().toISOString()
+		"publishedDate" : new Date().toISOString(),
+		"photoDirectory" : photoDirectory
 	};
 	
-	//create the directory if it does not exist
-	mkdirp('./public' + photoDirectory, function(err){
-		if(err){
-			console.error(err);
-		}else{
-			console.log(photoDirectory + ' exists or has been created.');
-		}
-	});
-	
-	//delete existing photos
-	fs.readdir('./public' + photoDirectory, function(err, files){
-		if(err){
-			console.error(err);
-		}
-		for(var i = 0; i < files.length; i++){
-			fs.unlink('./public' + photoDirectory + files[i], function(err){
-				if(err){
-					console.error(err);
-				}else{
-					console.log(files[i] + ' has been deleted.');
-				}
-			});
-		}
-		//move the photos from 'tmp' directory to album directory
-		movePhotos(req.files[0].destination + '/', './public' + photoDirectory, req.files);
-	});
-	
-	var collection = req.db.get('album');
-	
-	collection.update({_id:req.params.id}, {$set:updatedEntry}, function(err){
-		if(err){
-			res.send("There was a problem updating a record.");
-		}else{
-			res.redirect('/south-america');
-		}
-	});
-});
-
-function createDirectory(directory){
-	mkdirp(directory, function(err){
-		if(err){
-			console.error(err);
-		}else{
-			console.log(directory + ' exists or has been created.');
-		}
-	});
+	return entry;
 }
 
-function deleteDirectory(directory){
+function deleteDirectoryTask(directory, callback){
 	rimraf(directory, function(err){
 		if(err){
-			console.log('There was an error deleting ' + directory);
-		}else{
-			console.log(directory + ' has been successfully deleted.');
+			callback(err);
 		}
+		console.log(directory + ' has been successfully deleted.');
+		callback();
 	});
 }
 
-function movePhotos(oldPath, newPath, files){
+function createDirectoryTask(directory, callback){
+	mkdirp(directory, function(err){
+		if(err){
+			callback(err);
+		}
+		console.log(directory + ' exists or has been created.');
+		callback();
+	});
+}
+
+function movePhotosTask(oldPath, newPath, files, callback){
 	for(var i = 0; i < files.length; i++){
 		fs.rename(oldPath + files[i].originalname, newPath + files[i].originalname, function(err){
 			if(err){
-				console.log('Error attempting to move a photo. ' + err);
-			}else{
-				console.log('File has been moved.');
+				callback(err);
 			}
+			console.log('File has been moved.');
 		});
 	}
+	callback();
 }
 
-function deletePhotos(directory){
+function deletePhotosTask(directory, callback){
 	fs.readdir(directory, function(err, files){
 		if(err){
-			console.error(err);
+			callback(err);
 		}
 		for(var i = 0; i < files.length; i++){
 			fs.unlink(directory + files[i], function(err){
 				if(err){
-					console.error(err);
-				}else{
-					console.log(files[i] + ' has been deleted.');
+					callback(err);
 				}
+				console.log('photo has been deleted.');
 			});
 		}
+		callback();
+	});
+}
+
+function finalTask(err, tasks){
+	if(err){
+		console.log('An error occurred: ' + err);
+	}
+	console.log('All tasks successful: ' + tasks);
+}
+
+function finalTaskRedirect(err, tasks, res, redirectRoute){
+	if(err){
+		console.log('An error occurred: ' + err);
+	}
+	console.log('All tasks successful: ' + tasks);
+	res.redirect(redirectRoute);
+}
+
+function dbDeleteTask(collection, id, callback){
+	collection.remove({_id:id}, function(err){
+		if(err){
+			callback(err);
+		}
+		callback();
 	});
 }
 
