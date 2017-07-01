@@ -57,22 +57,13 @@ router.post('/addAlbum', upload.array('photo'), function(req, res){
 			createDirectoryTask('./public' + newEntry.photoDirectory, callback);
 		},
 		function(callback){
-			movePhotosTask(req.files[0].destination + '/', './public' + newEntry.photoDirectory, req.files, callback)
+			movePhotosTask(req.files[0].destination + '/', './public' + newEntry.photoDirectory, req.files, callback);
+		},
+		function(callback){
+			dbInsertTask(req.db.get('album'), newEntry, callback);
 		}
 	], function(err){
-		finalTask(err, ['createDirectory', 'movePhotos']);
-	});
-	
-	//set collection
-	var collection = req.db.get('album');
-	
-	//submit to the database
-	collection.insert(newEntry, function(err, doc){ //error handling
-		if(err){
-			res.send("There was a problem adding the record to the database.");
-		} else {
-			res.redirect("south-america");
-		}
+		finalTaskRedirect(err, ['createDirectory', 'movePhotos', 'dbInsertTask'], res, '/south-america');
 	});
 });
 
@@ -84,7 +75,6 @@ router.get('/edit-form/:id', function(req, res){
 		if(err){
 			res.send("There was a problem finding the record.");
 		}else{
-			console.log(doc._id);
 			res.render('edit-form', {
 				title:'To boldy Go', 
 				'album' : doc
@@ -105,23 +95,16 @@ router.post('/editAlbum/:id', upload.array('photo'), function(req, res){
 			createDirectoryTask('./public' + updatedEntry.photoDirectory, callback);
 		},
 		function(callback){
-			deletePhotosTask('./public' + updatedEntry.photoDirectory, callback)
+			deletePhotosTask('./public' + updatedEntry.photoDirectory, callback);
 		},
 		function(callback){
-			movePhotosTask(req.files[0].destination + '/', './public' + updatedEntry.photoDirectory, req.files, callback)
+			movePhotosTask(req.files[0].destination + '/', './public' + updatedEntry.photoDirectory, req.files, callback);
+		},
+		function(callback){
+			dbUpdateTask(req.db.get('album'), req.params.id, updatedEntry, callback);
 		}
 	], function(err){
-		finalTask(err, ['createDirectory', 'deletePhotos', 'movePhotos']);
-	});
-	
-	var collection = req.db.get('album');
-	
-	collection.update({_id:req.params.id}, {$set:updatedEntry}, function(err){
-		if(err){
-			res.send("There was a problem updating a record.");
-		}else{
-			res.redirect('/south-america');
-		}
+		finalTaskRedirect(err, ['createDirectory', 'deletePhotos', 'movePhotos', 'dbUpdateTask'], res, '/south-america');
 	});
 });
 
@@ -248,6 +231,24 @@ function finalTaskRedirect(err, tasks, res, redirectRoute){
 
 function dbDeleteTask(collection, id, callback){
 	collection.remove({_id:id}, function(err){
+		if(err){
+			callback(err);
+		}
+		callback();
+	});
+}
+
+function dbInsertTask(collection, entry, callback){
+	collection.insert(entry, function(err, doc){
+		if(err){
+			callback(err);
+		}
+		callback();
+	});
+}
+
+function dbUpdateTask(collection, id, entry, callback){
+	collection.update({_id:id}, {$set:entry}, function(err){
 		if(err){
 			callback(err);
 		}
