@@ -15,6 +15,25 @@ html, body{
 	display: inline-block;
 }
 
+.box-inner-rectangle{
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	overflow: hidden;
+}
+
+.box-inner-rectangle img{
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	opacity: 1;
+	height: auto;
+	width: 100%;
+}
+
 .square{
 	width: 17.5%;
 	padding-bottom: 17.5%;

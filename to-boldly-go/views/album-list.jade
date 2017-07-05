@@ -1,8 +1,45 @@
 extends template
 append stylesheets
 	link(rel="stylesheet" href="/stylesheets/template-header.css")
+	link(rel="stylesheet" href="/stylesheets/tiles.css")
 block content
-	<p>This is the Album List page</p>
+	- var continent = albums[0].continent.toLowerCase().split(' ').join('-');
+	- var albumTitle = albums[0].continent;
+	- var remainingAlbums = albums.length;
+	- var numRows = Math.ceil((albums.length - 2) / 4);
+	- var index = 2;
+	div(id=continent class="continent-tile-container")
+		div(class="row")
+			div(id='continent-title' class="rectangle")
+				div(class="box-inner-rectangle")
+					img(src="/images/"+ continent +"/main.jpg" class="image portrait")
+					div(class="continent-title")=albumTitle
+			div(id=albums[0].albumTitle.toLowerCase().split(' ').join('-') class="square")
+				div(class="box-inner")
+					img(src=albums[0].photos[0].photo class="image")
+					div(class="overlay-bottom")
+						div(class="overlay-text")=albums[0].albumTitle
+			div(id=albums[1].albumTitle.toLowerCase().split(' ').join('-') class="square")
+				div(class="box-inner")
+					img(src=albums[1].photos[0].photo class="image")
+					div(class="overlay-bottom")
+						div(class="overlay-text")=albums[1].albumTitle
+		- remainingAlbums = remainingAlbums - index;
+		- for(var i = 0; i < numRows; i++){
+			div(class="row")
+				- var ceiling = index + 4;
+				- if(remainingAlbums > 0 && remainingAlbums < 4){
+					- ceiling = index + remainingAlbums
+				- }
+				- for(index; index < ceiling; index++){
+					div(id=albums[index].albumTitle.toLowerCase().split(' ').join('-') class="square")
+						div(class="box-inner")
+							img(src=albums[index].photos[0].photo class="image")
+							div(class="overlay-bottom")
+								div(class="overlay-text")=albums[index].albumTitle
+				- }
+				- remainingAlbums = remainingAlbums - 4;
+		- }
 
 	h1.
 		Albums
