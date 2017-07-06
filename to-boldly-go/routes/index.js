@@ -15,14 +15,13 @@ router.get('/', function(req, res, net) {
 });
 
 /* GET a continent page. */
-router.get('/south-america', function(req, res, next) {
-  var db = req.db;
-  var albums = db.get('album');
-  albums.find({}, {}, function(e, docs){
-	res.render('album-list', {
-			title:'To boldy Go', 
-			'albums' : docs
-		});
+router.get('/albums/:continent', function(req, res, next) {
+  async.waterfall([
+	function(callback){
+		dbFindAlbumsTask(req.db.get('album'), req.params.continent.split('-').join(' '), callback);
+	}
+  ], function(err, results, message){
+	  finalTaskRender(err, ['dbFindAlbums(' + req.params.continent + ')' ], res, results, message)
   });
 });
 
@@ -41,7 +40,7 @@ router.get('/deleteAlbum/:id/:continent/:title', function(req, res){
 			deleteDirectoryTask('./public/images/' + req.params.continent + '/' + req.params.title, callback);
 		}
 	], function(err){
-		finalTaskRedirect(err, ['dbDelete', 'deleteDirectory'], res, '/south-america');
+		finalTaskRedirect(err, ['dbDelete', 'deleteDirectory'], res, '/albums/' + req.params.continent);
 	});
 });
 
@@ -63,7 +62,7 @@ router.post('/addAlbum', upload.array('photo'), function(req, res){
 			dbInsertTask(req.db.get('album'), newEntry, callback);
 		}
 	], function(err){
-		finalTaskRedirect(err, ['createDirectory', 'movePhotos', 'dbInsertTask'], res, '/south-america');
+		finalTaskRedirect(err, ['createDirectory', 'movePhotos', 'dbInsertTask'], res, '/albums/' + newEntry.continent.split(' ').join('-'));
 	});
 });
 
@@ -104,7 +103,7 @@ router.post('/editAlbum/:id', upload.array('photo'), function(req, res){
 			dbUpdateTask(req.db.get('album'), req.params.id, updatedEntry, callback);
 		}
 	], function(err){
-		finalTaskRedirect(err, ['createDirectory', 'deletePhotos', 'movePhotos', 'dbUpdateTask'], res, '/south-america');
+		finalTaskRedirect(err, ['createDirectory', 'deletePhotos', 'movePhotos', 'dbUpdateTask'], res, '/albums/' + updatedEntry.continent.split(' ').join('-'));
 	});
 });
 
@@ -134,9 +133,9 @@ function createDBEntry(req){
 	var photoArray = [];
 	
 	//get continent folder name
-	var continentFolder = continent.toLowerCase().split(' ').join('-');
+	var continentFolder = continent.split(' ').join('-');
 	//get album folder name
-	var albumFolder = albumTitle.toLowerCase().split(' ').join('-');
+	var albumFolder = albumTitle.split(' ').join('-');
 	
 	//build photo directory
 	var photoDirectory = "/images/" + continentFolder + "/" + albumFolder + "/";
@@ -227,6 +226,33 @@ function finalTaskRedirect(err, tasks, res, redirectRoute){
 	}
 	console.log('All tasks successful: ' + tasks);
 	res.redirect(redirectRoute);
+}
+
+function finalTaskRender(err, tasks, res, results, message){
+	if(err){
+		console.log('An error occurred: ' + err);
+	}
+	
+	console.log('All tasks successful: ' + tasks);
+
+	res.render('album-list', {
+		title : 'To boldy Go', 
+		'albums' : results,
+		'message' : message
+	});
+}
+
+function dbFindAlbumsTask(collection, parameter, callback){
+	collection.find({continent:parameter}, {}, function(err, results){
+		if(err){
+			callback(err);
+		}
+		var message = '';
+		if(!results.length){
+			message = 'No albums found for ' + parameter;
+		}
+		callback(null, results, message);
+  });
 }
 
 function dbDeleteTask(collection, id, callback){

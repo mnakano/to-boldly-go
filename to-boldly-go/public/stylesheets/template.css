@@ -32,6 +32,13 @@ body{
 	transform: translate(13%);
 }
 
+.message-container {
+	margin-top: 50px;
+	margin-bottom: 40%;
+	color: #44423d;
+	transform: translate(13%);
+}
+
 .footer{
 	height: 10%;
 	background-color: #10100a;
