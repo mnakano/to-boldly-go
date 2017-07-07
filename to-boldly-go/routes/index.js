@@ -11,18 +11,26 @@ var upload = getMulterUploadInstance('./public/images/tmp/');
 
 /* GET home page. */
 router.get('/', function(req, res, net) {
-	res.render('index', { title : 'To Boldly Go' });
+	async.waterfall([
+		function(callback){
+			var options = {sort : {publishedDate : -1}};
+			dbFindAlbumsTask(req.db.get('album'), null, options, callback);
+		}
+	], function(err, results, message){
+		finalTaskRender(err, res, results, message, 'index');
+	});
 });
 
 /* GET a continent page. */
 router.get('/albums/:continent', function(req, res, next) {
-  async.waterfall([
-	function(callback){
-		dbFindAlbumsTask(req.db.get('album'), req.params.continent.split('-').join(' '), callback);
-	}
-  ], function(err, results, message){
-	  finalTaskRender(err, ['dbFindAlbums(' + req.params.continent + ')' ], res, results, message)
-  });
+	async.waterfall([
+		function(callback){
+			var keys = {continent : req.params.continent.split('-').join(' ')};
+			dbFindAlbumsTask(req.db.get('album'), keys, null, callback);
+		}
+	], function(err, results, message){
+		finalTaskRender(err, res, results, message, 'album-list')
+	});
 });
 
 /*GET new album entry page*/
@@ -40,7 +48,7 @@ router.get('/deleteAlbum/:id/:continent/:title', function(req, res){
 			deleteDirectoryTask('./public/images/' + req.params.continent + '/' + req.params.title, callback);
 		}
 	], function(err){
-		finalTaskRedirect(err, ['dbDelete', 'deleteDirectory'], res, '/albums/' + req.params.continent);
+		finalTaskRedirect(err, res, '/albums/' + req.params.continent);
 	});
 });
 
@@ -62,7 +70,7 @@ router.post('/addAlbum', upload.array('photo'), function(req, res){
 			dbInsertTask(req.db.get('album'), newEntry, callback);
 		}
 	], function(err){
-		finalTaskRedirect(err, ['createDirectory', 'movePhotos', 'dbInsertTask'], res, '/albums/' + newEntry.continent.split(' ').join('-'));
+		finalTaskRedirect(err, res, '/albums/' + newEntry.continent.split(' ').join('-'));
 	});
 });
 
@@ -103,7 +111,7 @@ router.post('/editAlbum/:id', upload.array('photo'), function(req, res){
 			dbUpdateTask(req.db.get('album'), req.params.id, updatedEntry, callback);
 		}
 	], function(err){
-		finalTaskRedirect(err, ['createDirectory', 'deletePhotos', 'movePhotos', 'dbUpdateTask'], res, '/albums/' + updatedEntry.continent.split(' ').join('-'));
+		finalTaskRedirect(err, res, '/albums/' + updatedEntry.continent.split(' ').join('-'));
 	});
 });
 
@@ -213,46 +221,46 @@ function deletePhotosTask(directory, callback){
 	});
 }
 
-function finalTask(err, tasks){
+function finalTask(err){
 	if(err){
 		console.log('An error occurred: ' + err);
 	}
-	console.log('All tasks successful: ' + tasks);
+	console.log('All tasks successful.');
 }
 
-function finalTaskRedirect(err, tasks, res, redirectRoute){
+function finalTaskRedirect(err, res, redirectRoute){
 	if(err){
 		console.log('An error occurred: ' + err);
 	}
-	console.log('All tasks successful: ' + tasks);
+	console.log('All tasks successful.');
 	res.redirect(redirectRoute);
 }
 
-function finalTaskRender(err, tasks, res, results, message){
+function finalTaskRender(err, res, results, message, renderedPage){
 	if(err){
 		console.log('An error occurred: ' + err);
 	}
 	
-	console.log('All tasks successful: ' + tasks);
+	console.log('All tasks successful.');
 
-	res.render('album-list', {
+	res.render(renderedPage, {
 		title : 'To boldy Go', 
 		'albums' : results,
 		'message' : message
 	});
 }
 
-function dbFindAlbumsTask(collection, parameter, callback){
-	collection.find({continent:parameter}, {}, function(err, results){
+function dbFindAlbumsTask(collection, keys, options, callback){
+	var message = '';
+	collection.find(keys, options, function(err, results){
 		if(err){
 			callback(err);
 		}
-		var message = '';
 		if(!results.length){
 			message = 'No albums found for ' + parameter;
 		}
 		callback(null, results, message);
-  });
+	});
 }
 
 function dbDeleteTask(collection, id, callback){

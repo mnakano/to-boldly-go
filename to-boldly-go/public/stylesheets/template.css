@@ -23,20 +23,20 @@ body{
 }
 
 .main-content{
-	
+	transform: translate(13%);
 }
 
-.continent-tile-container {
+.tile-container {
 	margin-top: 50px;
 	color: #44423d;
-	transform: translate(13%);
+	/*transform: translate(13%);*/
 }
 
 .message-container {
 	margin-top: 50px;
 	margin-bottom: 40%;
 	color: #44423d;
-	transform: translate(13%);
+	/*transform: translate(13%);*/
 }
 
 .footer{

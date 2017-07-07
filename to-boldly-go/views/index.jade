@@ -4,46 +4,57 @@ append stylesheets
 	link(rel="stylesheet" href="/stylesheets/tiles.css")
 	link(rel="stylesheet" href="/stylesheets/photo-modal.css")
 block content
-	div(id="south-america" class="continent-tile-container")
-		div(class="row")
-			div(id="south-america-main" class="rectangle")
-				div(class="box-inner")
-					img(src="/images/south-america/machu-picchu.jpg" class="image portrait")
-					div(class="continent-title")="South America"
-					div(class="overlay-bottom")
-						div(class="overlay-text")="Explore the photos from South America"
-			div(id="south-america-1" class="square" onclick="openModal('modal-south-america-1'); currentSlide(1)")
-				div(class="box-inner")
-					img(src="/images/south-america/ceviche-plate.jpg" class="image")
-					div(class="overlay-bottom")
-						div(class="overlay-text")="Peruvian Cuisine"
-			div(id="south-america-6" class="square")
-				div(class="box-inner")
-					img(src="/images/south-america/pelourinho.jpg" class="image")
-					div(class="overlay-bottom")
-						div(class="overlay-text")="Salvador, Brazil"
-		div(class="row")
-			div(id="south-america-2" class="square")
-				div(class="box-inner")
-					img(src="/images/south-america/uyuni.jpg" class="image portrait")
-					div(class="overlay-bottom")
-						div(class="overlay-text")="Salar de Uyuni"
-			div(id="south-america-3" class="square")
-				div(class="box-inner")
-					img(src="/images/south-america/pedro-do-sal.jpg" class="image")
-					div(class="overlay-bottom")
-						div(class="overlay-text")="Live Samba in Rio"
-			div(id="south-america-4" class="square")
-				div(class="box-inner")
-					img(src="/images/south-america/express-del-sol.jpg" class="image")
-					div(class="overlay-bottom")
-						div(class="overlay-text")="Train to Uyuni"
-			div(id="south-america-5" class="square")
-				div(class="box-inner")
-					img(src="/images/south-america/ipanema.jpg" class="image")
-					div(class="overlay-bottom")
-						div(class="overlay-text")="Magnificent Ipanema"
+	-if(albums.length){
+		- var remainingAlbums = albums.length;
+		- var numRows = Math.ceil(albums.length / 4);
+		- var index = 0;
+		div
+			h1 Newly added albums
+		div(id='newestAlbum' class="tile-container")
+			- for(var i = 0; i < numRows; i++){
+				div(class="row")
+					- var ceiling = index + 4;
+					- if(remainingAlbums > 0 && remainingAlbums < 4){
+						- ceiling = index + remainingAlbums
+					- }
+					- for(index; index < ceiling; index++){
+						div(id=albums[index].albumTitle.split(' ').join('-') class="square")
+							div(class="box-inner")
+								img(src=albums[index].photos[0].photo class="image")
+								div(class="overlay-bottom")
+									div(class="overlay-text")=albums[index].albumTitle
+					- }
+					- remainingAlbums = remainingAlbums - 4;
+			- }
 
+		h1.
+			Albums
+		ul
+			each album, i in albums
+				li
+					div
+						=album.albumTitle
+					div
+						=album.albumCategory
+					div
+						=album.country
+					div
+						=album.continent
+					div
+						=album.albumDate
+					div
+						each photo, p in album.photos
+							div
+								=photo.photo.split('/').slice(-1)[0]
+							div
+								=photo.photoDescription
+					div
+						=album.publishedDate
+	-}else{
+		div(id="message" class="message-container")
+			= message
+	-}
+	//-	
 	div(id="modal-south-america-1" class="modal")
 		<span class="close cursor" onclick="closeModal('modal-south-america-1')">&times;</span>
 		div(class="modal-content")
@@ -73,3 +84,4 @@ block content
 					div(class="photo-text")="seafood soup"
 			<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
 			<a class="next" onclick="plusSlides(1)">&#10095;</a>
+	//
