@@ -1,7 +1,7 @@
 doctype html
 html
 	head
-		title= title
+		title= locals.title
 		block stylesheets
 			link(rel="stylesheet" href="/stylesheets/template.css")
 			link(rel="stylesheet" href="/stylesheets/menu-bar.css")
@@ -22,36 +22,19 @@ html
 							a(href="#") About
 						li(class="menu-left")
 							a(href="#") Regions <span class="arrow">&#x25BD;</span>
-							
 							ul(class="dropdown-content regions")
+								- for(var i = 0; i < locals.regions.length; i++){
 									li 
-										a(href="/albums/South-America") South America 
-									li
-										a(href="/albums/North-and-Central-America") North and Central America
-									li
-										a(href="/albums/East-Asia") East Asia
-									li
-										a(href="/albums/South-East-Asia") South East Asia
-									li
-										a(href="/albums/South-Asia") South Asia
-									li
-										a(href="/albums/East-Africa") East Africa
+										a(href="/albums/" + locals.regions[i].split(' ').join('-')) #{locals.regions[i]}
+								- }
 
 						li(class="menu-left")
 							a(href="#") Categories <span class="arrow">&#x25BD;</span>
 							ul(class="dropdown-content categories")
-								li 
-									a(href="#") Sights 
-								li
-									a(href="#") Food
-								li
-									a(href="#") Trains
-								li
-									a(href="#") Journal
-								li
-									a(href="#") Soccer
-								li
-									a(href="#") Cities
+								- for(var i = 0; i < locals.categories.length; i++){
+									li 
+										a(href="#") #{locals.categories[i]}
+								- }
 						
 						li(class="menu-left")
 							a(href="#") Admin <span class="arrow">&#x25BD;</span>

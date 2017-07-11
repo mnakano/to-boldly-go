@@ -35,7 +35,7 @@ router.get('/albums/:continent', function(req, res, next) {
 
 /*GET new album entry page*/
 router.get('/new-album', function(req, res){
-	res.render('new-album', {title : 'To Boldly Go'});
+	res.render('new-album');
 });
 
 /* DELETE an album */
@@ -83,7 +83,6 @@ router.get('/edit-form/:id', function(req, res){
 			res.send("There was a problem finding the record.");
 		}else{
 			res.render('edit-form', {
-				title:'To boldy Go', 
 				'album' : doc
 			});
 		}
@@ -244,7 +243,6 @@ function finalTaskRender(err, res, results, message, renderedPage){
 	console.log('All tasks successful.');
 
 	res.render(renderedPage, {
-		title : 'To boldy Go', 
 		'albums' : results,
 		'message' : message
 	});
