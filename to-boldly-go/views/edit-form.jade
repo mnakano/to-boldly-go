@@ -12,11 +12,14 @@ block content
 				input(id='albumTitle', type='text', placeholder='Title', name='albumTitle', value="#{album.albumTitle}")
 			div(class='input-group')
 				label(for='albumCategory') Album Category:
-				input(id='albumCategory', list='categories', type='text', placeholder='Category', name='albumCategory', value="#{album.albumCategory}")
-				datalist(id='categories')
-					option(value='Sights')
-					option(value='Food')
-					option(value='Soccer')
+				select(id='albumCategory', name='albumCategory', value="#{album.albumCategory}")
+					- for(var i = 0; i < locals.categories.length; i++){
+						- if(album.albumCategory == locals.categories[i]) {
+							option(value=locals.categories[i], selected='selected') #{locals.categories[i]}
+						- } else {
+							option(value=locals.categories[i]) #{locals.categories[i]}
+						- }
+					- }
 			div(class='input-group')
 				label(for='albumCountry') Country:
 				input(id='albumCountry', list='countries', type='text', placeholder='Country', name='country', value="#{album.country}")
@@ -25,12 +28,15 @@ block content
 					option(value='Brazil')
 					option(value='Canada')
 			div(class='input-group')
-				label(for='albumContinent') Continent:
-				input(id='albumContinent', list='continents', type='text', placeholder='Continent', name='continent', value="#{album.continent}")
-				datalist(id='continents')
-					option(value='South America')
-					option(value='North and Central America')
-					option(value='East Asia')
+				label(for='albumRegion') Region:
+				select(id='albumRegion', name='region', value="#{album.region}")
+					- for(var i = 0; i < locals.regions.length; i++){
+						- if(album.region == locals.regions[i]) {
+							option(value=locals.regions[i], selected='selected') #{locals.regions[i]}
+						- } else {
+							option(value=locals.regions[i]) #{locals.regions[i]}
+						- }
+					- }
 			div(class='input-group')
 				label(for='albumDate') Date:
 				input(id='albumDate', type='date', placeholder='Date', name='albumDate', value="#{album.albumDate}")

@@ -4,8 +4,8 @@ append stylesheets
 	link(rel="stylesheet" href="/stylesheets/tiles.css")
 block content
 	-if(albums.length){
-		- var continent = albums[0].continent.split(' ').join('-');
-		- var mainTitle = albums[0].continent;
+		- var region = albums[0].region.split(' ').join('-');
+		- var mainTitle = albums[0].region;
 		- var remainingAlbums = albums.length;
 		- var numRows = Math.ceil((albums.length - 2) / 4);
 		- var index = 2;	
@@ -13,7 +13,7 @@ block content
 			div(class="row")
 				div(id='continent-title' class="rectangle")
 					div(class="box-inner-rectangle")
-						img(src="/images/"+ continent +"/main.jpg" class="image portrait")
+						img(src="/images/"+ region +"/main.jpg" class="image portrait")
 						div(class="continent-title")=mainTitle
 				div(id=albums[0].albumTitle.split(' ').join('-') class="square")
 					div(class="box-inner")
@@ -54,7 +54,7 @@ block content
 					div
 						=album.country
 					div
-						=album.continent
+						=album.region
 					div
 						=album.albumDate
 					div
@@ -65,9 +65,9 @@ block content
 								=photo.photoDescription
 					div
 						=album.publishedDate
-						- var continent = album.continent.split(' ').join('-');
+						- var region = album.region.split(' ').join('-');
 						- var albumTitle = album.albumTitle.split(' ').join('-');
-					a(href="/deleteAlbum/#{album._id}/#{continent}/#{albumTitle}") Delete
+					a(href="/deleteAlbum/#{album._id}/#{region}/#{albumTitle}") Delete
 					a(href="/edit-form/#{album._id}") Edit
 	-}else{
 		div(id="message" class="message-container")

@@ -11,10 +11,34 @@ var monk = require('monk');
 var db = monk('localhost:27017/toboldlygo');
 
 var index = require('./routes/index');
-var users = require('./routes/users');
+var albumTags = require('./routes/albumTags');
 
 var app = express();
 
+function getNavBarCollection(collectionName){
+	var collection = [];
+	db.get(collectionName).find({}, {}, function(err, results){
+		if(err){
+			console.log('ERROR: ' + err);
+		}
+		for(i = 0; i < results.length; i++){
+			collection.push(results[i].name);
+		}
+	});
+	return collection;
+}
+
+function setNavBarValues(req, res, next){
+	if(!app.locals.regions){
+		app.locals.regions = getNavBarCollection('regions');
+	}
+	if(!app.locals.categories){
+		app.locals.categories = getNavBarCollection('categories');
+	}
+	next();
+}
+
+app.locals.title = 'To Boldly Go';
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -27,6 +51,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(setNavBarValues);
 
 //Make the db accessible to the router
 app.use(function(req, res, next){
@@ -35,7 +60,7 @@ app.use(function(req, res, next){
 });
 
 app.use('/', index);
-app.use('/users', users);
+app.use('/albumTags', albumTags);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -54,5 +79,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
 
 module.exports = app;

@@ -1,35 +1,36 @@
 var express = require('express');
-var mkdirp = require('mkdirp');
-var rimraf = require('rimraf');
-var multer = require('multer');
-var fs = require('fs');
 var async = require('async');
 var router = express.Router();
+var directoryHandler = require('./directoryHandler');
+var multiFormHandler = require('./multiFormHandler');
+var dbOperations = require('./dbOperations');
+var dbEntry = require('./dbEntry');
+var finalTasks = require('./finalTasks');
 
 //get multer instance for uploading photo(s).
-var upload = getMulterUploadInstance('./public/images/tmp/');
+var upload = multiFormHandler.getUploadInstance('./public/images/tmp/');
 
 /* GET home page. */
 router.get('/', function(req, res, net) {
 	async.waterfall([
 		function(callback){
 			var options = {sort : {publishedDate : -1}};
-			dbFindAlbumsTask(req.db.get('album'), null, options, callback);
+			dbOperations.dbFindAlbumsTask(req.db.get('album'), null, options, callback);
 		}
 	], function(err, results, message){
-		finalTaskRender(err, res, results, message, 'index');
+		finalTasks.render(err, res, results, message, 'index');
 	});
 });
 
-/* GET a continent page. */
-router.get('/albums/:continent', function(req, res, next) {
+/* GET a region page. */
+router.get('/region/:region', function(req, res, next) {
 	async.waterfall([
 		function(callback){
-			var keys = {continent : req.params.continent.split('-').join(' ')};
-			dbFindAlbumsTask(req.db.get('album'), keys, null, callback);
+			var keys = {region : req.params.region.split('-').join(' ')};
+			dbOperations.dbFindAlbumsTask(req.db.get('album'), keys, null, callback);
 		}
 	], function(err, results, message){
-		finalTaskRender(err, res, results, message, 'album-list')
+		finalTasks.render(err, res, results, message, 'album-list')
 	});
 });
 
@@ -39,16 +40,16 @@ router.get('/new-album', function(req, res){
 });
 
 /* DELETE an album */
-router.get('/deleteAlbum/:id/:continent/:title', function(req, res){
+router.get('/deleteAlbum/:id/:region/:title', function(req, res){
 	async.series([
 		function(callback){
-			dbDeleteTask(req.db.get('album'), req.params.id, callback);
+			dbOperations.dbDeleteTask(req.db.get('album'), req.params.id, callback);
 		},
 		function(callback){
-			deleteDirectoryTask('./public/images/' + req.params.continent + '/' + req.params.title, callback);
+			directoryHandler.deleteDirectoryTask('./public/images/' + req.params.region + '/' + req.params.title, callback);
 		}
 	], function(err){
-		finalTaskRedirect(err, res, '/albums/' + req.params.continent);
+		finalTasks.redirect(err, res, '/region/' + req.params.region);
 	});
 });
 
@@ -56,21 +57,21 @@ router.get('/deleteAlbum/:id/:continent/:title', function(req, res){
 router.post('/addAlbum', upload.array('photo'), function(req, res){
 	
 	//set request values and return a DB entry.
-	var newEntry = createDBEntry(req);
+	var newEntry = dbEntry.createDBEntry(req);
 	
 	//handle directory creation and photo relocation in series.
 	async.series([
 		function(callback){
-			createDirectoryTask('./public' + newEntry.photoDirectory, callback);
+			directoryHandler.createDirectoryTask('./public' + newEntry.photoDirectory, callback);
 		},
 		function(callback){
-			movePhotosTask(req.files[0].destination + '/', './public' + newEntry.photoDirectory, req.files, callback);
+			directoryHandler.movePhotosTask(req.files[0].destination + '/', './public' + newEntry.photoDirectory, req.files, callback);
 		},
 		function(callback){
-			dbInsertTask(req.db.get('album'), newEntry, callback);
+			dbOperations.dbInsertTask(req.db.get('album'), newEntry, callback);
 		}
 	], function(err){
-		finalTaskRedirect(err, res, '/albums/' + newEntry.continent.split(' ').join('-'));
+		finalTasks.redirect(err, res, '/region/' + newEntry.region.split(' ').join('-'));
 	});
 });
 
@@ -93,199 +94,25 @@ router.get('/edit-form/:id', function(req, res){
 router.post('/editAlbum/:id', upload.array('photo'), function(req, res){
 	
 	//set request values and return a DB entry.
-	var updatedEntry = createDBEntry(req);
+	var updatedEntry = dbEntry.createDBEntry(req);
 	
 	//handle directory and photo updates.
 	async.series([
 		function(callback){
-			createDirectoryTask('./public' + updatedEntry.photoDirectory, callback);
+			directoryHandler.createDirectoryTask('./public' + updatedEntry.photoDirectory, callback);
 		},
 		function(callback){
-			deletePhotosTask('./public' + updatedEntry.photoDirectory, callback);
+			directoryHandler.deletePhotosTask('./public' + updatedEntry.photoDirectory, callback);
 		},
 		function(callback){
-			movePhotosTask(req.files[0].destination + '/', './public' + updatedEntry.photoDirectory, req.files, callback);
+			directoryHandler.movePhotosTask(req.files[0].destination + '/', './public' + updatedEntry.photoDirectory, req.files, callback);
 		},
 		function(callback){
-			dbUpdateTask(req.db.get('album'), req.params.id, updatedEntry, callback);
+			dbOperations.dbUpdateTask(req.db.get('album'), req.params.id, updatedEntry, callback);
 		}
 	], function(err){
-		finalTaskRedirect(err, res, '/albums/' + updatedEntry.continent.split(' ').join('-'));
+		finalTasks.redirect(err, res, '/region/' + updatedEntry.region.split(' ').join('-'));
 	});
 });
-
-function getMulterUploadInstance(destinationPath){
-	//configure multer upload object
-	var storage = multer.diskStorage({
-		destination: function(req, file, cd){
-			cd(null, destinationPath);
-		},
-		filename: function(req, file, cd){
-			cd(null, file.originalname);
-		}
-	});
-
-	return multer({storage : storage});
-}
-
-function createDBEntry(req){
-	var entry = {};
-	
-	//set request field values
-	var albumTitle = req.body.albumTitle;
-	var albumCategory = req.body.albumCategory;
-	var continent = req.body.continent;
-	var country = req.body.country;
-	var albumDate = req.body.albumDate;
-	var photoArray = [];
-	
-	//get continent folder name
-	var continentFolder = continent.split(' ').join('-');
-	//get album folder name
-	var albumFolder = albumTitle.split(' ').join('-');
-	
-	//build photo directory
-	var photoDirectory = "/images/" + continentFolder + "/" + albumFolder + "/";
-	var descriptions = req.body.photoDescription;
-	
-	//set photo location and description
-	if(req.files.length > 1){	
-		for(var i = 0; i < req.files.length; i++){
-			photoArray.push({"photo" : photoDirectory + req.files[i].originalname, "photoDescription" : descriptions[i]});
-		}
-	}else{
-		photoArray.push({"photo" : photoDirectory + req.files[0].originalname, "photoDescription" : descriptions});
-	}
-	
-	var entry = {
-		"albumTitle" : albumTitle,
-		"albumCategory" : albumCategory,
-		"country" : country,
-		"continent" : continent,
-		"albumDate" : albumDate,
-		"photos" : photoArray,
-		"publishedDate" : new Date().toISOString(),
-		"photoDirectory" : photoDirectory
-	};
-	
-	return entry;
-}
-
-function deleteDirectoryTask(directory, callback){
-	rimraf(directory, function(err){
-		if(err){
-			callback(err);
-		}
-		console.log(directory + ' has been successfully deleted.');
-		callback();
-	});
-}
-
-function createDirectoryTask(directory, callback){
-	mkdirp(directory, function(err){
-		if(err){
-			callback(err);
-		}
-		console.log(directory + ' exists or has been created.');
-		callback();
-	});
-}
-
-function movePhotosTask(oldPath, newPath, files, callback){
-	for(var i = 0; i < files.length; i++){
-		fs.rename(oldPath + files[i].originalname, newPath + files[i].originalname, function(err){
-			if(err){
-				callback(err);
-			}
-			console.log('File has been moved.');
-		});
-	}
-	callback();
-}
-
-function deletePhotosTask(directory, callback){
-	fs.readdir(directory, function(err, files){
-		if(err){
-			callback(err);
-		}
-		for(var i = 0; i < files.length; i++){
-			fs.unlink(directory + files[i], function(err){
-				if(err){
-					callback(err);
-				}
-				console.log('photo has been deleted.');
-			});
-		}
-		callback();
-	});
-}
-
-function finalTask(err){
-	if(err){
-		console.log('An error occurred: ' + err);
-	}
-	console.log('All tasks successful.');
-}
-
-function finalTaskRedirect(err, res, redirectRoute){
-	if(err){
-		console.log('An error occurred: ' + err);
-	}
-	console.log('All tasks successful.');
-	res.redirect(redirectRoute);
-}
-
-function finalTaskRender(err, res, results, message, renderedPage){
-	if(err){
-		console.log('An error occurred: ' + err);
-	}
-	
-	console.log('All tasks successful.');
-
-	res.render(renderedPage, {
-		'albums' : results,
-		'message' : message
-	});
-}
-
-function dbFindAlbumsTask(collection, keys, options, callback){
-	var message = '';
-	collection.find(keys, options, function(err, results){
-		if(err){
-			callback(err);
-		}
-		if(!results.length){
-			message = 'No albums found for ' + parameter;
-		}
-		callback(null, results, message);
-	});
-}
-
-function dbDeleteTask(collection, id, callback){
-	collection.remove({_id:id}, function(err){
-		if(err){
-			callback(err);
-		}
-		callback();
-	});
-}
-
-function dbInsertTask(collection, entry, callback){
-	collection.insert(entry, function(err, doc){
-		if(err){
-			callback(err);
-		}
-		callback();
-	});
-}
-
-function dbUpdateTask(collection, id, entry, callback){
-	collection.update({_id:id}, {$set:entry}, function(err){
-		if(err){
-			callback(err);
-		}
-		callback();
-	});
-}
 
 module.exports = router;
