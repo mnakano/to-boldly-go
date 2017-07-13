@@ -13,8 +13,8 @@ module.exports = {
 		});
 	},
 	
-	dbDeleteTask: function(collection, id, callback){
-		collection.remove({_id:id}, function(err){
+	dbDeleteTask: function(collection, keys, callback){
+		collection.remove(keys, function(err){
 			if(err){
 				callback(err);
 			}

@@ -1,25 +1,55 @@
 extends template
 append stylesheets
 	link(rel="stylesheet" href="/stylesheets/template-header.css")
-	link(rel="stylesheet" href="/stylesheets/tiles.css")
+	link(rel="stylesheet" href="/stylesheets/admin-content.css")
 block content
 	h1
-		="Album Tags Page"
+		="Album Tags"
 	h2
 		="Regions"
 	div(id='regions')
-		- for(var i = 0; i < locals.regions.length; i++){
-			<p>#{locals.regions[i]}</p>
-		- }
+		table(class='admin-table')
+			- for(var i = 0; i < locals.regions.length; i++){
+				- var region = locals.regions[i].split(' ').join('-');
+				tr
+					td(class='list-name')
+						=locals.regions[i]
+					td
+						img(class='tag-image' src="/images/tagPhotos/" + region + ".jpg")
+					td
+						a(href="/albumTags/deleteTag/regions/#{region}")="Delete"
+					td
+						a(href="#")="Edit"
+			- }
 	h2
 		="Categories"
 	div(id='categories')
-		- for(var i = 0; i < locals.categories.length; i++){
-			<p>#{locals.categories[i]}</p>
-		- }
+		table(class='admin-table')
+			- for(var i = 0; i < locals.categories.length; i++){
+				- var category = locals.categories[i].split(' ').join('-');
+				tr
+					td(class='list-name')
+						=locals.categories[i]
+					td
+						img(class='tag-image' src="/images/tagPhotos/" + category + ".jpg")
+					td
+						a(href="/albumTags/deleteTag/categories/#{category}")="Delete"
+					td
+						a(href="#")="Edit"
+			- }
 	h2
 		="Countries"
 	div(id='countries')
-		- for(var i = 0; i < locals.countries.length; i++){
-			<p>#{locals.countries[i]}</p>
-		- }
+		table(class='admin-table')
+			- for(var i = 0; i < locals.countries.length; i++){
+				- var country = locals.countries[i].split(' ').join('-');
+				tr
+					td(class='list-name')
+						=locals.countries[i]
+					td
+						img(class='tag-image' src="/images/tagPhotos/" + country + ".jpg")
+					td
+						a(href="/albumTags/deleteTag/countries/#{country}")="Delete"
+					td
+						a(href="#")="Edit"
+			- }

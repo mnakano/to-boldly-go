@@ -1,0 +1,13 @@
+.admin-table{
+	margin-left: 20px;
+}
+
+.admin-table td{
+	padding-bottom: 10px;
+}
+
+.tag-image {
+	width: 100px;
+	padding-left: 10px;
+	padding-right: 10px;
+}

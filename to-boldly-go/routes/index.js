@@ -43,7 +43,8 @@ router.get('/album-new', function(req, res){
 router.get('/deleteAlbum/:id/:region/:title', function(req, res){
 	async.series([
 		function(callback){
-			dbOperations.dbDeleteTask(req.db.get('album'), req.params.id, callback);
+			var keys = {_id : req.params.id};
+			dbOperations.dbDeleteTask(req.db.get('album'), keys, callback);
 		},
 		function(callback){
 			directoryHandler.deleteDirectoryTask('./public/images/' + req.params.region + '/' + req.params.title, callback);
