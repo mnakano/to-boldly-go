@@ -3,4 +3,23 @@ append stylesheets
 	link(rel="stylesheet" href="/stylesheets/template-header.css")
 	link(rel="stylesheet" href="/stylesheets/tiles.css")
 block content
-	<p>Album Tags Page</p>
+	h1
+		="Album Tags Page"
+	h2
+		="Regions"
+	div(id='regions')
+		- for(var i = 0; i < locals.regions.length; i++){
+			<p>#{locals.regions[i]}</p>
+		- }
+	h2
+		="Categories"
+	div(id='categories')
+		- for(var i = 0; i < locals.categories.length; i++){
+			<p>#{locals.categories[i]}</p>
+		- }
+	h2
+		="Countries"
+	div(id='countries')
+		- for(var i = 0; i < locals.countries.length; i++){
+			<p>#{locals.countries[i]}</p>
+		- }

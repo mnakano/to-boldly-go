@@ -1,0 +1,24 @@
+extends template
+append stylesheets
+	link(rel="stylesheet" href="/stylesheets/template-header.css")
+	link(rel="stylesheet" href="/stylesheets/forms.css")
+block content
+	div(class='form-wrapper')
+		h1="Add New Album Tag"
+		form(id='new-tag', method='POST', enctype="multipart/form-data", action='/albumTags/addAlbumTag')
+			div(class='input-group')
+				label(for='tagName') Tag Name:
+				input(id='tagName', type='text', placeholder='Tag Name', name='name')
+			div(class='input-group')
+				label(for='tagType') Tag Type:
+				select(id='tagType', name='tagType')
+					option(value="categories")="Category"
+					option(value="countries")="Country"
+					option(value="regions")="Region"
+			div(id='photo-entry-group')
+				div(class='photo-entry')
+					div(class='input-group')
+						label(for='photo') Upload Photo:
+						input(class='photo', type='file', placeholder='Photo URL', name='photo')
+			div(class='input-group buttons')
+				input(id='btnSubmit', type='submit', value='Submit')

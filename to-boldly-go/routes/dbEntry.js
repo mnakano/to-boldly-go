@@ -36,5 +36,13 @@ module.exports = {
 		};
 		
 		return entry;
+	},
+	
+	createTagEntry: function(req){
+		var entry = {
+			"name" : req.body.name
+		};
+		
+		return entry;
 	}
 }

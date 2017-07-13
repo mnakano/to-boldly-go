@@ -11,14 +11,14 @@ var finalTasks = require('./finalTasks');
 var upload = multiFormHandler.getUploadInstance('./public/images/tmp/');
 
 /* GET home page. */
-router.get('/', function(req, res, net) {
+router.get('/', function(req, res) {
 	async.waterfall([
 		function(callback){
 			var options = {sort : {publishedDate : -1}};
-			dbOperations.dbFindAlbumsTask(req.db.get('album'), null, options, callback);
+			dbOperations.dbFindDocumentsTask(req.db.get('album'), null, options, callback);
 		}
 	], function(err, results, message){
-		finalTasks.render(err, res, results, message, 'index');
+		finalTasks.render(err, res, 'albums', results, message, 'index');
 	});
 });
 
@@ -27,16 +27,16 @@ router.get('/region/:region', function(req, res, next) {
 	async.waterfall([
 		function(callback){
 			var keys = {region : req.params.region.split('-').join(' ')};
-			dbOperations.dbFindAlbumsTask(req.db.get('album'), keys, null, callback);
+			dbOperations.dbFindDocumentsTask(req.db.get('album'), keys, null, callback);
 		}
 	], function(err, results, message){
-		finalTasks.render(err, res, results, message, 'album-list')
+		finalTasks.render(err, res, 'albums', results, message, 'album-list')
 	});
 });
 
 /*GET new album entry page*/
-router.get('/new-album', function(req, res){
-	res.render('new-album');
+router.get('/album-new', function(req, res){
+	res.render('album-new');
 });
 
 /* DELETE an album */

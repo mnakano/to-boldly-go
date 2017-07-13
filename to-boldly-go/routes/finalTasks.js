@@ -8,7 +8,7 @@ module.exports = {
 		res.redirect(redirectRoute);
 	},
 
-	render: function(err, res, results, message, renderedPage){
+	render: function(err, res, collectionName, results, message, renderedPage){
 		if(err){
 			console.log('An error occurred: ' + err);
 		}

@@ -1,13 +1,13 @@
 module.exports = {
 	
-	dbFindAlbumsTask: function(collection, keys, options, callback){
+	dbFindDocumentsTask: function(collection, keys, options, callback){
 		var message = '';
 		collection.find(keys, options, function(err, results){
 			if(err){
 				callback(err);
 			}
 			if(!results.length){
-				message = 'No albums found';
+				message = 'No documents found';
 			}
 			callback(null, results, message);
 		});

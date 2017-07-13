@@ -4,8 +4,7 @@ append stylesheets
 	link(rel="stylesheet" href="/stylesheets/forms.css")
 block content
 	div(class='form-wrapper')
-		h1.
-			New Album
+		h1="New Album"
 		form(id='new-album', method='POST', enctype="multipart/form-data", action='/addAlbum')
 			div(class='input-group')
 				label(for='albumTitle') Album Title:
