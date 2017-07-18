@@ -35,6 +35,9 @@ function setNavBarValues(req, res, next){
 	if(!app.locals.categories){
 		app.locals.categories = getNavBarCollection('categories');
 	}
+	if(!app.locals.countries){
+		app.locals.countries = getNavBarCollection('countries');
+	}
 	next();
 }
 
