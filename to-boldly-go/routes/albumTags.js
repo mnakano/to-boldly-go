@@ -85,4 +85,43 @@ router.get('/deleteTag/:tagType/:tagName', function(req, res){
 	});
 });
 
+// EDIT function for future improvements
+/*router.get('/editTagForm/:tagType/:tagName', function(req, res){
+	var collection = req.db.get(req.params.tagType);
+	var tagName = req.params.tagName.split('-').join(' ');
+	collection.findOne({name:tagName}, function(err, doc){
+		if(err){
+			res.send("There was a problem finding the record.");
+		}else{
+			res.render('album-tags-edit', {
+				'tag' : doc
+			});
+		}
+	});
+});
+
+router.post('/editAlbumTag/:tagName', upload.array('photo'), function(req, res){
+	var updatedEntry = dbEntry.createTagEntry(req);
+	async.series([
+		function(callback){
+			if(req.body.tagType == 'regions'){
+				directoryHandler.createDirectoryTask('./public/images/' + newEntry.name.split(' ').join('-'), callback);
+			}else{
+				callback();
+			}
+		},
+		function(callback){
+			directoryHandler.deletePhotosTask('./public' + updatedEntry.photoDirectory, callback);
+		},
+		function(callback){
+			directoryHandler.movePhotosTask(req.files[0].destination + '/', './public' + updatedEntry.photoDirectory, req.files, callback);
+		},
+		function(callback){
+			dbOperations.dbUpdateTask(req.db.get('album'), req.params.id, updatedEntry, callback);
+		}
+	], function(err){
+		finalTasks.redirect(err, res, '/region/' + updatedEntry.region.split(' ').join('-'));
+	});
+});*/
+
 module.exports = router;

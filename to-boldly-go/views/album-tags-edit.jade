@@ -1,0 +1,36 @@
+extends template
+append stylesheets
+	link(rel="stylesheet" href="/stylesheets/template-header.css")
+	link(rel="stylesheet" href="/stylesheets/forms.css")
+block content
+	div(class='form-wrapper')
+		h1="Edit an Album Tag"
+		form(id='new-tag', method='POST', enctype="multipart/form-data", action='/albumTags/editAlbumTag')
+			div(class='input-group')
+				label(for='tagName') Tag Name:
+				input(id='tagName', type='text', name='name', value='#{tag.name}')
+			div(class='input-group')
+				label(for='tagType') Tag Type:
+				select(id='tagType', name='tagType')
+					- if(tag.tagType == 'categories'){
+						option(value="categories", selected='selected')="Category"
+					- }else{
+						option(value="categories")="Category"
+					- }
+					- if(tag.tagType == 'countries'){
+						option(value="countries", selected='selected')="Country"
+					- }else{
+						option(value="countries")="Country"
+					- }
+					- if(tag.tagType == 'regions'){
+						option(value="regions", selected='selected')="Region"
+					- }else{
+						option(value="regions")="Region"
+					- }	
+			div(id='photo-entry-group')
+				div(class='photo-entry')
+					div(class='input-group')
+						label(for='photo') Upload Photo:
+						input(class='photo', type='file', placeholder='Photo URL', name='photo')
+			div(class='input-group buttons')
+				input(id='btnSubmit', type='submit', value='Submit')
