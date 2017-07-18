@@ -22,6 +22,17 @@ router.get('/', function(req, res) {
 	});
 });
 
+router.get('/admin-album-list', function(req, res){
+	async.waterfall([
+		function(callback){
+			var options = {sort : {albumTitle : 1}};
+			dbOperations.dbFindDocumentsTask(req.db.get('album'), null, options, callback);
+		}
+	], function(err, results, message){
+		finalTasks.render(err, res, 'albums', results, message, 'admin-album-list');
+	});
+});
+
 /* GET a region page. */
 router.get('/region/:region', function(req, res, next) {
 	async.waterfall([
@@ -50,7 +61,7 @@ router.get('/deleteAlbum/:id/:region/:title', function(req, res){
 			directoryHandler.deleteDirectoryTask('./public/images/' + req.params.region + '/' + req.params.title, callback);
 		}
 	], function(err){
-		finalTasks.redirect(err, res, '/region/' + req.params.region);
+		finalTasks.redirect(err, res, '/admin-album-list');
 	});
 });
 
@@ -72,7 +83,7 @@ router.post('/addAlbum', upload.array('photo'), function(req, res){
 			dbOperations.dbInsertTask(req.db.get('album'), newEntry, callback);
 		}
 	], function(err){
-		finalTasks.redirect(err, res, '/region/' + newEntry.region.split(' ').join('-'));
+		finalTasks.redirect(err, res, '/admin-album-list');
 	});
 });
 
@@ -112,7 +123,7 @@ router.post('/editAlbum/:id', upload.array('photo'), function(req, res){
 			dbOperations.dbUpdateTask(req.db.get('album'), req.params.id, updatedEntry, callback);
 		}
 	], function(err){
-		finalTasks.redirect(err, res, '/region/' + updatedEntry.region.split(' ').join('-'));
+		finalTasks.redirect(err, res, '/admin-album-list');
 	});
 });
 
