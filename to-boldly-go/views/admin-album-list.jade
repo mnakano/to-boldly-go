@@ -1,0 +1,20 @@
+extends template
+append stylesheets
+	link(rel="stylesheet" href="/stylesheets/template-header.css")
+	link(rel="stylesheet" href="/stylesheets/admin-content.css")
+block content
+	h1
+		="Albums"
+	div(id='albums')									
+		table(class='admin-table')
+			- for(var i = 0; i < albums.length; i++){
+				tr
+					td(class='list-name')
+						=albums[i].albumTitle
+					td
+						img(class='tag-image' src="#{albums[i].photos[0].photo}")
+					td
+						a(href="/deleteAlbum/#{albums[i]._id}/#{albums[i].region.split(' ').join('-')}/#{albums[i].albumTitle.split(' ').join('-')}") Delete
+					td
+						a(href="/edit-form/#{albums[i]._id}") Edit
+			- }

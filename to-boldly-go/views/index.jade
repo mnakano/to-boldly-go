@@ -26,62 +26,38 @@ block content
 					- }
 					- remainingAlbums = remainingAlbums - 4;
 			- }
-
-		h1.
-			Albums
-		ul
-			each album, i in albums
-				li
-					div
-						=album.albumTitle
-					div
-						=album.albumCategory
-					div
-						=album.country
-					div
-						=album.region
-					div
-						=album.albumDate
-					div
-						each photo, p in album.photos
-							div
-								=photo.photo.split('/').slice(-1)[0]
-							div
-								=photo.photoDescription
-					div
-						=album.publishedDate
 	-}else{
 		div(id="message" class="message-container")
 			= message
 	-}
 	//-	
-	div(id="modal-south-america-1" class="modal")
-		<span class="close cursor" onclick="closeModal('modal-south-america-1')">&times;</span>
-		div(class="modal-content")
-			div(id="slide-header")
-				div(id="slide-header-content")
-					div(id="slide-title")="Peruvian Cuisine"
-					div(id="slide-count")="1 / 4"
-			div(class="slides")
-				div(class="photo-wrapper")
-					img(src="/images/south-america/peruvian-food/ceviche-plate.jpg")
-				div(class="photo-description")
-					div(class="photo-text")="ceviche"
-			div(class="slides")
-				div(class="photo-wrapper")
-					img(src="/images/south-america/peruvian-food/anticucho.jpg")
-				div(class="photo-description")
-					div(class="photo-text")="anticucho"
-			div(class="slides")
-				div(class="photo-wrapper")
-					img(src="/images/south-america/peruvian-food/causa.jpg")
-				div(class="photo-description")
-					div(class="photo-text")="causa"
-			div(class="slides")
-				div(class="photo-wrapper")
-					img(src="/images/south-america/peruvian-food/seafood-soup.jpg")
-				div(class="photo-description")
-					div(class="photo-text")="seafood soup"
-			<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-			<a class="next" onclick="plusSlides(1)">&#10095;</a>
+		div(id="modal-south-america-1" class="modal")
+			<span class="close cursor" onclick="closeModal('modal-south-america-1')">&times;</span>
+			div(class="modal-content")
+				div(id="slide-header")
+					div(id="slide-header-content")
+						div(id="slide-title")="Peruvian Cuisine"
+						div(id="slide-count")="1 / 4"
+				div(class="slides")
+					div(class="photo-wrapper")
+						img(src="/images/south-america/peruvian-food/ceviche-plate.jpg")
+					div(class="photo-description")
+						div(class="photo-text")="ceviche"
+				div(class="slides")
+					div(class="photo-wrapper")
+						img(src="/images/south-america/peruvian-food/anticucho.jpg")
+					div(class="photo-description")
+						div(class="photo-text")="anticucho"
+				div(class="slides")
+					div(class="photo-wrapper")
+						img(src="/images/south-america/peruvian-food/causa.jpg")
+					div(class="photo-description")
+						div(class="photo-text")="causa"
+				div(class="slides")
+					div(class="photo-wrapper")
+						img(src="/images/south-america/peruvian-food/seafood-soup.jpg")
+					div(class="photo-description")
+						div(class="photo-text")="seafood soup"
+				<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+				<a class="next" onclick="plusSlides(1)">&#10095;</a>
 	//
