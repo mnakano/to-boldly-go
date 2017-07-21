@@ -8,7 +8,7 @@ block content
 		- var remainingAlbums = albums.length;
 		- var numRows = Math.ceil(albums.length / 4);
 		- var index = 0;
-		div
+		div(class='main-header')
 			h1 Newly added albums
 		div(id='newestAlbum' class="tile-container")
 			- for(var i = 0; i < numRows; i++){
@@ -30,34 +30,5 @@ block content
 		div(id="message" class="message-container")
 			= message
 	-}
-	//-	
-		div(id="modal-south-america-1" class="modal")
-			<span class="close cursor" onclick="closeModal('modal-south-america-1')">&times;</span>
-			div(class="modal-content")
-				div(id="slide-header")
-					div(id="slide-header-content")
-						div(id="slide-title")="Peruvian Cuisine"
-						div(id="slide-count")="1 / 4"
-				div(class="slides")
-					div(class="photo-wrapper")
-						img(src="/images/south-america/peruvian-food/ceviche-plate.jpg")
-					div(class="photo-description")
-						div(class="photo-text")="ceviche"
-				div(class="slides")
-					div(class="photo-wrapper")
-						img(src="/images/south-america/peruvian-food/anticucho.jpg")
-					div(class="photo-description")
-						div(class="photo-text")="anticucho"
-				div(class="slides")
-					div(class="photo-wrapper")
-						img(src="/images/south-america/peruvian-food/causa.jpg")
-					div(class="photo-description")
-						div(class="photo-text")="causa"
-				div(class="slides")
-					div(class="photo-wrapper")
-						img(src="/images/south-america/peruvian-food/seafood-soup.jpg")
-					div(class="photo-description")
-						div(class="photo-text")="seafood soup"
-				<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-				<a class="next" onclick="plusSlides(1)">&#10095;</a>
-	//
+	
+	div(id='modal' class="modal")

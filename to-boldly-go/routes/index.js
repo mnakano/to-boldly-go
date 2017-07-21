@@ -127,4 +127,18 @@ router.post('/editAlbum/:id', upload.array('photo'), function(req, res){
 	});
 });
 
+router.get('/album-single/:title', function(req, res){
+	var albums = req.db.get('album');
+	var title = req.params.title.split('-').join(' ');
+	albums.findOne({albumTitle:title}, function(err, doc){
+		if(err){
+			res.send("There was a problem finding the record: " + title);
+		}else{
+			res.render('album-single', {
+				'album' : doc
+			});
+		}
+	});
+});
+
 module.exports = router;

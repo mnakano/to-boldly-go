@@ -2,6 +2,7 @@ extends template
 append stylesheets
 	link(rel="stylesheet" href="/stylesheets/template-header.css")
 	link(rel="stylesheet" href="/stylesheets/tiles.css")
+	link(rel="stylesheet" href="/stylesheets/photo-modal.css")
 block content
 	-if(albums.length){
 		- var region = albums[0].region.split(' ').join('-');
@@ -45,3 +46,5 @@ block content
 		div(id="message" class="message-container")
 			= message
 	-}
+	
+	div(id='modal' class="modal")

@@ -1,0 +1,15 @@
+<span class="close cursor" onclick="closeModal('modal')">&times;</span>
+div(class="modal-content")
+	div(id="slide-header")
+		div(id="slide-header-content")
+			div(id="slide-title")=album.albumTitle
+			div(id="slide-count")="1 / " + album.photos.length
+	- for(var i = 0; i < album.photos.length; i++){
+		div(class="slides")
+			div(class="photo-wrapper")
+				img(src=album.photos[i].photo)
+			div(class="photo-description")
+				div(class="photo-text")=album.photos[i].photoDescription
+	- }
+	<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+	<a class="next" onclick="plusSlides(1)">&#10095;</a>

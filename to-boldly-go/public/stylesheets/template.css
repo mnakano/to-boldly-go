@@ -23,13 +23,17 @@ body{
 }
 
 .main-content{
+	/*transform: translate(13%);*/
+}
+
+.main-header{
 	transform: translate(13%);
 }
 
 .tile-container {
 	margin-top: 50px;
 	color: #44423d;
-	/*transform: translate(13%);*/
+	transform: translate(13%);
 }
 
 .message-container {
