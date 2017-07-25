@@ -33,7 +33,7 @@ html
 							ul(class="dropdown-content categories")
 								- for(var i = 0; i < locals.categories.length; i++){
 									li 
-										a(href="#") #{locals.categories[i]}
+										a(href="/category/" + locals.categories[i].split(' ').join('-')) #{locals.categories[i]}
 								- }
 						
 						li(class="menu-left")

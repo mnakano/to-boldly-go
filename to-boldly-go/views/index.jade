@@ -13,18 +13,20 @@ block content
 		div(id='newestAlbum' class="tile-container")
 			- for(var i = 0; i < numRows; i++){
 				div(class="row")
-					- var ceiling = index + 4;
+					- var max = index + 4;
 					- if(remainingAlbums > 0 && remainingAlbums < 4){
-						- ceiling = index + remainingAlbums
+						- max = index + remainingAlbums
 					- }
-					- for(index; index < ceiling; index++){
-						div(id=albums[index].albumTitle.split(' ').join('-') class="square")
-							div(class="box-inner")
-								img(src=albums[index].photos[0].photo class="image")
-								div(class="overlay-bottom")
-									div(class="overlay-text")=albums[index].albumTitle
+					- for(index; index < max; index++){
+						- if(remainingAlbums > 0){
+							div(id=albums[index].albumTitle.split(' ').join('-') class="square")
+								div(class="box-inner")
+									img(src=albums[index].photos[0].photo class="image")
+									div(class="overlay-bottom")
+										div(class="overlay-text")=albums[index].albumTitle
+							- remainingAlbums = remainingAlbums - 1;
+						- }
 					- }
-					- remainingAlbums = remainingAlbums - 4;
 			- }
 	-}else{
 		div(id="message" class="message-container")
