@@ -6,7 +6,7 @@ block content
 	div(class='form-wrapper')
 		h1.
 			Edit #{album.albumTitle}
-		form(id='new-album', method='POST', enctype="multipart/form-data", action='/editAlbum/#{album._id}')
+		form(id='new-album', method='POST', enctype="multipart/form-data", action='/albums/editAlbum/#{album._id}')
 			div(class='input-group')
 				label(for='albumTitle') Album Title:
 				input(id='albumTitle', type='text', placeholder='Title', name='albumTitle', value="#{album.albumTitle}")

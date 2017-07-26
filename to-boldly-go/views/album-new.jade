@@ -5,7 +5,7 @@ append stylesheets
 block content
 	div(class='form-wrapper')
 		h1="New Album"
-		form(id='new-album', method='POST', enctype="multipart/form-data", action='/addAlbum')
+		form(id='new-album', method='POST', enctype="multipart/form-data", action='/albums/addAlbum')
 			div(class='input-group')
 				label(for='albumTitle') Album Title:
 				input(id='albumTitle', type='text', placeholder='Title', name='albumTitle')

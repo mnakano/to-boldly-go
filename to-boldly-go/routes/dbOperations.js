@@ -13,6 +13,22 @@ module.exports = {
 		});
 	},
 	
+	dbFindOneDocumentTask: function(collections, keys, options, callback){
+		var message = '';
+		collection.findOne(keys, function(err, result){
+			if(err){
+				console.log(err);
+				callback(err);
+			}
+			if(!result){
+				console.log('no result');
+				message = 'No document found';
+			}
+			console.log('found result');
+			callback(null, result, message);
+		});
+	},
+	
 	dbDeleteTask: function(collection, keys, callback){
 		collection.remove(keys, function(err){
 			if(err){

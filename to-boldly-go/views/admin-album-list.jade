@@ -14,7 +14,7 @@ block content
 					td
 						img(class='tag-image' src="#{albums[i].photos[0].photo}")
 					td
-						a(href="/deleteAlbum/#{albums[i]._id}/#{albums[i].region.split(' ').join('-')}/#{albums[i].albumTitle.split(' ').join('-')}") Delete
+						a(href="/albums/deleteAlbum/#{albums[i]._id}/#{albums[i].region.split(' ').join('-')}/#{albums[i].albumTitle.split(' ').join('-')}") Delete
 					td
-						a(href="/edit-form/#{albums[i]._id}") Edit
+						a(href="/albums/album-edit-form/#{albums[i]._id}") Edit
 			- }
