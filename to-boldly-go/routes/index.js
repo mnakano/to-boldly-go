@@ -8,7 +8,7 @@ var finalTasks = require('./finalTasks');
 router.get('/', function(req, res) {
 	async.waterfall([
 		function(callback){
-			var options = {sort : {publishedDate : -1}};
+			var options = {sort : {publishedDate : -1}, limit : 8};
 			dbOperations.dbFindDocumentsTask(req.db.get('album'), null, options, callback);
 		}
 	], function(err, results, message){

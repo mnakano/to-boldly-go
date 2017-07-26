@@ -6,7 +6,7 @@ append stylesheets
 block content
 	-if(albums.length){
 		- var remainingAlbums = albums.length;
-		- var numRows = Math.ceil(albums.length / 4);
+		- var numRows = Math.ceil((albums.length - 2) / 4);
 		- var index = 0;
 		div(id=continent class="tile-container")
 			div(class="row")
@@ -24,7 +24,7 @@ block content
 						- remainingAlbums = remainingAlbums - 1;
 					- }
 				- }
-			- if(numRows > 1){
+			- if(numRows > 0){
 				- for(var i = 0; i < numRows; i++){
 					div(class="row")
 						- var max = index + 4;
