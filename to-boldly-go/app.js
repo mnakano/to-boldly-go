@@ -11,6 +11,7 @@ var monk = require('monk');
 var dbConfig = require('./config/db');
 var db = monk(dbConfig.url);
 
+//assigning routes
 var index = require('./routes/index');
 var albumTags = require('./routes/albumTags');
 var albums = require('./routes/albums');
@@ -58,12 +59,20 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(setNavBarValues);
 
+//configuring Passport for authentication
+var passport = require('passport');
+var expressSession = require('express-session');
+app.use(expressSession({secret : 'mySecretKey'}));
+app.use(passport.initialize());
+app.use(passport.session());
+
 //Make the db accessible to the router
 app.use(function(req, res, next){
 	req.db = db;
 	next();
 });
 
+//routes
 app.use('/', index);
 app.use('/albumTags', albumTags);
 app.use('/albums', albums);
