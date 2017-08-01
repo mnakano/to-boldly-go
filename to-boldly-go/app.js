@@ -8,7 +8,8 @@ var bodyParser = require('body-parser');
 //assigning database
 var mongo = require('mongodb');
 var monk = require('monk');
-var db = monk('localhost:27017/toboldlygo');
+var dbConfig = require('./config/db');
+var db = monk(dbConfig.url);
 
 var index = require('./routes/index');
 var albumTags = require('./routes/albumTags');
