@@ -1,11 +1,11 @@
 var express = require('express');
 var async = require('async');
 var router = express.Router();
-var directoryHandler = require('./directoryHandler');
-var multiFormHandler = require('./multiFormHandler');
-var dbOperations = require('./dbOperations');
-var dbEntry = require('./dbEntry');
-var finalTasks = require('./finalTasks');
+var directoryHandler = require('../support-modules/directoryHandler');
+var multiFormHandler = require('../support-modules/multiFormHandler');
+var dbOperations = require('../support-modules/dbOperations');
+var dbEntry = require('../support-modules/dbEntry');
+var finalTasks = require('../support-modules/finalTasks');
 
 var upload = multiFormHandler.getUploadInstance('./public/images/tagPhotos/');
 

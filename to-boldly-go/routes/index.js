@@ -1,8 +1,8 @@
 var express = require('express');
 var async = require('async');
 var router = express.Router();
-var dbOperations = require('./dbOperations');
-var finalTasks = require('./finalTasks');
+var dbOperations = require('../support-modules/dbOperations');
+var finalTasks = require('../support-modules/finalTasks');
 
 /* GET home page. */
 router.get('/', function(req, res) {
