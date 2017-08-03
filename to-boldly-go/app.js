@@ -11,12 +11,12 @@ var monk = require('monk');
 var dbConfig = require('./config/db');
 var db = monk(dbConfig.url);
 
+var app = express();
+
 //assigning routes
 var index = require('./routes/index');
 var albumTags = require('./routes/albumTags');
 var albums = require('./routes/albums');
-
-var app = express();
 
 function getNavBarCollection(collectionName){
 	var collection = [];
@@ -66,6 +66,11 @@ app.use(expressSession({secret : 'mySecretKey'}));
 app.use(passport.initialize());
 app.use(passport.session());
 
+var initPassport = require('./passport/init');
+initPassport(passport);
+
+var auth = require('./routes/auth')(passport);
+
 //Make the db accessible to the router
 app.use(function(req, res, next){
 	req.db = db;
@@ -76,6 +81,7 @@ app.use(function(req, res, next){
 app.use('/', index);
 app.use('/albumTags', albumTags);
 app.use('/albums', albums);
+app.use('/auth', auth);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

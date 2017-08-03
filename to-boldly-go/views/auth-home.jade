@@ -1,0 +1,10 @@
+extends template
+append stylesheets
+	link(rel="stylesheet" href="/stylesheets/template-header.css")
+	link(rel="stylesheet" href="/stylesheets/admin-content.css")
+block content
+	h1
+		="Home"
+	h2
+		="Welcome: " + user.username
+	a(href='/auth/logout') Logout
