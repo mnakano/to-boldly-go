@@ -9,15 +9,22 @@ var finalTasks = require('../support-modules/finalTasks');
 
 var upload = multiFormHandler.getUploadInstance('./public/images/tagPhotos/');
 
-router.get('/', function(req, res) {
+var isAuthenticated = function(req, res, next){
+	if(req.isAuthenticated()){
+		return next();
+	}
+	res.redirect('/');
+}
+
+router.get('/', isAuthenticated, function(req, res) {
 	res.render('album-tags-list', {title:'To Boldly Go'});
 });
 
-router.get('/newTag', function(req, res){
+router.get('/newTag', isAuthenticated, function(req, res){
 	res.render('album-tags-new', {title:'To Boldly Go'})
 });
 
-router.post('/addAlbumTag', upload.single('photo'), function(req, res){
+router.post('/addAlbumTag', isAuthenticated, upload.single('photo'), function(req, res){
 	var newEntry = dbEntry.createTagEntry(req);
 	async.series([
 		function(callback){
@@ -45,7 +52,7 @@ router.post('/addAlbumTag', upload.single('photo'), function(req, res){
 	});
 });
 
-router.get('/deleteTag/:tagType/:tagName', function(req, res){
+router.get('/deleteTag/:tagType/:tagName', isAuthenticated, function(req, res){
 	async.series([
 		function(callback){
 			if(req.params.tagType == 'regions'){

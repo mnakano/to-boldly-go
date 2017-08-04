@@ -16,7 +16,7 @@ module.exports = function(passport){
 	
 	router.post('/login', passport.authenticate('login', {
 		successRedirect : '/auth/home',
-		failureRedirect : '/auth',
+		failureRedirect : '/',
 	}));
 	
 	router.get('/register', function(req, res){
@@ -33,8 +33,9 @@ module.exports = function(passport){
 	});
 	
 	router.get('/logout', function(req, res){
+		req.app.locals.isAuthenticated = false;
 		req.logout();
-		res.redirect('/auth');
+		res.redirect('/');
 	});
 	
 	return router;

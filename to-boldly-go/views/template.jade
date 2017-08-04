@@ -35,20 +35,21 @@ html
 									li 
 										a(href="/category/" + locals.categories[i].split(' ').join('-')) #{locals.categories[i]}
 								- }
-						
-						li(class="menu-left")
-							a(href="#") Admin <span class="arrow">&#x25BD;</span>
-							ul(class="dropdown-content regions")
-								li
-									a(href='/albums') Album List
-								li 
-									a(href="/albums/album-new") Add new album
-								li
-									a(href="/albumTags") Album Tags
-								li
-									a(href="/albumTags/newTag") Add new tag
-								li
-									a(href="#") Log in
+						- if(locals.isAuthenticated){
+							li(class="menu-left")
+								a(href="#") Admin <span class="arrow">&#x25BD;</span>
+								ul(class="dropdown-content regions")
+									li
+										a(href='/albums') Album List
+									li 
+										a(href="/albums/album-new") Add new album
+									li
+										a(href="/albumTags") Album Tags
+									li
+										a(href="/albumTags/newTag") Add new tag
+									li
+										a(href="/auth/logout") Log Out
+						- }
 
 						//li(class="menu-right")
 							//<span class="search-icon"><a href="#"><i class="material-icons">search</i></a></span>

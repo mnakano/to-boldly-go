@@ -9,7 +9,14 @@ var finalTasks = require('../support-modules/finalTasks');
 
 var upload = multiFormHandler.getUploadInstance('./public/images/tmp/');
 
-router.get('/', function(req, res){
+var isAuthenticated = function(req, res, next){
+	if(req.isAuthenticated()){
+		return next();
+	}
+	res.redirect('/');
+}
+
+router.get('/', isAuthenticated, function(req, res){
 	async.waterfall([
 		function(callback){
 			var options = {sort : {albumTitle : 1}};
@@ -21,11 +28,11 @@ router.get('/', function(req, res){
 });
 
 /*GET new album entry page*/
-router.get('/album-new', function(req, res){
+router.get('/album-new', isAuthenticated, function(req, res){
 	res.render('album-new');
 });
 
-router.get('/deleteAlbum/:id/:region/:title', function(req, res){
+router.get('/deleteAlbum/:id/:region/:title', isAuthenticated, function(req, res){
 	async.series([
 		function(callback){
 			var keys = {_id : req.params.id};
@@ -40,7 +47,7 @@ router.get('/deleteAlbum/:id/:region/:title', function(req, res){
 });
 
 /*POST to Add Album Service*/
-router.post('/addAlbum', upload.array('photo'), function(req, res){
+router.post('/addAlbum', isAuthenticated, upload.array('photo'), function(req, res){
 	
 	//set request values and return a DB entry.
 	var newEntry = dbEntry.createDBEntry(req);
@@ -62,7 +69,7 @@ router.post('/addAlbum', upload.array('photo'), function(req, res){
 });
 
 /*GET an album data to edit form*/
-router.get('/album-edit-form/:id', function(req, res){
+router.get('/album-edit-form/:id', isAuthenticated, function(req, res){
 	var db = req.db;
 	var albums = db.get('album');
 	albums.findOne({_id:req.params.id}, function(err, doc){
@@ -77,7 +84,7 @@ router.get('/album-edit-form/:id', function(req, res){
 });
 
 /*UPDATE an album data*/
-router.post('/editAlbum/:id', upload.array('photo'), function(req, res){
+router.post('/editAlbum/:id', isAuthenticated, upload.array('photo'), function(req, res){
 	
 	//set request values and return a DB entry.
 	var updatedEntry = dbEntry.createDBEntry(req);
