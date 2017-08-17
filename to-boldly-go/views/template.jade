@@ -2,6 +2,7 @@ doctype html
 html
 	head
 		title= locals.title
+		meta(name='viewport' content='width=device-width, initial-scale=1.0')
 		block stylesheets
 			link(rel="stylesheet" href="/stylesheets/template.css")
 			link(rel="stylesheet" href="/stylesheets/menu-bar.css")
@@ -12,7 +13,11 @@ html
 	body
 		div(class='bg')
 			div(class='title')
-				="To Boldly Go"
+				="To" 
+			div(class='title')
+				="Boldly" 
+			div(class='title')
+				="Go"
 			div(class='menu-bar')
 				nav(class='menu-bar-content')
 					ul
