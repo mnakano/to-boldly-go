@@ -16,7 +16,7 @@
 	font-size: 12px;
 }
 
-@media only screen and (min-width: 768px){
+@media only screen and (min-width: 650px){
 	.menu-bar-content .arrow{
 		font-size: 0.7em;
 		margin-left: 5px;
@@ -35,16 +35,13 @@
 .menu-bar-content{
 	display: table-cell;
 	vertical-align: middle;
-	width: 72%;
-	
+	text-align: center;
 }
 
 .menu-bar-content ul{
 	list-style-type: none;
-	/*margin: 0;*/
 	padding: 0;
-	margin-left: 13.5%;
-	margin-right: 10.5%;
+	margin-left: 5%;
 }
 
 .menu-bar-content li{
@@ -70,16 +67,17 @@
 .dropdown-content{
 	padding: 5px 0px;
 	top: 100%;
-	left: -11px;
+	left: -5px;
 	position: absolute;
 	visibility: hidden;
 	background-color:rgba(0, 0, 0, 0.8);
 	list-style-type: none;
 	border-radius: 4px;
+	text-align: left;
 }
 
 .regions{
-	width: 230px;
+	width: 200px;
 }
 
 .categories{

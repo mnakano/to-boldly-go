@@ -5,28 +5,15 @@ append stylesheets
 	link(rel="stylesheet" href="/stylesheets/photo-modal.css")
 block content
 	-if(albums.length){
-		- var remainingAlbums = albums.length;
-		- var numRows = Math.ceil(albums.length / 4);
-		- var index = 0;
 		div(class='main-header')
 			h1 Most Recent Albums
 		div(id='newestAlbum' class="tile-container")
-			- for(var i = 0; i < numRows; i++){
-				div(class="row")
-					- var max = index + 4;
-					- if(remainingAlbums > 0 && remainingAlbums < 4){
-						- max = index + remainingAlbums
-					- }
-					- for(index; index < max; index++){
-						- if(remainingAlbums > 0){
-							div(id=albums[index].albumTitle.split(' ').join('-') class="square")
-								div(class="box-inner")
-									img(src=albums[index].photos[0].photo class="image")
-									div(class="overlay-bottom")
-										div(class="overlay-text")=albums[index].albumTitle
-							- remainingAlbums = remainingAlbums - 1;
-						- }
-					- }
+			- for(var i = 0; i < albums.length; i++){
+				div(id=albums[i].albumTitle.split(' ').join('-') class="square")
+					div(class="box-inner")
+						img(src=albums[i].photos[0].photo class="image")
+						div(class="overlay-bottom")
+							div(class="overlay-text")=albums[i].albumTitle
 			- }
 	-}else{
 		div(id="message" class="message-container")

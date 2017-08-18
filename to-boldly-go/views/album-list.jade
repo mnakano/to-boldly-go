@@ -5,42 +5,18 @@ append stylesheets
 	link(rel="stylesheet" href="/stylesheets/photo-modal.css")
 block content
 	-if(albums.length){
-		- var remainingAlbums = albums.length;
-		- var numRows = Math.ceil((albums.length - 2) / 4);
-		- var index = 0;
-		div(id=continent class="tile-container")
-			div(class="row")
-				div(id='continent-title' class="rectangle")
+		div(class="tile-container")
+			div(id='tag-title' class="rectangle")
 					div(class="box-inner-rectangle")
 						img(src="/images/tagPhotos/" + tagName + ".jpg" class="image portrait")
-						div(class="continent-title")=tagName.split('-').join(' ')
-				- for(index; index < 2; index++){
-					- if(remainingAlbums > 0){
-						div(id=albums[index].albumTitle.split(' ').join('-') class="square")
-							div(class="box-inner")
-								img(src=albums[index].photos[0].photo class="image")
-								div(class="overlay-bottom")
-									div(class="overlay-text")=albums[index].albumTitle
-						- remainingAlbums = remainingAlbums - 1;
-					- }
-				- }
-			- if(numRows > 0){
-				- for(var i = 0; i < numRows; i++){
-					div(class="row")
-						- var max = index + 4;
-						- for(index; index < max; index++){
-							- if(remainingAlbums > 0){
-								div(id=albums[index].albumTitle.split(' ').join('-') class="square")
-									div(class="box-inner")
-										img(src=albums[index].photos[0].photo class="image")
-										div(class="overlay-bottom")
-											div(class="overlay-text")=albums[index].albumTitle
-								- remainingAlbums = remainingAlbums - 1;
-							- }
-						- }
-						
-				- }
-			- }		
+						div(class="tag-title")=tagName.split('-').join(' ')
+			- for(var i = 0; i < albums.length; i++){
+				div(id=albums[i].albumTitle.split(' ').join('-') class="square")
+					div(class="box-inner")
+						img(src=albums[i].photos[0].photo class="image")
+						div(class="overlay-bottom")
+							div(class="overlay-text")=albums[i].albumTitle
+			- }	
 	-}else{
 		div(id="message" class="message-container")
 			= message

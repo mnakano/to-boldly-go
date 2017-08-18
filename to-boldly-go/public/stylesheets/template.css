@@ -1,7 +1,6 @@
 body, html {
 	height: 100%;
 	margin: 0;
-	/* font-family: arial; */
 	font-family: helvetica;
 }
 
@@ -23,17 +22,18 @@ body{
 }
 
 .main-content{
-	/*transform: translate(13%);*/
+	width: 80%;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .main-header{
-	transform: translate(13%);
+	text-align: center;
 }
 
 .tile-container {
-	margin-top: 50px;
+	margin-top: 10%;
 	color: #44423d;
-	transform: translate(13%);
 }
 
 .message-container {
@@ -44,7 +44,7 @@ body{
 }
 
 .footer{
-	height: 10%;
+	height: 60px;
 	background-color: #10100a;
 	color: #ffffff;
 	clear: both;
@@ -56,4 +56,17 @@ body{
 	position: relative;
 	top: 50%;
 	transform: translateY(-50%);
+	font-size: 12px;
+	width: 60%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+@media only screen and (min-width: 768px){
+	.tile-container {
+		margin-top: 3%;
+	}
+	.footer{
+		height: 10%;
+	}
 }
