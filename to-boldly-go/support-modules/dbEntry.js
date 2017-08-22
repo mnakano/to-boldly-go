@@ -30,6 +30,7 @@ module.exports = {
 			"country" : req.body.country,
 			"region" : region,
 			"albumDate" : req.body.albumDate,
+			"journal" : req.body.journal,
 			"photos" : photoArray,
 			"publishedDate" : new Date().toISOString(),
 			"photoDirectory" : photoDirectory

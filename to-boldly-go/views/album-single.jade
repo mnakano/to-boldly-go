@@ -1,15 +1,33 @@
-<span class="close cursor" onclick="closeModal('modal')">&times;</span>
-div(class="modal-content")
-	div(id="slide-header")
-		div(id="slide-header-content")
-			div(id="slide-title")=album.albumTitle
-			div(id="slide-count")="1 / " + album.photos.length
-	- for(var i = 0; i < album.photos.length; i++){
-		div(class="slides")
-			div(class="photo-wrapper")
-				img(src=album.photos[i].photo)
-			div(class="photo-description")
-				div(class="photo-text")=album.photos[i].photoDescription
-	- }
-	<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-	<a class="next" onclick="plusSlides(1)">&#10095;</a>
+extends template
+append stylesheets
+	link(rel="stylesheet" href="/stylesheets/template-header.css")
+	link(rel="stylesheet" href="/stylesheets/album-journal.css")
+	link(rel="stylesheet" href="/stylesheets/photo-modal.css")
+block content
+	h2
+		=album.albumTitle
+	div
+		div(class='thumbnail-container')
+			img(class="thumbnail" src=album.photos[0].photo)
+		div(class='journal')
+			=album.journal
+	div
+		a(onclick="openModal('modal'); currentSlide(1)") View Photos
+	
+	div(id='modal' class='modal')
+		<span class="close cursor" onclick="closeModal('modal')">&times;</span>
+		div(class="modal-content")
+			div(id="slide-header")
+				div(id="slide-header-content")
+					div(id="slide-title")=album.albumTitle
+					div(id="slide-count")="1 / " + album.photos.length
+			- for(var i = 0; i < album.photos.length; i++){
+				div(class="slides")
+					div(class="photo-wrapper")
+						img(src=album.photos[i].photo)
+					div(class="photo-description")
+						div(class="photo-text")=album.photos[i].photoDescription
+			- }
+			<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+			<a class="next" onclick="plusSlides(1)">&#10095;</a>
+

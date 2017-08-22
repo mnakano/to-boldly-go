@@ -10,15 +10,6 @@ $(document).ready(function(){
 	});
 	//event delegation for removing a photo entry
 	$('#photo-entry-group').on('click', '.removePhoto', removePhotoEntry);
-	
-	//event delegation for photo modal
-	$('.square').on('click', function(){
-		var title = $(this).attr("id");
-		$('#modal').load('/album-single/' + title, function(){
-			openModal('modal');
-			currentSlide(1);
-		});
-	});
 });
 
 // modal scripts

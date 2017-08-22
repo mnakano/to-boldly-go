@@ -21,10 +21,16 @@ body{
 	font-family: courier;
 }
 
+.container{
+	position: relative;
+	min-height: 100%;
+}
+
 .main-content{
-	width: 80%;
+	width: 96%;
 	margin-left: auto;
 	margin-right: auto;
+	padding-bottom: 80px;
 }
 
 .main-header{
@@ -44,12 +50,15 @@ body{
 }
 
 .footer{
+	width: 100%;
 	height: 60px;
 	background-color: #10100a;
 	color: #ffffff;
 	clear: both;
-	margin-top: 100px;
 	text-align: center;
+	margin-top: 20px;
+	position: absolute;
+	bottom: 0;
 }
 
 .footer-text{
@@ -63,10 +72,13 @@ body{
 }
 
 @media only screen and (min-width: 768px){
+	.main-content{
+		width: 80%;
+	}
 	.tile-container {
 		margin-top: 3%;
 	}
 	.footer{
-		height: 10%;
+		height: 80px;
 	}
 }

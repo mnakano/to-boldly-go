@@ -1,0 +1,17 @@
+.thumbnail {
+	width: 100%;
+	margin-bottom: 20px;
+}
+
+.journal {
+	
+}
+
+@media only screen and (min-width: 650px){
+	.thumbnail {
+		width: 25%;
+		float: left;
+		margin-right:20px;
+		margin-bottom: 20px;
+	}
+}

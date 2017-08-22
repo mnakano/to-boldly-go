@@ -2,7 +2,6 @@ extends template
 append stylesheets
 	link(rel="stylesheet" href="/stylesheets/template-header.css")
 	link(rel="stylesheet" href="/stylesheets/tiles.css")
-	link(rel="stylesheet" href="/stylesheets/photo-modal.css")
 block content
 	-if(albums.length){
 		div(class="tile-container")
@@ -12,14 +11,13 @@ block content
 						div(class="tag-title")=tagName.split('-').join(' ')
 			- for(var i = 0; i < albums.length; i++){
 				div(id=albums[i].albumTitle.split(' ').join('-') class="square")
-					div(class="box-inner")
-						img(src=albums[i].photos[0].photo class="image")
-						div(class="overlay-bottom")
-							div(class="overlay-text")=albums[i].albumTitle
+					a(class='square-anchor' href='/album-single/' + albums[i].albumTitle.split(' ').join('-'))
+						div(class="box-inner")
+							img(src=albums[i].photos[0].photo class="image")
+							div(class="overlay-bottom")
+								div(class="overlay-text")=albums[i].albumTitle
 			- }	
 	-}else{
 		div(id="message" class="message-container")
 			= message
 	-}
-	
-	div(id='modal' class="modal")

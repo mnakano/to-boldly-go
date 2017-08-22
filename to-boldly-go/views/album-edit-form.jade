@@ -44,6 +44,9 @@ block content
 			div(class='input-group')
 				label(for='albumDate') Date:
 				input(id='albumDate', type='date', placeholder='Date', name='albumDate', value="#{album.albumDate}")
+			div(class='input-group')
+				label(for='journal') Journal Entry:
+				textarea(class='jorunal' id='journal', type='text', name='journal' rows='10', cols='30', value="#{album,journal}")
 			div(id='photo-entry-group')
 				each photo, p in album.photos
 					div(class='photo-entry')

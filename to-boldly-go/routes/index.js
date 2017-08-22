@@ -44,8 +44,10 @@ router.get('/album-single/:title', function(req, res){
 	var title = req.params.title.split('-').join(' ');
 	albums.findOne({albumTitle:title}, function(err, doc){
 		if(err){
+			console.log(err);
 			res.send("There was a problem finding the record: " + title);
 		}else{
+			console.log("SUCCESS!!!");
 			res.render('album-single', {
 				'album' : doc
 			});
