@@ -1,17 +1,29 @@
+.thumbnail-container {
+	margin-bottom: 20px;
+	text-align: center;
+}
+
 .thumbnail {
 	width: 100%;
-	margin-bottom: 20px;
 }
 
 .journal {
-	
+	font-size: 12px;
 }
 
 @media only screen and (min-width: 650px){
-	.thumbnail {
+	.thumbnail-container{
 		width: 25%;
-		float: left;
 		margin-right:20px;
-		margin-bottom: 20px;
+		
+		float: left;
+	}
+	
+	.thumbnail {
+		
+	}
+	
+	.journal {
+		font-size: 15px
 	}
 }

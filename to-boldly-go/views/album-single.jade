@@ -8,11 +8,12 @@ block content
 		=album.albumTitle
 	div
 		div(class='thumbnail-container')
-			img(class="thumbnail" src=album.photos[0].photo)
+			img(class="thumbnail cursor" src=album.photos[0].photo onclick="openModal('modal'); currentSlide(1)")
+			div()
+				a(class='cursor' onclick="openModal('modal'); currentSlide(1)") View Photos
 		div(class='journal')
 			=album.journal
-	div
-		a(onclick="openModal('modal'); currentSlide(1)") View Photos
+	
 	
 	div(id='modal' class='modal')
 		<span class="close cursor" onclick="closeModal('modal')">&times;</span>
@@ -24,10 +25,11 @@ block content
 			- for(var i = 0; i < album.photos.length; i++){
 				div(class="slides")
 					div(class="photo-wrapper")
-						img(src=album.photos[i].photo)
+						img(src=album.photos[i].photo onclick="plusSlides(1)")
 					div(class="photo-description")
 						div(class="photo-text")=album.photos[i].photoDescription
 			- }
-			<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-			<a class="next" onclick="plusSlides(1)">&#10095;</a>
+			div(class='slide-arrow')
+				<a class="prev cursor" onclick="plusSlides(-1)">&#10094;</a>
+				<a class="next cursor" onclick="plusSlides(1)">&#10095;</a>
 
