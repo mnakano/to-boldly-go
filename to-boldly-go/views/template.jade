@@ -19,31 +19,30 @@ html
 			div(class='title')
 				="Go"
 			div(class='menu-bar')
-				nav(class='menu-bar-content')
+				div(class='menu-bar-content')
 					ul
-						li(class="menu-left")
-							a(href="/") Home
-						//li(class="menu-left")
-							//a(href="#") About
-						li(class="menu-left")
-							a(href="#") Regions <span class="arrow">&#x25BD;</span>
-							ul(class="dropdown-content regions")
+						li
+							a(href="/")
+								<i class='material-icons'>&#xe88a;</i>
+								<span class='nav-text'> Home</span>	
+						li Regions <span class="arrow">&#x25BD;</span>
+							ul(id='regions' class="dropdown-content")
 								- for(var i = 0; i < locals.regions.length; i++){
-									li 
+									li
 										a(href="/region/" + locals.regions[i].split(' ').join('-')) #{locals.regions[i]}
 								- }
-
-						li(class="menu-left")
-							a(href="#") Categories <span class="arrow">&#x25BD;</span>
-							ul(class="dropdown-content categories")
+						li Categories <span class="arrow">&#x25BD;</span>
+							ul(id='categories' class="dropdown-content")
 								- for(var i = 0; i < locals.categories.length; i++){
-									li 
+									li
 										a(href="/category/" + locals.categories[i].split(' ').join('-')) #{locals.categories[i]}
-								- }
+								- }	
+						li
+							a(class='responsive-icon' href='javascript:void(0)' onclick='addResponsive()')
+								<i class="material-icons">list</i>	
 						- if(locals.isAuthenticated){
-							li(class="menu-left")
-								a(href="#") Admin <span class="arrow">&#x25BD;</span>
-								ul(class="dropdown-content regions")
+							li Admin <span class="arrow">&#x25BD;</span>
+								ul(id='admin-menu' class="dropdown-content")
 									li
 										a(href='/albums') Album List
 									li 
@@ -55,10 +54,6 @@ html
 									li
 										a(href="/auth/logout") Log Out
 						- }
-
-						//li(class="menu-right")
-							//<span class="search-icon"><a href="#"><i class="material-icons">search</i></a></span>
-							//input(type="text" name="search" placeholder="Search...")
 		div(class='container')
 			div(class='main-content')
 				block content

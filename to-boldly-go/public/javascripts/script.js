@@ -1,13 +1,13 @@
 // navigation bar script
 $(document).ready(function(){
-	var headerTop = $('.menu-bar').offset().top;
+	/*var headerTop = $('.menu-bar').offset().top;
 	$(window).scroll(function(){
 		if($(window).scrollTop() > headerTop){
 			$('.menu-bar').addClass('menu-bar-scroll');
 		} else {
 			$('.menu-bar').removeClass('menu-bar-scroll');
 		}
-	});
+	});*/
 	//event delegation for removing a photo entry
 	$('#photo-entry-group').on('click', '.removePhoto', removePhotoEntry);
 });
@@ -88,4 +88,13 @@ function addPhotoEntry(){
 
 function removePhotoEntry(){
 	$(this).closest('.photo-entry').remove();
+}
+
+function addResponsive(){
+	var div = document.getElementById('top-navigation');
+	if(div.className === 'nav'){
+		div.className += ' responsive';
+	} else {
+		div.className = 'nav';
+	}
 }

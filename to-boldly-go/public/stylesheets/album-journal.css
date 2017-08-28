@@ -9,6 +9,7 @@
 
 .journal {
 	font-size: 12px;
+	line-height: 150%;
 }
 
 @media only screen and (min-width: 650px){
