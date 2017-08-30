@@ -19,7 +19,6 @@ module.exports = function(passport){
 					console.log('Invalid Password');
 					return done(null, false);
 				}
-				req.app.locals.isAuthenticated = true;
 				return done(null, user);
 			});
 		})

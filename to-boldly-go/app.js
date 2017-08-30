@@ -46,8 +46,6 @@ function setNavBarValues(req, res, next){
 
 app.locals.title = 'To Boldly Go';
 
-app.locals.isAuthenticated = false;
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
