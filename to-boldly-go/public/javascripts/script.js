@@ -89,12 +89,3 @@ function addPhotoEntry(){
 function removePhotoEntry(){
 	$(this).closest('.photo-entry').remove();
 }
-
-function addResponsive(){
-	var div = document.getElementById('top-navigation');
-	if(div.className === 'nav'){
-		div.className += ' responsive';
-	} else {
-		div.className = 'nav';
-	}
-}

@@ -1,24 +1,22 @@
 .menu-bar{	
 	width: 100%;
-	height: 50px;
+	height: 30px;
 	display: table;
 	background-color:rgba(0, 0, 0, 0.5);
 	color: #ffffff;
 	position: fixed;
 	top: 0;
 	z-index: 10;
-	font-size: 12px;
+	font-size: 17px;
 }
 
 .menu-bar-content{
-	display: table-cell;
-	vertical-align: middle;
-	text-align: center;
+	display: inline;
+	margin-top: 5%;
 }
 
 .menu-bar-content .arrow{
 	font-size: 11px;
-	margin-left: 5px;
 	line-height: middle;
 }
 
@@ -26,14 +24,19 @@
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
-	margin-left: 5%;
+	margin-left: 3%;
+	margin-top: 2%;
 }
 
 .menu-bar-content li{
 	display: inline-block;
-	margin-right: 5%;	
+	margin-right: 7%;
 	cursor: pointer;
 	position: relative;
+}
+
+.nav-text{
+	display: none;
 }
 
 .menu-bar-content a{
@@ -45,58 +48,40 @@
 	visibility: visible;
 }
 
-#regions{
-	width: 150px;
-}
-
-#categories{
-	width: 80px;
-}
-
-#admin-menu {
-	width: 250px;
-}
-
 .dropdown-content{
 	padding: 5px 0px;
 	top: 100%;
-	left: -5px;
+	left: 5px;
 	position: absolute;
 	visibility: hidden;
 	background-color:rgba(0, 0, 0, 0.8);
 	list-style-type: none;
 	border-radius: 4px;
 	text-align: left;
+	font-size: 12px;
 }
-
-.dropdown-content li{
-	display: block;
-}
-
-.dropdown-content li a{
+	
+.dropdown-content a{
 	color: #ffffff;
 	text-decoration: none;
 	display: block;
-	padding: 10px 10px;
+	padding: 5px 5px;
+}
+
+.dropdown-content a:link{
+	opacity: 0.8;
+}
+	
+.dropdown-content a:hover{
 	opacity: 1.0;
 }
 
-.nav-text{
-	display: none;
+#regions{
+	width: 150px;
 }
 
-.material-icons {
-	font-size: 20px !important;
-}
-
-.responsive-icon {
-	display: inline-block;
-	float: right;
-}
-
-.responsive{
-	float: none;
-	display: block;
+#categories{
+	width: 80px;
 }
 
 @media only screen and (min-width: 650px){
@@ -106,33 +91,49 @@
 		font-size: 17px;
 	}
 	
+	.menu-bar-content{
+		display: table-cell;
+		vertical-align: middle;
+		text-align: center;
+	}
+	
+	.menu-bar-content ul{
+		margin-left: 0%;
+		margin-top: 0%;
+	}
+	
+	.menu-bar-content li{
+		margin-right: 5%;
+	}
+	
 	.menu-bar-content .arrow{
 		font-size: 0.7em;
 		margin-left: 5px;
 		line-height: middle;
 	}
 	
-	.dropdown-content a:link{
-		opacity: 0.6;
+	.dropdown-content{
+		left: 17px;
+		font-size: 15px;
 	}
 	
-	.dropdown-content a:hover{
-		opacity: 1.0;
+	.dropdown-content a{
+		padding: 10px 10px;
+	}
+	
+	.dropdown-content a:link{
+		opacity: 0.6;
 	}
 	
 	#regions{
 		width: 250px;
 	}
+
+	#admin-menu {
+		width: 250px;
+	}
 	
 	.nav-text{
 		display: inline-block;
-	}
-	
-	.responsive-icon{
-		display: none;
-	}
-	
-	.material-icons {
-		font-size: 15px !important;
 	}
 }

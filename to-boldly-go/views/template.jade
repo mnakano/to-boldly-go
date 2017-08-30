@@ -6,7 +6,7 @@ html
 		block stylesheets
 			link(rel="stylesheet" href="/stylesheets/template.css")
 			link(rel="stylesheet" href="/stylesheets/menu-bar.css")
-			link(rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons")
+			link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css")
 		block jscripts
 			script(type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js")
 			script(type="text/javascript" src="/javascripts/script.js")
@@ -23,36 +23,30 @@ html
 					ul
 						li
 							a(href="/")
-								<i class='material-icons'>&#xe88a;</i>
+								<i class='fa fa-home'></i>
 								<span class='nav-text'> Home</span>	
-						li Regions <span class="arrow">&#x25BD;</span>
-							ul(id='regions' class="dropdown-content")
-								- for(var i = 0; i < locals.regions.length; i++){
-									li
-										a(href="/region/" + locals.regions[i].split(' ').join('-')) #{locals.regions[i]}
-								- }
-						li Categories <span class="arrow">&#x25BD;</span>
-							ul(id='categories' class="dropdown-content")
-								- for(var i = 0; i < locals.categories.length; i++){
-									li
-										a(href="/category/" + locals.categories[i].split(' ').join('-')) #{locals.categories[i]}
-								- }	
 						li
-							a(class='responsive-icon' href='javascript:void(0)' onclick='addResponsive()')
-								<i class="material-icons">list</i>	
+							<i class='fa fa-globe'></i>
+							<span class='nav-text'> Regions </span><span class="arrow">&#x25BD;</span>
+							div(id='regions' class="dropdown-content")
+								- for(var i = 0; i < locals.regions.length; i++){
+									a(href="/region/" + locals.regions[i].split(' ').join('-')) #{locals.regions[i]}
+								- }
+						li
+							<i class='fa fa-tags'></i>
+							<span class='nav-text'> Categories </span><span class="arrow">&#x25BD;</span>
+							div(id='categories' class="dropdown-content")
+								- for(var i = 0; i < locals.categories.length; i++){
+									a(href="/category/" + locals.categories[i].split(' ').join('-')) #{locals.categories[i]}
+								- }		
 						- if(locals.isAuthenticated){
 							li Admin <span class="arrow">&#x25BD;</span>
-								ul(id='admin-menu' class="dropdown-content")
-									li
-										a(href='/albums') Album List
-									li 
-										a(href="/albums/album-new") Add new album
-									li
-										a(href="/albumTags") Album Tags
-									li
-										a(href="/albumTags/newTag") Add new tag
-									li
-										a(href="/auth/logout") Log Out
+								div(id='admin-menu' class="dropdown-content")
+									a(href='/albums') Album List
+									a(href="/albums/album-new") Add new album
+									a(href="/albumTags") Album Tags
+									a(href="/albumTags/newTag") Add new tag
+									a(href="/auth/logout") Log Out
 						- }
 		div(class='container')
 			div(class='main-content')

@@ -1,24 +1,20 @@
 .bg{
-	background-image: url("/images/header/header-narrow2-b.jpg");
-	height: 25%;
+	background-image: url("/images/header/header-narrow3.jpg");
+	height: 23%;
 	background-position: 85% 0%;
 }
 
 .title {
 	font-size: 20px;
-	top: 30%;
+	top: 25%;
 	margin: 0 auto;
-	/*margin-right: 2%;*/
 	text-align: center;
 }
 
 @media only screen and (min-width: 650px){
 	.title {
-		font-size: 35px;
-		top: 40%;
-		left: 40%;
-		margin-right: 2%;
-		float: left;
+		font-size: 30px;
+		top: 35%;
 	}
 	
 	.bg{
