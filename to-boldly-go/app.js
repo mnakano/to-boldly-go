@@ -15,8 +15,8 @@ var app = express();
 
 //assigning routes
 var index = require('./routes/index');
-var albumTags = require('./routes/albumTags');
-var albums = require('./routes/albums');
+var adminAlbumTags = require('./routes/adminAlbumTags');
+var adminAlbums = require('./routes/adminAlbums');
 
 function getNavBarCollection(collectionName){
 	var collection = [];
@@ -69,7 +69,7 @@ app.use(passport.session());
 var initPassport = require('./passport/init');
 initPassport(passport);
 
-var auth = require('./routes/auth')(passport);
+var adminAuth = require('./routes/adminAuth')(passport);
 
 //Make the db accessible to the router
 app.use(function(req, res, next){
@@ -79,9 +79,9 @@ app.use(function(req, res, next){
 
 //routes
 app.use('/', index);
-app.use('/albumTags', albumTags);
-app.use('/albums', albums);
-app.use('/auth', auth);
+app.use('/adminAlbumTags', adminAlbumTags);
+app.use('/adminAlbums', adminAlbums);
+app.use('/adminAuth', adminAuth);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

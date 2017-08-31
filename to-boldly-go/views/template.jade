@@ -39,15 +39,6 @@ html
 								- for(var i = 0; i < locals.categories.length; i++){
 									a(href="/category/" + locals.categories[i].split(' ').join('-')) #{locals.categories[i]}
 								- }		
-						- if(locals.isAuthenticated){
-							li Admin <span class="arrow">&#x25BD;</span>
-								div(id='admin-menu' class="dropdown-content")
-									a(href='/albums') Album List
-									a(href="/albums/album-new") Add new album
-									a(href="/albumTags") Album Tags
-									a(href="/albumTags/newTag") Add new tag
-									a(href="/auth/logout") Log Out
-						- }
 		div(class='container')
 			div(class='main-content')
 				block content

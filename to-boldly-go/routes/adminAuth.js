@@ -5,35 +5,34 @@ var isAuthenticated = function(req, res, next){
 	if(req.isAuthenticated()){
 		return next();
 	}
-	res.redirect('/auth');
+	res.redirect('/adminAuth');
 }
 
 module.exports = function(passport){
 	
 	router.get('/', function(req, res){
-		res.render('auth-login');
+		res.render('admin-login');
 	});
 	
 	router.post('/login', passport.authenticate('login', {
-		successRedirect : '/auth/home',
+		successRedirect : '/adminAuth/home',
 		failureRedirect : '/',
 	}));
 	
+	router.get('/home', function(req, res){
+		res.render('admin-home', {'user':req.user});
+	});
+	
 	router.get('/register', function(req, res){
-		res.render('auth-register');
+		res.render('admin-register');
 	});
 	
 	router.post('/register', passport.authenticate('register', {
-		successRedirect : '/auth/home',
-		failureRedirect : '/auth/register'
+		successRedirect : '/adminAuth/home',
+		failureRedirect : '/adminAuth/register'
 	}));
 	
-	router.get('/home', isAuthenticated, function(req, res){
-		res.render('auth-home', {'user':req.user});
-	});
-	
 	router.get('/logout', function(req, res){
-		req.app.locals.isAuthenticated = false;
 		req.logout();
 		res.redirect('/');
 	});

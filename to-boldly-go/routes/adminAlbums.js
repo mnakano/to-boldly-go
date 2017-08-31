@@ -28,7 +28,7 @@ router.get('/', isAuthenticated, function(req, res){
 });
 
 /*GET new album entry page*/
-router.get('/album-new', isAuthenticated, function(req, res){
+router.get('/newAlbum', isAuthenticated, function(req, res){
 	res.render('album-new');
 });
 
@@ -42,7 +42,7 @@ router.get('/deleteAlbum/:id/:region/:title', isAuthenticated, function(req, res
 			directoryHandler.deleteDirectoryTask('./public/images/' + req.params.region + '/' + req.params.title, callback);
 		}
 	], function(err){
-		finalTasks.redirect(err, res, '/albums');
+		finalTasks.redirect(err, res, '/adminAlbums');
 	});
 });
 
@@ -64,12 +64,12 @@ router.post('/addAlbum', isAuthenticated, upload.array('photo'), function(req, r
 			dbOperations.dbInsertTask(req.db.get('album'), newEntry, callback);
 		}
 	], function(err){
-		finalTasks.redirect(err, res, '/albums');
+		finalTasks.redirect(err, res, '/adminAlbums');
 	});
 });
 
 /*GET an album data to edit form*/
-router.get('/album-edit-form/:id', isAuthenticated, function(req, res){
+router.get('/editAlbumForm/:id', isAuthenticated, function(req, res){
 	var db = req.db;
 	var albums = db.get('album');
 	albums.findOne({_id:req.params.id}, function(err, doc){
@@ -104,7 +104,7 @@ router.post('/editAlbum/:id', isAuthenticated, upload.array('photo'), function(r
 			dbOperations.dbUpdateTask(req.db.get('album'), req.params.id, updatedEntry, callback);
 		}
 	], function(err){
-		finalTasks.redirect(err, res, '/albums');
+		finalTasks.redirect(err, res, '/adminAlbums');
 	});
 });
 

@@ -5,9 +5,9 @@ append stylesheets
 block content
 	h1
 		="Album Tags"
-	h2
-		="Regions"
-	div(id='regions')
+	div(class="admin-content-wrapper")
+		h2
+			="Regions"
 		table(class='admin-table')
 			- for(var i = 0; i < locals.regions.length; i++){
 				- var region = locals.regions[i].split(' ').join('-');
@@ -17,13 +17,10 @@ block content
 					td
 						img(class='tag-image' src="/images/tagPhotos/" + region + ".jpg")
 					td
-						a(href="/albumTags/deleteTag/regions/#{region}")="Delete"
-					td
-						//a(href="/albumTags/editTagForm/regions/#{region}")="Edit"
+						a(href="/adminAlbumTags/deleteTag/regions/#{region}")="Delete"
 			- }
-	h2
-		="Categories"
-	div(id='categories')
+		h2
+			="Categories"
 		table(class='admin-table')
 			- for(var i = 0; i < locals.categories.length; i++){
 				- var category = locals.categories[i].split(' ').join('-');
@@ -33,13 +30,10 @@ block content
 					td
 						img(class='tag-image' src="/images/tagPhotos/" + category + ".jpg")
 					td
-						a(href="/albumTags/deleteTag/categories/#{category}")="Delete"
-					td
-						//a(href="/albumTags/editTagForm/categories/#{category}")="Edit"
+						a(href="/adminAlbumTags/deleteTag/categories/#{category}")="Delete"
 			- }
-	h2
-		="Countries"
-	div(id='countries')
+		h2
+			="Countries"
 		table(class='admin-table')
 			- for(var i = 0; i < locals.countries.length; i++){
 				- var country = locals.countries[i].split(' ').join('-');
@@ -49,7 +43,5 @@ block content
 					td
 						img(class='tag-image' src="/images/tagPhotos/" + country + ".jpg")
 					td
-						a(href="/albumTags/deleteTag/countries/#{country}")="Delete"
-					td
-						//a(href="/albumTags/editTagForm/countries/#{country}")="Edit"
+						a(href="/adminAlbumTags/deleteTag/countries/#{country}")="Delete"
 			- }

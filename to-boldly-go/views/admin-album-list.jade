@@ -4,8 +4,8 @@ append stylesheets
 	link(rel="stylesheet" href="/stylesheets/admin-content.css")
 block content
 	h1
-		="Albums"
-	div(id='albums')									
+		="Album List"
+	div(class='admin-content-wrapper')									
 		table(class='admin-table')
 			- for(var i = 0; i < albums.length; i++){
 				tr
@@ -14,7 +14,7 @@ block content
 					td
 						img(class='tag-image' src="#{albums[i].photos[0].photo}")
 					td
-						a(href="/albums/deleteAlbum/#{albums[i]._id}/#{albums[i].region.split(' ').join('-')}/#{albums[i].albumTitle.split(' ').join('-')}") Delete
+						a(href="/adminAlbums/deleteAlbum/#{albums[i]._id}/#{albums[i].region.split(' ').join('-')}/#{albums[i].albumTitle.split(' ').join('-')}") Delete
 					td
-						a(href="/albums/album-edit-form/#{albums[i]._id}") Edit
+						a(href="/adminAlbums/editAlbumForm/#{albums[i]._id}") Edit
 			- }

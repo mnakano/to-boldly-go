@@ -5,7 +5,7 @@ append stylesheets
 block content
 	div(class='form-wrapper')
 		h1="Edit an Album Tag"
-		form(id='new-tag', method='POST', enctype="multipart/form-data", action='/albumTags/editAlbumTag')
+		form(id='new-tag', method='POST', enctype="multipart/form-data", action='/adminAlbumTags/editAlbumTag')
 			div(class='input-group')
 				label(for='tagName') Tag Name:
 				input(id='tagName', type='text', name='name', value='#{tag.name}')

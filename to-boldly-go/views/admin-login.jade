@@ -1,0 +1,18 @@
+extends template
+append stylesheets
+	link(rel="stylesheet" href="/stylesheets/template-header.css")
+	link(rel="stylesheet" href="/stylesheets/forms.css")
+	link(rel="stylesheet" href="/stylesheets/admin-content.css")
+block content
+	div(class='auth-form')
+		h1
+			="Log In"
+		form(method='POST', action='/adminAuth/login')
+			div(class='input-group')
+					label(for='username') Username:
+					input(id='username', type='text', placeholder='Username', name='username')
+			div(class='input-group')
+					label(for='password') Password:
+					input(id='password', type='password', placeholder='Password', name='password')
+			div(class='input-group buttons')
+					input(id='btnLogin', type='submit', value='Login')

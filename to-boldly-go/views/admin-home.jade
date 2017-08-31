@@ -1,0 +1,23 @@
+extends template
+append stylesheets
+	link(rel="stylesheet" href="/stylesheets/template-header.css")
+	link(rel="stylesheet" href="/stylesheets/admin-content.css")
+block content
+	div(class='admin-content-wrapper')
+		div(id='menu-header')
+			h1="Admin Menu"
+			div(id='login-message') Logged in as <span style="font-weight:bold">#{user.username}<span>
+		div(id='menu-list')
+			ul
+				li
+					a(href='/adminAlbums/newAlbum') Add New Album
+				li
+					a(href='/adminAlbums') Edit/Delete Existing Albums
+				li
+					a(href="/adminAlbumTags") Edit/Delete Existing Album Tags
+				li
+					a(href="/adminAlbumTags/newTag") Add New Album Tag
+				li
+					a(href="/adminAuth/register") Register New User
+				li
+					a(href='/adminAuth/logout') Logout
