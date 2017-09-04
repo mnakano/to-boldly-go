@@ -2,6 +2,7 @@ extends template
 append stylesheets
 	link(rel="stylesheet" href="/stylesheets/template-header.css")
 	link(rel="stylesheet" href="/stylesheets/forms.css")
+	link(rel="stylesheet" href="/stylesheets/admin-content.css")
 block content
 	div(class='form-wrapper')
 		h1.
@@ -46,13 +47,20 @@ block content
 				input(id='albumDate', type='date', placeholder='Date', name='albumDate', value="#{album.albumDate}")
 			div(class='input-group')
 				label(for='journal') Journal Entry:
-				textarea(class='jorunal' id='journal', type='text', name='journal' rows='10', cols='30', value="#{album,journal}")
+				textarea(class='jorunal' id='journal', type='text', name='journal' rows='10', cols='30', value="#{album.journal}")
 			div(id='photo-entry-group')
 				each photo, p in album.photos
 					div(class='photo-entry')
-						div(class='input-group')
-							label(for='photo') Upload Photo:
-							input(class='photo', type='file', placeholder='Photo URL', name='photo' value="#{photo.photo.split('/').slice(-1)[0]}")
+						div(class='input-group photo-table')
+							div(class='photo-block')
+								span Keep the Current Photo:
+								img(name='currentPhoto' class='tag-image' src="#{photo.photo}")
+							div(class='photo-block' style="vertical-align:middle; padding-right:50px;")
+								span OR
+							div(id='photo-upload' class='photo-block')
+								input(class='photo-upload-new' name='photoUploadNew' type='checkbox' onclick='showPhotoUpload()') 
+								span Upload a New Photo:
+								//input(class='photo-edit', type='file', placeholder='Photo URL', name='photo')
 						div(class='input-group')
 							label(for='photo-description') Photo Journal:
 							textarea(class='photo-description', type='text' rows='10', cols='30' name='photoDescription')=photo.photoDescription

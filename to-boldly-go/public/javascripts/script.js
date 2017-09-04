@@ -1,14 +1,4 @@
-// navigation bar script
 $(document).ready(function(){
-	/*var headerTop = $('.menu-bar').offset().top;
-	$(window).scroll(function(){
-		if($(window).scrollTop() > headerTop){
-			$('.menu-bar').addClass('menu-bar-scroll');
-		} else {
-			$('.menu-bar').removeClass('menu-bar-scroll');
-		}
-	});*/
-	//event delegation for removing a photo entry
 	$('#photo-entry-group').on('click', '.removePhoto', removePhotoEntry);
 });
 
@@ -88,4 +78,19 @@ function addPhotoEntry(){
 
 function removePhotoEntry(){
 	$(this).closest('.photo-entry').remove();
+}
+
+function showPhotoUpload(){
+	if($(this).checked){
+		alert('un-checked');
+		$(this).closest('.photo-edit').remove();
+	} else {
+		alert('checked');
+		var photoInput = document.createElement("input");
+		photoInput.className = 'photo-edit';
+		photoInput.type = 'file';
+		photoInput.name = 'photo';
+		photoInput.placeholder = 'Photo URL';
+		document.getElementById('photo-upload').appendChild(photoInput);
+	}
 }

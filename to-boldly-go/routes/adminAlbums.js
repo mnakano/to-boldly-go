@@ -88,7 +88,7 @@ router.post('/editAlbum/:id', isAuthenticated, upload.array('photo'), function(r
 	
 	//set request values and return a DB entry.
 	var updatedEntry = dbEntry.createDBEntry(req);
-	
+	console.log("CURRENT PHOTO: " + updatedDirectory.photos[0]);
 	//handle directory and photo updates.
 	async.series([
 		function(callback){
