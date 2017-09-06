@@ -19,15 +19,15 @@ module.exports = function(passport){
 		failureRedirect : '/',
 	}));
 	
-	router.get('/home', function(req, res){
+	router.get('/home', isAuthenticated, function(req, res){
 		res.render('admin-home', {'user':req.user});
 	});
 	
-	router.get('/register', function(req, res){
+	router.get('/register', isAuthenticated, function(req, res){
 		res.render('admin-register');
 	});
 	
-	router.post('/register', passport.authenticate('register', {
+	router.post('/register', isAuthenticated, passport.authenticate('register', {
 		successRedirect : '/adminAuth/home',
 		failureRedirect : '/adminAuth/register'
 	}));

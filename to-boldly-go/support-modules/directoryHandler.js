@@ -22,6 +22,16 @@ module.exports = {
 			callback();
 		});
 	},
+	
+	renameDirectoryTask: function(oldDirectory, newDirectory, callback){
+		fs.rename(oldDirectory, newDirectory, function(err){
+			if(err){
+				callback(err)
+			}
+			console.log('Directory name changed');
+		});
+		callback();
+	},
 
 	movePhotosTask: function(oldPath, newPath, files, callback){
 		for(var i = 0; i < files.length; i++){

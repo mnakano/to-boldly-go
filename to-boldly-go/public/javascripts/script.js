@@ -80,7 +80,7 @@ function removePhotoEntry(){
 	$(this).closest('.photo-entry').remove();
 }
 
-function showPhotoUpload(){
+/*function showPhotoUpload(){
 	if($(this).checked){
 		alert('un-checked');
 		$(this).closest('.photo-edit').remove();
@@ -93,4 +93,4 @@ function showPhotoUpload(){
 		photoInput.placeholder = 'Photo URL';
 		document.getElementById('photo-upload').appendChild(photoInput);
 	}
-}
+}*/
