@@ -7,6 +7,21 @@ block content
 	h2
 		=album.albumTitle
 	div
+		div(class='album-details') 
+			div(class='album-detail')
+				- var date = new Date(album.publishedDate);
+				<span>Published on: #{date.toISOString().split('T')[0]}</span>
+			div(class='album-detail')
+				span(class='album-attribute') Date Travelled: 
+					span(class='attribute') #{album.albumDate}
+				span(class='album-attribute') Region: 
+					span(class='attribute') 
+						a(class='cursor' href="/region/" + album.region.split(' ').join('-')) #{album.region}
+				span(class='album-attribute') Country: 
+					span(class='attribute') #{album.country}
+				span(class='album-attribute') Tags: 
+					span(class='attribute') 
+						a(class='cursor' href="/category/" + album.albumCategory.split(' ').join('-')) #{album.albumCategory}
 		div(class='thumbnail-container')
 			img(class="thumbnail cursor" src=album.photos[0].photo onclick="openModal('modal'); currentSlide(1)")
 			div()

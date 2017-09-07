@@ -12,6 +12,31 @@
 	line-height: 150%;
 }
 
+.album-details{
+	font-size: 12px;
+	margin-top: -2%;
+}
+
+.album-detail{
+	margin-bottom: 2%;
+}
+
+.album-attribute{
+	margin-right: 1%;
+}
+
+.attribute{
+	font-weight: bold;
+}
+
+.attribute a{
+	color: #000000;
+}
+
+.attribute a:visited{
+	color: #000000;
+}
+
 @media only screen and (min-width: 650px){
 	.thumbnail-container{
 		width: 25%;
@@ -20,11 +45,11 @@
 		float: left;
 	}
 	
-	.thumbnail {
-		
-	}
-	
 	.journal {
 		font-size: 15px
+	}
+	
+	.album-detail{
+		margin-bottom: 1%;
 	}
 }
