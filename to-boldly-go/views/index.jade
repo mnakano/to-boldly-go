@@ -2,6 +2,7 @@ extends template
 append stylesheets
 	link(rel="stylesheet" href="/stylesheets/main-header.css")
 	link(rel="stylesheet" href="/stylesheets/tiles.css")
+	link(rel="stylesheet" href="/stylesheets/index.css")
 block content
 	-if(albums.length){
 		div(class='main-header')
@@ -19,3 +20,13 @@ block content
 		div(id="message" class="message-container")
 			= message
 	-}
+	div(class='main-header')
+		h1 Welcome to To Boldly Go!
+	div(class='text-block')
+		Welcome message and introduction to the website goes here...
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+	div(class='main-header')
+		h1 Contact Info
+	div(class='text-block')
+		Contact info goes here...
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
