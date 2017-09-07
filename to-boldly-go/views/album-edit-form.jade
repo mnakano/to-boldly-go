@@ -57,7 +57,7 @@ block content
 								input(type='checkbox', name='keepPhoto' value='1' checked='true') 
 								span Keep the Current Photo:
 								img(name='currentPhotoImg' class='tag-image' src="#{photo.photo}")
-								input(type='text', name='currentPhoto', value="#{photo.photo.split('/').slice(-1)[0]}")
+								input(type='text', name='currentPhoto', value="#{photo.photo.split('/').slice(-1)[0]}" style='display:none;')
 							div(class='photo-block' style="vertical-align:middle; padding-right:50px;")
 								span OR
 							div(id='photo-upload' class='photo-block') 
