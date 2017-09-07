@@ -93,10 +93,14 @@ router.post('/editAlbum/:id', //isAuthenticated,
 upload.array('photo'), function(req, res){
 	
 	//set request values and return a DB entry.
-	var updatedEntry = dbEntry.createDBEditEntry(req);
+	var updatedEntry;
 
 	//handle directory and photo updates.
 	async.series([
+		function(callback){
+			updatedEntry = dbEntry.createDBEditEntry(req);
+			callback();
+		},
 		function(callback){
 			if(req.body.albumTitle != req.body.albumTitleOld){
 				var regionFolder = req.body.region.split(' ').join('-');
@@ -108,12 +112,15 @@ upload.array('photo'), function(req, res){
 			}
 		},
 		function(callback){
-			//directoryHandler.deletePhotosTask('./public' + updatedEntry.photoDirectory, callback);
-			callback();
+			var photos = [];
+			for(var i = 0; i < updatedEntry.photos.length; i++){
+				photos.push(updatedEntry.photos[i].photo.split("/").slice(-1)[0]);
+			}
+			directoryHandler.deleteRemovedPhotosTask('./public' + updatedEntry.photoDirectory + "/", photos, callback);
 		},
 		function(callback){
 			if(req.files.length){
-				directoryHandler.movePhotosTask(req.files[0].destination + '/', './public' + updatedEntry.photoDirectory + "/", req.files, callback);
+				directoryHandler.movePhotosTask(req.files[0].destination + "/", './public' + updatedEntry.photoDirectory + "/", req.files, callback);
 			} else {
 				callback();
 			}

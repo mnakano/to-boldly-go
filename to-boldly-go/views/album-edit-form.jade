@@ -54,14 +54,14 @@ block content
 					div(class='photo-entry')
 						div(class='input-group photo-table')
 							div(class='photo-block')
-								input(type='checkbox', name='keepCurrentPhoto' checked='true') 
+								input(type='checkbox', name='keepPhoto' value='1' checked='true') 
 								span Keep the Current Photo:
 								img(name='currentPhotoImg' class='tag-image' src="#{photo.photo}")
-								
 								input(type='text', name='currentPhoto', value="#{photo.photo.split('/').slice(-1)[0]}")
 							div(class='photo-block' style="vertical-align:middle; padding-right:50px;")
 								span OR
 							div(id='photo-upload' class='photo-block') 
+								input(type='checkbox', name='keepPhoto' value='0')
 								span Upload a New Photo:
 								input(class='photo-edit', type='file', placeholder='Photo URL', name='photo')
 						div(class='input-group')

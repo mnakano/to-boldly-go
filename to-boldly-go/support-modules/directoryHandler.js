@@ -29,8 +29,8 @@ module.exports = {
 				callback(err)
 			}
 			console.log('Directory name changed');
+			callback();
 		});
-		callback();
 	},
 
 	movePhotosTask: function(oldPath, newPath, files, callback){
@@ -57,6 +57,25 @@ module.exports = {
 					}
 					console.log('photo has been deleted.');
 				});
+			}
+			callback();
+		});
+	},
+	
+	deleteRemovedPhotosTask: function(directory, photos, callback){
+		fs.readdir(directory, function(err, files){
+			if(err){
+				callback(err);
+			}
+			for(var i = 0; i < files.length; i++){
+				if(photos.indexOf(files[i]) < 0){
+					fs.unlink(directory + files[i], function(err){
+						if(err){
+							callback(err);
+						}
+						console.log('photo has been deleted.');
+					});
+				}
 			}
 			callback();
 		});

@@ -56,16 +56,14 @@ module.exports = {
 		//set photo location and description
 		var checkboxArray = [];
 		var descriptionArray = [];
-		console.log(req.body.keepCurrentPhoto);
 		//assign checkbox values
-		if(req.body.keepCurrentPhoto instanceof Array){
-			for(var i = 0; i < req.body.keepCurrentPhoto.length; i++){
-				checkboxArray.push(req.body.keepCurrentPhoto[i]);
+		if(req.body.keepPhoto instanceof Array){
+			for(var i = 0; i < req.body.keepPhoto.length; i++){
+				checkboxArray.push(req.body.keepPhoto[i]);
 			}
 		} else {
-			checkboxArray.push(req.body.keepCurrentPhoto);
+			checkboxArray.push(req.body.keepPhoto);
 		}
-		
 		//assign descriptions to the descriptionArray
 		if(req.body.photoDescription instanceof Array){
 			for(var i = 0; i < req.body.photoDescription.length; i++){
@@ -75,21 +73,30 @@ module.exports = {
 			descriptionArray.push(req.body.photoDescription);
 		}
 		//assign old photo name values
+		var descArrayIndex = 0;
 		if(req.body.currentPhoto instanceof Array){
 			for(var i = 0; i < req.body.currentPhoto.length; i++){
-				photoArray.push({"photo" : photoDirectory + "/" + req.body.currentPhoto[i], "photoDescription" : descriptionArray[i]});
+				photoArray.push({"photo" : photoDirectory + "/" + req.body.currentPhoto[i], "photoDescription" : descriptionArray[descArrayIndex]});
+				descArrayIndex++;
 			}
 		} else {
-			photoArray.push({"photo" : photoDirectory + "/" + req.body.currentPhoto, "photoDescription" : descriptionArray[0]});
+			photoArray.push({"photo" : photoDirectory + "/" + req.body.currentPhoto, "photoDescription" : descriptionArray[descArrayIndex]});
 		}	
 		//replace old photo with new photo from file array by comparing the checkbox values
 		if(req.files.length){
 			index = 0;
 			for(var i = 0; i < checkboxArray.length; i++){
-				if(!checkboxArray[i]){
+				if(checkboxArray[i] == 0){
 					//replace the current photo with file photo
 					photoArray[i] = {"photo" : photoDirectory + "/" + req.files[index].originalname, "photoDescription" : descriptionArray[i]}
 					index++;
+				}
+			}
+			//append newly uploaded photos if there are any
+			if(req.files.length > index){
+				for(var i = index; i < req.files.length; i++){
+					photoArray.push({"photo" : photoDirectory + "/" + req.files[i].originalname, "photoDescription" : descriptionArray[descArrayIndex]});
+					descArrayIndex++;
 				}
 			}
 		}
