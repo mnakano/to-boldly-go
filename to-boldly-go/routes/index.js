@@ -39,6 +39,17 @@ router.get('/category/:category', function(req, res, next) {
 	});
 });
 
+router.get('/country/:country', function(req, res, next) {
+	async.waterfall([
+		function(callback){
+			var keys = {country : req.params.country.split('-').join(' ')};
+			dbOperations.dbFindDocumentsTask(req.db.get('album'), keys, null, callback);
+		}
+	], function(err, results, message){
+		finalTasks.render(err, res, req.params.country, results, message, 'album-list')
+	});
+});
+
 router.get('/album-single/:title', function(req, res){
 	var albums = req.db.get('album');
 	var title = req.params.title.split('-').join(' ');

@@ -38,7 +38,14 @@ html
 							div(id='categories' class="dropdown-content")
 								- for(var i = 0; i < locals.categories.length; i++){
 									a(href="/category/" + locals.categories[i].split(' ').join('-')) #{locals.categories[i]}
-								- }		
+								- }
+						li
+							<i class='fa fa-flag'></i>
+							<span class='nav-text'> Countries </span><span class="arrow">&#x25BD;</span>
+							div(id='countries' class="dropdown-content")
+								- for(var i = 0; i < locals.countries.length; i++){
+									a(href="/country/" + locals.countries[i].split(' ').join('-')) #{locals.countries[i]}
+								- }
 		div(class='container')
 			div(class='main-content')
 				block content

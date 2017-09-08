@@ -18,7 +18,8 @@ block content
 					span(class='attribute') 
 						a(class='cursor' href="/region/" + album.region.split(' ').join('-')) #{album.region}
 				span(class='album-attribute') Country: 
-					span(class='attribute') #{album.country}
+					span(class='attribute') 
+						a(class='cursor' href="/country/" + album.country.split(' ').join('-')) #{album.country}
 				span(class='album-attribute') Tags: 
 					span(class='attribute') 
 						a(class='cursor' href="/category/" + album.albumCategory.split(' ').join('-')) #{album.albumCategory}

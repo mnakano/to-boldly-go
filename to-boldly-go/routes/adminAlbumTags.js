@@ -48,7 +48,7 @@ router.post('/addAlbumTag', isAuthenticated, upload.single('photo'), function(re
 			callback();
 		}
 	], function(err){
-		finalTasks.redirect(err, res, '/albumTags');
+		finalTasks.redirect(err, res, '/adminAlbumTags');
 	});
 });
 
