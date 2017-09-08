@@ -24,8 +24,7 @@ block content
 					- }
 			div(class='input-group')
 				label(for='albumCountry') Country:
-				input(id='albumCountry', list='countries', type='text', placeholder='Country', name='country', value="#{album.country}")
-				datalist(id='countries')
+				select(id='albumCountry', name='country')
 					- for(var i = 0; i < locals.countries.length; i++){
 						- if(album.country == locals.countries[i]) {
 							option(value=locals.countries[i], selected='selected') #{locals.countries[i]}

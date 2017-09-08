@@ -17,11 +17,10 @@ block content
 					- }
 			div(class='input-group')
 				label(for='albumCountry') Country:
-				input(id='albumCountry', list='countries', type='text', placeholder='Country', name='country')
-				datalist(id='countries')
-					option(value='Peru')
-					option(value='Brazil')
-					option(value='Canada')
+				select(id='albumCountry', name='country')
+					- for(var i = 0; i < locals.countries.length; i++){
+						option(value=locals.countries[i]) #{locals.countries[i]}
+					- }
 			div(class='input-group')
 				label(for='albumRegion') Region:
 				select(id='albumRegion', name='region')
