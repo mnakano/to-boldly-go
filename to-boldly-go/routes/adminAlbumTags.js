@@ -88,7 +88,7 @@ router.get('/deleteTag/:tagType/:tagName', isAuthenticated, function(req, res){
 			}
 		}
 	], function(err){
-		finalTasks.redirect(err, res, '/albumTags');
+		finalTasks.redirect(err, res, '/adminAlbumTags');
 	});
 });
 
