@@ -48,7 +48,7 @@ module.exports = {
 	},
 
 	dbUpdateTask: function(collection, id, entry, callback){
-		collection.update({_id:id}, {$set:entry}, function(err){
+		collection.update(id, entry, function(err){
 			if(err){
 				callback(err);
 			}

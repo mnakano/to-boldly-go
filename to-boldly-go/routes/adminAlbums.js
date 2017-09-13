@@ -120,7 +120,7 @@ router.post('/editAlbum/:id', isAuthenticated, upload.array('photo'), function(r
 			}
 		},
 		function(callback){
-			dbOperations.dbUpdateTask(req.db.get('album'), req.params.id, updatedEntry, callback);
+			dbOperations.dbUpdateTask(req.db.get('album'), {_id:req.params.id}, {$set:updatedEntry}, callback);
 		}
 	], function(err){
 		finalTasks.redirect(err, res, '/adminAlbums');

@@ -48,7 +48,7 @@
 }
 
 .dropdown-content{
-	padding: 5px 0px;
+	padding: 5px 5px 3px 5px;
 	top: 100%;
 	left: 5px;
 	position: absolute;
@@ -83,6 +83,16 @@
 	width: 80px;
 }
 
+#countries{
+	font-size: 14px;
+	margin-left: 10%;
+	padding-bottom: 10px;
+}
+
+#countries a{
+	padding: 2px 0px;
+}
+
 @media only screen and (min-width: 650px){
 	.menu-bar{	
 		height: 70px;
@@ -91,12 +101,12 @@
 	}
 	
 	.menu-bar-content{
-		text-align: center;
+
 	}
 	
 	.menu-bar-content ul{
-		margin-left: 0%;
 		margin-top: 0%;
+		margin-left: 11%;
 	}
 	
 	.menu-bar-content li{
@@ -115,7 +125,7 @@
 	}
 	
 	.dropdown-content a{
-		padding: 10px 10px;
+		padding: 5px 10px 5px 10px;
 	}
 	
 	.dropdown-content a:link{
@@ -127,11 +137,7 @@
 	}
 	
 	#regions{
-		width: 250px;
-	}
-
-	#admin-menu {
-		width: 250px;
+		width: 180px;
 	}
 	
 	.nav-text{

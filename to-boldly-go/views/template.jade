@@ -30,21 +30,18 @@ html
 							<span class='nav-text'> Regions </span><span class="arrow">&#x25BD;</span>
 							div(id='regions' class="dropdown-content")
 								- for(var i = 0; i < locals.regions.length; i++){
-									a(href="/region/" + locals.regions[i].split(' ').join('-')) #{locals.regions[i]}
+									a(href="/region/" + locals.regions[i].name.split(' ').join('-')) #{locals.regions[i].name}
+									div(id='countries')
+										- for(var k = 0; k < locals.regions[i].countries.length; k++){
+											a(href="/country/" + locals.regions[i].countries[k].split(' ').join('-')) #{locals.regions[i].countries[k]}
+										- }
 								- }
 						li
 							<i class='fa fa-tags'></i>
 							<span class='nav-text'> Categories </span><span class="arrow">&#x25BD;</span>
 							div(id='categories' class="dropdown-content")
 								- for(var i = 0; i < locals.categories.length; i++){
-									a(href="/category/" + locals.categories[i].split(' ').join('-')) #{locals.categories[i]}
-								- }
-						li
-							<i class='fa fa-flag'></i>
-							<span class='nav-text'> Countries </span><span class="arrow">&#x25BD;</span>
-							div(id='countries' class="dropdown-content")
-								- for(var i = 0; i < locals.countries.length; i++){
-									a(href="/country/" + locals.countries[i].split(' ').join('-')) #{locals.countries[i]}
+									a(href="/category/" + locals.categories[i].name.split(' ').join('-')) #{locals.categories[i].name}
 								- }
 		div(class='container')
 			div(class='main-content')

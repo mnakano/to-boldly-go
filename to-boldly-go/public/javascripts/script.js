@@ -1,5 +1,13 @@
 $(document).ready(function(){
 	$('#photo-entry-group').on('click', '.removePhoto', removePhotoEntry);
+	$('#region-select').hide();
+	$('#tagType').change(function(){
+		if($('#tagType option:selected').text() == 'Country'){
+			$('#region-select').show();
+		}else{
+			$('#region-select').hide();
+		}
+	});
 });
 
 // modal scripts

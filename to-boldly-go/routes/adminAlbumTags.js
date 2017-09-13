@@ -16,15 +16,18 @@ var isAuthenticated = function(req, res, next){
 	res.redirect('/');
 }
 
-router.get('/', isAuthenticated, function(req, res) {
+router.get('/', //isAuthenticated, 
+function(req, res) {
 	res.render('album-tags-list', {title:'To Boldly Go'});
 });
 
-router.get('/newTag', isAuthenticated, function(req, res){
+router.get('/newTag', //isAuthenticated, 
+function(req, res){
 	res.render('album-tags-new', {title:'To Boldly Go'})
 });
 
-router.post('/addAlbumTag', isAuthenticated, upload.single('photo'), function(req, res){
+router.post('/addAlbumTag', //isAuthenticated, 
+upload.single('photo'), function(req, res){
 	var newEntry = dbEntry.createTagEntry(req);
 	async.series([
 		function(callback){
@@ -35,7 +38,13 @@ router.post('/addAlbumTag', isAuthenticated, upload.single('photo'), function(re
 			}
 		},
 		function(callback){
-			dbOperations.dbInsertTask(req.db.get(req.body.tagType), newEntry, callback);
+			if(req.body.tagType == 'countries'){
+				var entry = {$push : {countries : req.body.name}};
+				var id = {name : req.body.region};
+				dbOperations.dbUpdateTask(req.db.get('regions'), id, entry, callback);
+			}else{
+				dbOperations.dbInsertTask(req.db.get(req.body.tagType), newEntry, callback);
+			}
 		},
 		function(callback){
 			if(req.body.tagType == 'regions'){
@@ -52,7 +61,8 @@ router.post('/addAlbumTag', isAuthenticated, upload.single('photo'), function(re
 	});
 });
 
-router.get('/deleteTag/:tagType/:tagName', isAuthenticated, function(req, res){
+router.get('/deleteTag/:tagType/:tagName', //isAuthenticated, 
+function(req, res){
 	async.series([
 		function(callback){
 			if(req.params.tagType == 'regions'){

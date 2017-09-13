@@ -25,7 +25,7 @@ function getNavBarCollection(collectionName){
 			console.log('ERROR: ' + err);
 		}
 		for(i = 0; i < results.length; i++){
-			collection.push(results[i].name);
+			collection.push(results[i]);
 		}
 	});
 	return collection;

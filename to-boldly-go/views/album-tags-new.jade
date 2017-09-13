@@ -15,6 +15,12 @@ block content
 					option(value="categories")="Category"
 					option(value="countries")="Country"
 					option(value="regions")="Region"
+			div(id='region-select' class='input-group')
+				label(for='region') Select Region:
+				select(id='region', name='region')
+					- for(var i = 0; i < locals.regions.length; i++){
+						option(value="#{locals.regions[i]}")=locals.regions[i]
+					- }
 			div(id='photo-entry-group')
 				div(class='photo-entry')
 					div(class='input-group')
