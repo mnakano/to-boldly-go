@@ -116,11 +116,18 @@ module.exports = {
 		return entry;
 	},
 	
-	createTagEntry: function(req){
-		var entry = {
-			"name" : req.body.name
-		};
-		
+	createTagEntry: function(req, region){
+		var entry;
+		if(region){
+			entry = {
+				"name" : req.body.name,
+				"countries" : []
+			};
+		}else{
+			 entry = {
+				"name" : req.body.name
+			};
+		}	
 		return entry;
 	}
 }

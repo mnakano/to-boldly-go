@@ -28,11 +28,11 @@ function(req, res){
 
 router.post('/addAlbumTag', //isAuthenticated, 
 upload.single('photo'), function(req, res){
-	var newEntry = dbEntry.createTagEntry(req);
+	var newEntry;
 	async.series([
 		function(callback){
 			if(req.body.tagType == 'regions'){
-				directoryHandler.createDirectoryTask('./public/images/' + newEntry.name.split(' ').join('-'), callback);
+				directoryHandler.createDirectoryTask('./public/images/' + req.body.name.split(' ').join('-'), callback);
 			}else{
 				callback();
 			}
@@ -42,17 +42,29 @@ upload.single('photo'), function(req, res){
 				var entry = {$push : {countries : req.body.name}};
 				var id = {name : req.body.region};
 				dbOperations.dbUpdateTask(req.db.get('regions'), id, entry, callback);
+			}else if(req.body.tagType == 'regions'){
+				newEntry = dbEntry.createTagEntry(req, true);
+				dbOperations.dbInsertTask(req.db.get(req.body.tagType), newEntry, callback);
 			}else{
+				newEntry = dbEntry.createTagEntry(req, false);
 				dbOperations.dbInsertTask(req.db.get(req.body.tagType), newEntry, callback);
 			}
 		},
 		function(callback){
 			if(req.body.tagType == 'regions'){
-				req.app.locals.regions.push(req.body.name);
+				var newRegion = {name:req.body.name, countries:[]};
+				req.app.locals.regions.push(newRegion);
 			}else if(req.body.tagType == 'categories'){
 				req.app.locals.categories.push(req.body.name);
 			}else if(req.body.tagType == 'countries'){
-				req.app.locals.countries.push(req.body.name);
+				var regionIndex = -1;
+				for(var i = 0; i < req.app.locals.regions.length; i++){
+					if(req.app.locals.regions[i].name == req.body.region){
+						regionIndex = i;
+						break;
+					}
+				}
+				req.app.locals.regions[regionIndex].countries.push(req.body.name);
 			}
 			callback();
 		}
@@ -61,14 +73,20 @@ upload.single('photo'), function(req, res){
 	});
 });
 
-router.get('/deleteTag/:tagType/:tagName', //isAuthenticated, 
+router.get('/deleteTag/:tagType/:tagName/:region?', //isAuthenticated, 
 function(req, res){
 	async.series([
 		function(callback){
 			if(req.params.tagType == 'regions'){
-				var index = req.app.locals.regions.indexOf(req.params.tagName.split('-').join(' '));
-				if(index > -1){
-					req.app.locals.regions.splice(index, 1);
+				var regionIndex = -1;
+				for(var i = 0; i < req.app.locals.regions.length; i++){
+					if(req.app.locals.regions[i].name == req.params.tagName.split('-').join(' ')){
+						regionIndex = i;
+						break;
+					}
+				}
+				if(regionIndex > -1){
+					req.app.locals.regions.splice(regionIndex, 1);
 				}
 			}else if(req.params.tagType == 'categories'){
 				var index = req.app.locals.categories.indexOf(req.params.tagName.split('-').join(' '));
@@ -76,16 +94,31 @@ function(req, res){
 					req.app.locals.categories.splice(index, 1);
 				}
 			}else if(req.params.tagType == 'countries'){
-				var index = req.app.locals.countries.indexOf(req.params.tagName.split('-').join(' '));
-				if(index > -1){
-					req.app.locals.countries.splice(index, 1);
+				var regionIndex = -1;
+				for(var i = 0; i < req.app.locals.regions.length; i++){
+					if(req.app.locals.regions[i].name == req.params.region.split('-').join(' ')){
+						regionIndex = i;
+						break;
+					}
 				}
+				if(regionIndex > -1){
+					var countryIndex = req.app.locals.regions[regionIndex].countries.indexOf(req.params.tagName.split('-').join(' '));
+					if(countryIndex > -1){
+						req.app.locals.regions[regionIndex].countries.splice(countryIndex, 1)
+					}
+				}			
 			}
 			callback();
 		},
 		function(callback){
-			var keys = {name : req.params.tagName.split('-').join(' ')};
-			dbOperations.dbDeleteTask(req.db.get(req.params.tagType), keys, callback);
+			if(req.params.tagType == 'countries'){
+				var entry = {$pull : {countries : req.params.tagName.split('-').join(' ')}};
+				var id = {name : req.params.region.split('-').join(' ')};
+				dbOperations.dbUpdateTask(req.db.get('regions'), id, entry, callback);
+			}else{
+				var keys = {name : req.params.tagName.split('-').join(' ')};
+				dbOperations.dbDeleteTask(req.db.get(req.params.tagType), keys, callback);
+			}	
 		},
 		function(callback){
 			directoryHandler.deleteDirectoryTask('./public/images/tagPhotos/' + req.params.tagName + '.jpg', callback);

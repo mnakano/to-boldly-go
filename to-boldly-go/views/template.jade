@@ -30,8 +30,8 @@ html
 							<span class='nav-text'> Regions </span><span class="arrow">&#x25BD;</span>
 							div(id='regions' class="dropdown-content")
 								- for(var i = 0; i < locals.regions.length; i++){
-									a(href="/region/" + locals.regions[i].name.split(' ').join('-')) #{locals.regions[i].name}
-									div(id='countries')
+									span(class='link')#[a(href="/region/" + locals.regions[i].name.split(' ').join('-')) #{locals.regions[i].name}] #[span(class="expand arrow")&#x25BD;]
+									div(class='countries')
 										- for(var k = 0; k < locals.regions[i].countries.length; k++){
 											a(href="/country/" + locals.regions[i].countries[k].split(' ').join('-')) #{locals.regions[i].countries[k]}
 										- }
@@ -41,7 +41,7 @@ html
 							<span class='nav-text'> Categories </span><span class="arrow">&#x25BD;</span>
 							div(id='categories' class="dropdown-content")
 								- for(var i = 0; i < locals.categories.length; i++){
-									a(href="/category/" + locals.categories[i].name.split(' ').join('-')) #{locals.categories[i].name}
+									span(class='link')#[a(href="/category/" + locals.categories[i].name.split(' ').join('-')) #{locals.categories[i].name}]
 								- }
 		div(class='container')
 			div(class='main-content')

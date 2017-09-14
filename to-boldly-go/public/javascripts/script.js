@@ -8,6 +8,15 @@ $(document).ready(function(){
 			$('#region-select').hide();
 		}
 	});
+	$('.countries').hide();
+	$('.expand').on('click', function(){
+		var countryDropdown = $(this).closest('.link').next('.countries');
+		if(countryDropdown.is(':hidden')){
+			countryDropdown.show();
+		}else{
+			countryDropdown.hide();
+		}	
+	});
 });
 
 // modal scripts

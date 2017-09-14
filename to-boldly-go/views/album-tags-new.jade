@@ -19,7 +19,7 @@ block content
 				label(for='region') Select Region:
 				select(id='region', name='region')
 					- for(var i = 0; i < locals.regions.length; i++){
-						option(value="#{locals.regions[i]}")=locals.regions[i]
+						option(value="#{locals.regions[i].name}")=locals.regions[i].name
 					- }
 			div(id='photo-entry-group')
 				div(class='photo-entry')

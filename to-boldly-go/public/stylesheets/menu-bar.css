@@ -63,8 +63,6 @@
 .dropdown-content a{
 	color: #ffffff;
 	text-decoration: none;
-	display: block;
-	padding: 7px 5px;
 }
 
 .dropdown-content a:link{
@@ -83,14 +81,32 @@
 	width: 80px;
 }
 
-#countries{
+.link {
+	display: block;
+	padding: 7px 5px;
+}
+
+.link a{
+	margin-right: 10px;
+}
+
+.expand{
+	opacity: 0.8;
+}
+
+.expand:hover{
+	opacity: 1.0;
+}
+
+.countries{
 	font-size: 14px;
 	margin-left: 10%;
 	padding-bottom: 10px;
 }
 
-#countries a{
-	padding: 2px 0px;
+.countries a{
+	display: block;
+	padding: 5px 2px;
 }
 
 @media only screen and (min-width: 650px){
@@ -125,7 +141,7 @@
 	}
 	
 	.dropdown-content a{
-		padding: 5px 10px 5px 10px;
+		padding: 5px 0px 5px 10px;
 	}
 	
 	.dropdown-content a:link{
@@ -138,6 +154,10 @@
 	
 	#regions{
 		width: 180px;
+	}
+	
+	.countries a{
+		
 	}
 	
 	.nav-text{

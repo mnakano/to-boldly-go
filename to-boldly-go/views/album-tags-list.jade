@@ -10,38 +10,35 @@ block content
 			="Regions"
 		table(class='admin-table')
 			- for(var i = 0; i < locals.regions.length; i++){
-				- var region = locals.regions[i].split(' ').join('-');
+				- var region = locals.regions[i].name.split(' ').join('-');
 				tr
 					td(class='list-name')
-						=locals.regions[i]
+						=locals.regions[i].name
 					td
 						img(class='tag-image' src="/images/tagPhotos/" + region + ".jpg")
 					td
 						a(href="/adminAlbumTags/deleteTag/regions/#{region}")="Delete"
+					- for(var k = 0; k < locals.regions[i].countries.length; k++){
+						- var country = locals.regions[i].countries[k].split(' ').join('-');
+						tr
+							td(class='list-name')
+								=locals.regions[i].countries[k]
+							td
+								img(class='tag-image' src="/images/tagPhotos/" + country + ".jpg")
+							td
+								a(href="/adminAlbumTags/deleteTag/countries/#{country}/#{region}")="Delete"
+					- }
 			- }
 		h2
 			="Categories"
 		table(class='admin-table')
 			- for(var i = 0; i < locals.categories.length; i++){
-				- var category = locals.categories[i].split(' ').join('-');
+				- var category = locals.categories[i].name.split(' ').join('-');
 				tr
 					td(class='list-name')
-						=locals.categories[i]
+						=locals.categories[i].name
 					td
 						img(class='tag-image' src="/images/tagPhotos/" + category + ".jpg")
 					td
 						a(href="/adminAlbumTags/deleteTag/categories/#{category}")="Delete"
-			- }
-		h2
-			="Countries"
-		table(class='admin-table')
-			- for(var i = 0; i < locals.countries.length; i++){
-				- var country = locals.countries[i].split(' ').join('-');
-				tr
-					td(class='list-name')
-						=locals.countries[i]
-					td
-						img(class='tag-image' src="/images/tagPhotos/" + country + ".jpg")
-					td
-						a(href="/adminAlbumTags/deleteTag/countries/#{country}")="Delete"
 			- }
