@@ -20,7 +20,7 @@ var adminAlbums = require('./routes/adminAlbums');
 
 function getNavBarCollection(collectionName){
 	var collection = [];
-	db.get(collectionName).find({}, {}, function(err, results){
+	db.get(collectionName).find({}, {sort:{name:1}}, function(err, results){
 		if(err){
 			console.log('ERROR: ' + err);
 		}
@@ -37,9 +37,6 @@ function setNavBarValues(req, res, next){
 	}
 	if(!app.locals.categories){
 		app.locals.categories = getNavBarCollection('categories');
-	}
-	if(!app.locals.countries){
-		app.locals.countries = getNavBarCollection('countries');
 	}
 	next();
 }

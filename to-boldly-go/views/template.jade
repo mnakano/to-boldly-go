@@ -32,6 +32,7 @@ html
 								- for(var i = 0; i < locals.regions.length; i++){
 									span(class='link')#[a(href="/region/" + locals.regions[i].name.split(' ').join('-')) #{locals.regions[i].name}] #[span(class="expand arrow")&#x25BD;]
 									div(class='countries')
+										- locals.regions[i].countries.sort()
 										- for(var k = 0; k < locals.regions[i].countries.length; k++){
 											a(href="/country/" + locals.regions[i].countries[k].split(' ').join('-')) #{locals.regions[i].countries[k]}
 										- }

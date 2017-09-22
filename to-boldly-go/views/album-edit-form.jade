@@ -29,6 +29,7 @@ block content
 						- countries.push(locals.regions[i].countries[k]);
 					- }
 				- }
+				countries.sort();
 				label(for='albumCountry') Country:
 				select(id='albumCountry', name='country')
 					- for(var i = 0; i < countries.length; i++){
