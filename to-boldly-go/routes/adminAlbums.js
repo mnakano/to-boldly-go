@@ -16,7 +16,8 @@ var isAuthenticated = function(req, res, next){
 	res.redirect('/');
 }
 
-router.get('/', isAuthenticated, function(req, res){
+router.get('/', //isAuthenticated, 
+function(req, res){
 	async.waterfall([
 		function(callback){
 			var options = {sort : {albumTitle : 1}};
@@ -28,18 +29,20 @@ router.get('/', isAuthenticated, function(req, res){
 });
 
 /*GET new album entry page*/
-router.get('/newAlbum', isAuthenticated, function(req, res){
+router.get('/newAlbum', //isAuthenticated, 
+function(req, res){
 	res.render('album-new');
 });
 
-router.get('/deleteAlbum/:id/:region/:title', isAuthenticated, function(req, res){
+router.get('/deleteAlbum/:id/:title', //isAuthenticated, 
+function(req, res){
 	async.series([
 		function(callback){
 			var keys = {_id : req.params.id};
 			dbOperations.dbDeleteTask(req.db.get('album'), keys, callback);
 		},
 		function(callback){
-			directoryHandler.deleteDirectoryTask('./public/images/' + req.params.region + '/' + req.params.title, callback);
+			directoryHandler.deleteDirectoryTask('./public/images/albums/' + req.params.title, callback);
 		}
 	], function(err){
 		finalTasks.redirect(err, res, '/adminAlbums');
@@ -47,8 +50,8 @@ router.get('/deleteAlbum/:id/:region/:title', isAuthenticated, function(req, res
 });
 
 /*POST to Add Album Service*/
-router.post('/addAlbum', isAuthenticated, upload.array('photo'), function(req, res){
-	
+router.post('/addAlbum', //isAuthenticated, 
+upload.array('photo'), function(req, res){
 	//set request values and return a DB entry.
 	var newEntry = dbEntry.createDBEntry(req);
 	
@@ -69,7 +72,8 @@ router.post('/addAlbum', isAuthenticated, upload.array('photo'), function(req, r
 });
 
 /*GET an album data to edit form*/
-router.get('/editAlbumForm/:id', isAuthenticated, function(req, res){
+router.get('/editAlbumForm/:id', //isAuthenticated, 
+function(req, res){
 	var db = req.db;
 	var albums = db.get('album');
 	albums.findOne({_id:req.params.id}, function(err, doc){
@@ -84,7 +88,8 @@ router.get('/editAlbumForm/:id', isAuthenticated, function(req, res){
 });
 
 /*UPDATE an album data*/
-router.post('/editAlbum/:id', isAuthenticated, upload.array('photo'), function(req, res){
+router.post('/editAlbum/:id', //isAuthenticated, 
+upload.array('photo'), function(req, res){
 	
 	//set request values and return a DB entry.
 	var updatedEntry;
@@ -97,9 +102,8 @@ router.post('/editAlbum/:id', isAuthenticated, upload.array('photo'), function(r
 		},
 		function(callback){
 			if(req.body.albumTitle != req.body.albumTitleOld){
-				var regionFolder = req.body.region.split(' ').join('-');
 				var albumFolder = req.body.albumTitleOld.split(' ').join('-');
-				var photoDirectoryOld = "/images/" + regionFolder + "/" + albumFolder;
+				var photoDirectoryOld = "/images/albums/" + albumFolder;
 				directoryHandler.renameDirectoryTask('./public' + photoDirectoryOld , './public' + updatedEntry.photoDirectory, callback);
 			} else {
 				callback();

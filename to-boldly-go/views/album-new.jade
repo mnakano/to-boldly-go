@@ -13,19 +13,25 @@ block content
 				label(for='albumCategory') Album Category:
 				select(id='albumCategory', name='albumCategory')
 					- for(var i = 0; i < locals.categories.length; i++){
-						option(value=locals.categories[i]) #{locals.categories[i]}
+						option(value=locals.categories[i].name) #{locals.categories[i].name}
 					- }
 			div(class='input-group')
+				- var countries = [];
+				- for(var i = 0; i < locals.regions.length; i++){
+					- for(var k = 0; k < locals.regions[i].countries.length; k++){
+						- countries.push(locals.regions[i].countries[k]);
+					- }
+				- }
 				label(for='albumCountry') Country:
 				select(id='albumCountry', name='country')
-					- for(var i = 0; i < locals.countries.length; i++){
-						option(value=locals.countries[i]) #{locals.countries[i]}
+					- for(var i = 0; i < countries.length; i++){
+						option(value=countries[i]) #{countries[i]}
 					- }
 			div(class='input-group')
 				label(for='albumRegion') Region:
 				select(id='albumRegion', name='region')
 					- for(var i = 0; i < locals.regions.length; i++){
-						option(value=locals.regions[i]) #{locals.regions[i]}
+						option(value=locals.regions[i].name) #{locals.regions[i].name}
 					- }
 			div(class='input-group')
 				label(for='albumDate') Date:

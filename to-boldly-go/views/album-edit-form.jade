@@ -3,7 +3,7 @@ append stylesheets
 	link(rel="stylesheet" href="/stylesheets/template-header.css")
 	link(rel="stylesheet" href="/stylesheets/forms.css")
 	link(rel="stylesheet" href="/stylesheets/admin-content.css")
-block content
+block content	
 	div(class='form-wrapper')
 		h1.
 			Edit #{album.albumTitle}
@@ -16,30 +16,36 @@ block content
 				label(for='albumCategory') Album Category:
 				select(id='albumCategory', name='albumCategory', value="#{album.albumCategory}")
 					- for(var i = 0; i < locals.categories.length; i++){
-						- if(album.albumCategory == locals.categories[i]) {
-							option(value=locals.categories[i], selected='selected') #{locals.categories[i]}
+						- if(album.albumCategory == locals.categories[i].name) {
+							option(value=locals.categories[i].name, selected='selected') #{locals.categories[i].name}
 						- } else {
-							option(value=locals.categories[i]) #{locals.categories[i]}
+							option(value=locals.categories[i].name) #{locals.categories[i].name}
 						- }
 					- }
 			div(class='input-group')
+				- var countries = [];
+				- for(var i = 0; i < locals.regions.length; i++){
+					- for(var k = 0; k < locals.regions[i].countries.length; k++){
+						- countries.push(locals.regions[i].countries[k]);
+					- }
+				- }
 				label(for='albumCountry') Country:
 				select(id='albumCountry', name='country')
-					- for(var i = 0; i < locals.countries.length; i++){
-						- if(album.country == locals.countries[i]) {
-							option(value=locals.countries[i], selected='selected') #{locals.countries[i]}
+					- for(var i = 0; i < countries.length; i++){
+						- if(album.country == countries[i]) {
+							option(value=countries[i], selected='selected') #{countries[i]}
 						- } else {
-							option(value=locals.countries[i]) #{locals.countries[i]}
+							option(value=countries[i]) #{countries[i]}
 						- }
 					- }
 			div(class='input-group')
 				label(for='albumRegion') Region:
 				select(id='albumRegion', name='region', value="#{album.region}")
 					- for(var i = 0; i < locals.regions.length; i++){
-						- if(album.region == locals.regions[i]) {
-							option(value=locals.regions[i], selected='selected') #{locals.regions[i]}
+						- if(album.region == locals.regions[i].name) {
+							option(value=locals.regions[i].name, selected='selected') #{locals.regions[i].name}
 						- } else {
-							option(value=locals.regions[i]) #{locals.regions[i]}
+							option(value=locals.regions[i].name) #{locals.regions[i].name}
 						- }
 					- }
 			div(class='input-group')
@@ -47,7 +53,7 @@ block content
 				input(id='albumDate', type='date', placeholder='Date', name='albumDate', value="#{album.albumDate}")
 			div(class='input-group')
 				label(for='journal') Journal Entry:
-				textarea(class='jorunal' id='journal', type='text', name='journal' rows='10', cols='30', value="#{album.journal}")
+				textarea(class='jorunal' id='journal', type='text', name='journal' rows='10', cols='30')=album.journal
 			div(id='photo-entry-group')
 				each photo, p in album.photos
 					div(class='photo-entry')

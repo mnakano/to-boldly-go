@@ -19,7 +19,8 @@ module.exports = function(passport){
 		failureRedirect : '/',
 	}));
 	
-	router.get('/home', isAuthenticated, function(req, res){
+	router.get('/home', //isAuthenticated, 
+	function(req, res){
 		res.render('admin-home', {'user':req.user});
 	});
 	

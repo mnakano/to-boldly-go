@@ -3,16 +3,10 @@ module.exports = {
 		var entry = {};
 		
 		//set request field values
-		var albumTitle = req.body.albumTitle;
-		var region = req.body.region;
 		var photoArray = [];
 		
-		//set folder names
-		var regionFolder = region.split(' ').join('-');
-		var albumFolder = albumTitle.split(' ').join('-');
-		
 		//build photo directory
-		var photoDirectory = "/images/" + regionFolder + "/" + albumFolder;
+		var photoDirectory = "/images/albums/" + req.body.albumTitle.split(' ').join('-');
 		var descriptions = req.body.photoDescription;
 		
 		if(req.files.length > 1){	
@@ -24,10 +18,10 @@ module.exports = {
 		}
 		
 		var entry = {
-			"albumTitle" : albumTitle,
+			"albumTitle" : req.body.albumTitle,
 			"albumCategory" : req.body.albumCategory,
 			"country" : req.body.country,
-			"region" : region,
+			"region" : req.body.region,
 			"albumDate" : req.body.albumDate,
 			"journal" : req.body.journal,
 			"photos" : photoArray,
@@ -42,16 +36,10 @@ module.exports = {
 		var entry = {};
 		
 		//set request field values
-		var albumTitle = req.body.albumTitle;
-		var region = req.body.region;
 		var photoArray = [];
 		
-		//set folder names
-		var regionFolder = region.split(' ').join('-');
-		var albumFolder = albumTitle.split(' ').join('-');
-		
 		//build photo directory
-		var photoDirectory = "/images/" + regionFolder + "/" + albumFolder;
+		var photoDirectory = "/images/albums/" + req.body.albumTitle.split(' ').join('-');
 		
 		//set photo location and description
 		var checkboxArray = [];
@@ -102,10 +90,10 @@ module.exports = {
 		}
 		
 		var entry = {
-			"albumTitle" : albumTitle,
+			"albumTitle" : req.body.albumTitle,
 			"albumCategory" : req.body.albumCategory,
 			"country" : req.body.country,
-			"region" : region,
+			"region" : req.body.region,
 			"albumDate" : req.body.albumDate,
 			"journal" : req.body.journal,
 			"photos" : photoArray,

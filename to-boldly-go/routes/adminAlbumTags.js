@@ -1,7 +1,6 @@
 var express = require('express');
 var async = require('async');
 var router = express.Router();
-var directoryHandler = require('../support-modules/directoryHandler');
 var multiFormHandler = require('../support-modules/multiFormHandler');
 var dbOperations = require('../support-modules/dbOperations');
 var dbEntry = require('../support-modules/dbEntry');
@@ -30,13 +29,6 @@ router.post('/addAlbumTag', //isAuthenticated,
 upload.single('photo'), function(req, res){
 	var newEntry;
 	async.series([
-		function(callback){
-			if(req.body.tagType == 'regions'){
-				directoryHandler.createDirectoryTask('./public/images/' + req.body.name.split(' ').join('-'), callback);
-			}else{
-				callback();
-			}
-		},
 		function(callback){
 			if(req.body.tagType == 'countries'){
 				var entry = {$push : {countries : req.body.name}};
@@ -122,13 +114,6 @@ function(req, res){
 		},
 		function(callback){
 			directoryHandler.deleteDirectoryTask('./public/images/tagPhotos/' + req.params.tagName + '.jpg', callback);
-		},
-		function(callback){
-			if(req.params.tagType == 'regions'){
-				directoryHandler.deleteDirectoryTask('./public/images/' + req.params.tagName, callback);
-			}else{
-				callback();
-			}
 		}
 	], function(err){
 		finalTasks.redirect(err, res, '/adminAlbumTags');
