@@ -50,6 +50,18 @@ router.get('/country/:country', function(req, res, next) {
 	});
 });
 
+router.get('/search', function(req, res, next){
+	var search = req.query['search'];
+	async.waterfall([
+		function(callback){
+			var keys = {$text:{$search:search}};
+			dbOperations.dbFindDocumentsTask(req.db.get('album'), keys, null, callback);
+		}
+	], function(err, results, message){
+		finalTasks.render(err, res, search, results, message, 'album-list', true)
+	});
+});
+
 router.get('/album-single/:title', function(req, res){
 	var albums = req.db.get('album');
 	var title = req.params.title.split('-').join(' ');

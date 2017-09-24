@@ -44,6 +44,11 @@ html
 								- for(var i = 0; i < locals.categories.length; i++){
 									span(class='link')#[a(href="/category/" + locals.categories[i].name.split(' ').join('-')) #{locals.categories[i].name}]
 								- }
+						li
+							form(method='GET', action='/search')
+								input(type='text' name='search')
+								button(type='submit')
+									<i class='fa fa-search'></i>
 		div(class='container')
 			div(class='main-content')
 				block content

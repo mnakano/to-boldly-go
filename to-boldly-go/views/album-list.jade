@@ -4,11 +4,18 @@ append stylesheets
 	link(rel="stylesheet" href="/stylesheets/tiles.css")
 block content
 	-if(albums.length){
+		- if(search){
+			div(class='main-header')
+				h3
+					="Showing results for: \"" + tagName + "\""
+		- }
 		div(class="tile-container")
-			div(id='tag-title' class="rectangle")
-					div(class="box-inner-rectangle")
-						img(src="/images/tagPhotos/" + tagName + ".jpg" class="image portrait")
-						div(class="tag-title")=tagName.split('-').join(' ')
+			- if(!search){
+				div(id='tag-title' class="rectangle")
+						div(class="box-inner-rectangle")
+							img(src="/images/tagPhotos/" + tagName + ".jpg" class="image portrait")
+							div(class="tag-title")=tagName.split('-').join(' ')
+			- }
 			- for(var i = 0; i < albums.length; i++){
 				div(id=albums[i].albumTitle.split(' ').join('-') class="square")
 					a(class='square-anchor' href='/album-single/' + albums[i].albumTitle.split(' ').join('-'))

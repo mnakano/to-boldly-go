@@ -8,7 +8,7 @@ module.exports = {
 		res.redirect(redirectRoute);
 	},
 
-	render: function(err, res, tagName, results, message, renderedPage){
+	render: function(err, res, tagName, results, message, renderedPage, search = false){
 		if(err){
 			console.log('An error occurred: ' + err);
 		}
@@ -18,7 +18,8 @@ module.exports = {
 		res.render(renderedPage, {
 			'albums' : results,
 			'tagName' : tagName,
-			'message' : message
+			'message' : message,
+			'search' : search
 		});
 	},
 	
