@@ -17,6 +17,15 @@ $(document).ready(function(){
 			countryDropdown.hide();
 		}	
 	});
+	$('.search-icon').on('click', function(){
+		var searchField = document.getElementById('search-field');
+		if($('#search-field').css('display') == 'none'){
+			searchField.style.display = 'inline-block';
+		} else {
+			searchField.style.display = 'none';
+		}
+		
+	});
 });
 
 // modal scripts
