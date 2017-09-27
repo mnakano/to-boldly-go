@@ -1,12 +1,12 @@
 var express = require('express');
 var async = require('async');
 var router = express.Router();
-var multiFormHandler = require('../support-modules/multiFormHandler');
-var dbOperations = require('../support-modules/dbOperations');
+var multiFormTask = require('../support-modules/multiFormTask');
+var dbTask = require('../support-modules/dbTask');
 var dbEntry = require('../support-modules/dbEntry');
-var finalTasks = require('../support-modules/finalTasks');
+var finalTask = require('../support-modules/finalTask');
 
-var upload = multiFormHandler.getUploadInstance('./public/images/tagPhotos/');
+var upload = multiFormTask.getUploadInstance('./public/images/tagPhotos/');
 
 var isAuthenticated = function(req, res, next){
 	if(req.isAuthenticated()){
@@ -33,13 +33,13 @@ upload.single('photo'), function(req, res){
 			if(req.body.tagType == 'countries'){
 				var entry = {$push : {countries : req.body.name}};
 				var id = {name : req.body.region};
-				dbOperations.dbUpdateTask(req.db.get('regions'), id, entry, callback);
+				dbTask.dbUpdateTask(req.db.get('regions'), id, entry, callback);
 			}else if(req.body.tagType == 'regions'){
 				newEntry = dbEntry.createTagEntry(req, true);
-				dbOperations.dbInsertTask(req.db.get(req.body.tagType), newEntry, callback);
+				dbTask.dbInsertTask(req.db.get(req.body.tagType), newEntry, callback);
 			}else{
 				newEntry = dbEntry.createTagEntry(req, false);
-				dbOperations.dbInsertTask(req.db.get(req.body.tagType), newEntry, callback);
+				dbTask.dbInsertTask(req.db.get(req.body.tagType), newEntry, callback);
 			}
 		},
 		function(callback){
@@ -61,7 +61,7 @@ upload.single('photo'), function(req, res){
 			callback();
 		}
 	], function(err){
-		finalTasks.redirect(err, res, '/adminAlbumTags');
+		finalTask.redirect(err, res, '/adminAlbumTags');
 	});
 });
 
@@ -106,17 +106,17 @@ function(req, res){
 			if(req.params.tagType == 'countries'){
 				var entry = {$pull : {countries : req.params.tagName.split('-').join(' ')}};
 				var id = {name : req.params.region.split('-').join(' ')};
-				dbOperations.dbUpdateTask(req.db.get('regions'), id, entry, callback);
+				dbTask.dbUpdateTask(req.db.get('regions'), id, entry, callback);
 			}else{
 				var keys = {name : req.params.tagName.split('-').join(' ')};
-				dbOperations.dbDeleteTask(req.db.get(req.params.tagType), keys, callback);
+				dbTask.dbDeleteTask(req.db.get(req.params.tagType), keys, callback);
 			}	
 		},
 		function(callback){
 			directoryHandler.deleteDirectoryTask('./public/images/tagPhotos/' + req.params.tagName + '.jpg', callback);
 		}
 	], function(err){
-		finalTasks.redirect(err, res, '/adminAlbumTags');
+		finalTask.redirect(err, res, '/adminAlbumTags');
 	});
 });
 
@@ -152,10 +152,10 @@ router.post('/editAlbumTag/:tagName', upload.array('photo'), function(req, res){
 			directoryHandler.movePhotosTask(req.files[0].destination + '/', './public' + updatedEntry.photoDirectory, req.files, callback);
 		},
 		function(callback){
-			dbOperations.dbUpdateTask(req.db.get('album'), req.params.id, updatedEntry, callback);
+			dbTask.dbUpdateTask(req.db.get('album'), req.params.id, updatedEntry, callback);
 		}
 	], function(err){
-		finalTasks.redirect(err, res, '/region/' + updatedEntry.region.split(' ').join('-'));
+		finalTask.redirect(err, res, '/region/' + updatedEntry.region.split(' ').join('-'));
 	});
 });*/
 

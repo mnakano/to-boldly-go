@@ -4,6 +4,7 @@ module.exports = {
 		
 		//set request field values
 		var photoArray = [];
+		var categoryArray = [];
 		
 		//build photo directory
 		var photoDirectory = "/images/albums/" + req.body.albumTitle.split(' ').join('-');
@@ -17,9 +18,17 @@ module.exports = {
 			photoArray.push({"photo" : photoDirectory + "/" + req.files[0].originalname, "photoDescription" : descriptions});
 		}
 		
+		if(req.body.albumCategory instanceof Array){
+			for(var i = 0; i < req.body.albumCategory.length; i++){
+				categoryArray.push(req.body.albumCategory[i]);
+			}
+		} else {
+			categoryArray.push(req.body.albumCategory);
+		}
+		
 		var entry = {
 			"albumTitle" : req.body.albumTitle,
-			"albumCategory" : req.body.albumCategory,
+			"albumCategory" : categoryArray,
 			"country" : req.body.country,
 			"region" : req.body.region,
 			"albumDate" : req.body.albumDate,
@@ -37,6 +46,7 @@ module.exports = {
 		
 		//set request field values
 		var photoArray = [];
+		var categoryArray = [];
 		
 		//build photo directory
 		var photoDirectory = "/images/albums/" + req.body.albumTitle.split(' ').join('-');
@@ -89,9 +99,17 @@ module.exports = {
 			}
 		}
 		
+		if(req.body.albumCategory instanceof Array){
+			for(var i = 0; i < req.body.albumCategory.length; i++){
+				categoryArray.push(req.body.albumCategory[i]);
+			}
+		} else {
+			categoryArray.push(req.body.albumCategory);
+		}
+		
 		var entry = {
 			"albumTitle" : req.body.albumTitle,
-			"albumCategory" : req.body.albumCategory,
+			"albumCategory" : categoryArray,
 			"country" : req.body.country,
 			"region" : req.body.region,
 			"albumDate" : req.body.albumDate,

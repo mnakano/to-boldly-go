@@ -14,29 +14,12 @@ block content
 				input(type='text', name='albumTitleOld', value="#{album.albumTitle}" style='display:none;')
 			div(class='input-group')
 				label(for='albumCategory') Album Category:
-				select(id='albumCategory', name='albumCategory', value="#{album.albumCategory}")
+				select(id='albumCategory', name='albumCategory', value="#{album.albumCategory}", multiple)
 					- for(var i = 0; i < locals.categories.length; i++){
-						- if(album.albumCategory == locals.categories[i].name) {
+						- if(album.albumCategory.indexOf(locals.categories[i].name) > -1) {
 							option(value=locals.categories[i].name, selected='selected') #{locals.categories[i].name}
 						- } else {
 							option(value=locals.categories[i].name) #{locals.categories[i].name}
-						- }
-					- }
-			div(class='input-group')
-				- var countries = [];
-				- for(var i = 0; i < locals.regions.length; i++){
-					- for(var k = 0; k < locals.regions[i].countries.length; k++){
-						- countries.push(locals.regions[i].countries[k]);
-					- }
-				- }
-				countries.sort();
-				label(for='albumCountry') Country:
-				select(id='albumCountry', name='country')
-					- for(var i = 0; i < countries.length; i++){
-						- if(album.country == countries[i]) {
-							option(value=countries[i], selected='selected') #{countries[i]}
-						- } else {
-							option(value=countries[i]) #{countries[i]}
 						- }
 					- }
 			div(class='input-group')
@@ -47,6 +30,23 @@ block content
 							option(value=locals.regions[i].name, selected='selected') #{locals.regions[i].name}
 						- } else {
 							option(value=locals.regions[i].name) #{locals.regions[i].name}
+						- }
+					- }
+			div(class='input-group')
+				- var countries = [];
+				- for(var i = 0; i < locals.regions.length; i++){
+					- for(var k = 0; k < locals.regions[i].countries.length; k++){
+						- countries.push(locals.regions[i].countries[k]);
+					- }
+				- }
+				- countries.sort();
+				label(for='albumCountry') Country:
+				select(id='albumCountry', name='country')
+					- for(var i = 0; i < countries.length; i++){
+						- if(album.country == countries[i]) {
+							option(value=countries[i], selected='selected') #{countries[i]}
+						- } else {
+							option(value=countries[i]) #{countries[i]}
 						- }
 					- }
 			div(class='input-group')

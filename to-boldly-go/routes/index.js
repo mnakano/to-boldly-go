@@ -1,27 +1,27 @@
 var express = require('express');
 var async = require('async');
 var router = express.Router();
-var dbOperations = require('../support-modules/dbOperations');
-var finalTasks = require('../support-modules/finalTasks');
+var dbTask = require('../support-modules/dbTask');
+var finalTasks = require('../support-modules/finalTask');
 
 /* GET home page. */
 router.get('/', function(req, res) {
 	async.waterfall([
 		function(callback){
 			var options = {sort : {publishedDate : -1}, limit : 8};
-			dbOperations.dbFindDocumentsTask(req.db.get('album'), null, options, callback);
+			dbTask.dbFindDocumentsTask(req.db.get('album'), null, options, callback);
 		}
 	], function(err, results, message){
 		finalTasks.render(err, res, 'albums', results, message, 'index');
 	});
 });
 
-/* GET a region page. */
 router.get('/region/:region', function(req, res, next) {
 	async.waterfall([
 		function(callback){
 			var keys = {region : req.params.region.split('-').join(' ')};
-			dbOperations.dbFindDocumentsTask(req.db.get('album'), keys, null, callback);
+			var options = {sort : {albumDate : -1}};
+			dbTask.dbFindDocumentsTask(req.db.get('album'), keys, options, callback);
 		}
 	], function(err, results, message){
 		finalTasks.render(err, res, req.params.region, results, message, 'album-list')
@@ -32,7 +32,8 @@ router.get('/category/:category', function(req, res, next) {
 	async.waterfall([
 		function(callback){
 			var keys = {albumCategory : req.params.category.split('-').join(' ')};
-			dbOperations.dbFindDocumentsTask(req.db.get('album'), keys, null, callback);
+			var options = {sort : {albumDate : -1}};
+			dbTask.dbFindDocumentsTask(req.db.get('album'), keys, options, callback);
 		}
 	], function(err, results, message){
 		finalTasks.render(err, res, req.params.category, results, message, 'album-list')
@@ -43,7 +44,8 @@ router.get('/country/:country', function(req, res, next) {
 	async.waterfall([
 		function(callback){
 			var keys = {country : req.params.country.split('-').join(' ')};
-			dbOperations.dbFindDocumentsTask(req.db.get('album'), keys, null, callback);
+			var options = {sort : {albumDate : -1}};
+			dbTask.dbFindDocumentsTask(req.db.get('album'), keys, options, callback);
 		}
 	], function(err, results, message){
 		finalTasks.render(err, res, req.params.country, results, message, 'album-list')
@@ -55,7 +57,8 @@ router.get('/search', function(req, res, next){
 	async.waterfall([
 		function(callback){
 			var keys = {$text:{$search:search}};
-			dbOperations.dbFindDocumentsTask(req.db.get('album'), keys, null, callback);
+			var options = {sort : {publishedDate : -1}};
+			dbTask.dbFindDocumentsTask(req.db.get('album'), keys, options, callback);
 		}
 	], function(err, results, message){
 		finalTasks.render(err, res, search, results, message, 'album-list', true)

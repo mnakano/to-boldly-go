@@ -1,13 +1,13 @@
 var express = require('express');
 var async = require('async');
 var router = express.Router();
-var directoryHandler = require('../support-modules/directoryHandler');
-var multiFormHandler = require('../support-modules/multiFormHandler');
-var dbOperations = require('../support-modules/dbOperations');
+var dirTask = require('../support-modules/dirTask');
+var multiFormTask = require('../support-modules/multiFormTask');
+var dbTask = require('../support-modules/dbTask');
 var dbEntry = require('../support-modules/dbEntry');
-var finalTasks = require('../support-modules/finalTasks');
+var finalTask = require('../support-modules/finalTask');
 
-var upload = multiFormHandler.getUploadInstance('./public/images/tmp/');
+var upload = multiFormTask.getUploadInstance('./public/images/tmp/');
 
 var isAuthenticated = function(req, res, next){
 	if(req.isAuthenticated()){
@@ -21,10 +21,10 @@ function(req, res){
 	async.waterfall([
 		function(callback){
 			var options = {sort : {albumTitle : 1}};
-			dbOperations.dbFindDocumentsTask(req.db.get('album'), null, options, callback);
+			dbTask.dbFindDocumentsTask(req.db.get('album'), null, options, callback);
 		}
 	], function(err, results, message){
-		finalTasks.render(err, res, 'albums', results, message, 'admin-album-list');
+		finalTask.render(err, res, 'albums', results, message, 'admin-album-list');
 	});
 });
 
@@ -39,13 +39,13 @@ function(req, res){
 	async.series([
 		function(callback){
 			var keys = {_id : req.params.id};
-			dbOperations.dbDeleteTask(req.db.get('album'), keys, callback);
+			dbTask.dbDeleteTask(req.db.get('album'), keys, callback);
 		},
 		function(callback){
-			directoryHandler.deleteDirectoryTask('./public/images/albums/' + req.params.title, callback);
+			dirTask.deleteDirectoryTask('./public/images/albums/' + req.params.title, callback);
 		}
 	], function(err){
-		finalTasks.redirect(err, res, '/adminAlbums');
+		finalTask.redirect(err, res, '/adminAlbums');
 	});
 });
 
@@ -58,16 +58,16 @@ upload.array('photo'), function(req, res){
 	//handle directory creation and photo relocation in series.
 	async.series([
 		function(callback){
-			directoryHandler.createDirectoryTask('./public' + newEntry.photoDirectory, callback);
+			dirTask.createDirectoryTask('./public' + newEntry.photoDirectory, callback);
 		},
 		function(callback){
-			directoryHandler.movePhotosTask(req.files[0].destination + '/', './public' + newEntry.photoDirectory + "/", req.files, callback);
+			dirTask.movePhotosTask(req.files[0].destination + '/', './public' + newEntry.photoDirectory + "/", req.files, callback);
 		},
 		function(callback){
-			dbOperations.dbInsertTask(req.db.get('album'), newEntry, callback);
+			dbTask.dbInsertTask(req.db.get('album'), newEntry, callback);
 		}
 	], function(err){
-		finalTasks.redirect(err, res, '/adminAlbums');
+		finalTask.redirect(err, res, '/adminAlbums');
 	});
 });
 
@@ -104,7 +104,7 @@ upload.array('photo'), function(req, res){
 			if(req.body.albumTitle != req.body.albumTitleOld){
 				var albumFolder = req.body.albumTitleOld.split(' ').join('-');
 				var photoDirectoryOld = "/images/albums/" + albumFolder;
-				directoryHandler.renameDirectoryTask('./public' + photoDirectoryOld , './public' + updatedEntry.photoDirectory, callback);
+				dirTask.renameDirectoryTask('./public' + photoDirectoryOld , './public' + updatedEntry.photoDirectory, callback);
 			} else {
 				callback();
 			}
@@ -114,20 +114,20 @@ upload.array('photo'), function(req, res){
 			for(var i = 0; i < updatedEntry.photos.length; i++){
 				photos.push(updatedEntry.photos[i].photo.split("/").slice(-1)[0]);
 			}
-			directoryHandler.deleteRemovedPhotosTask('./public' + updatedEntry.photoDirectory + "/", photos, callback);
+			dirTask.deleteRemovedPhotosTask('./public' + updatedEntry.photoDirectory + "/", photos, callback);
 		},
 		function(callback){
 			if(req.files.length){
-				directoryHandler.movePhotosTask(req.files[0].destination + "/", './public' + updatedEntry.photoDirectory + "/", req.files, callback);
+				dirTask.movePhotosTask(req.files[0].destination + "/", './public' + updatedEntry.photoDirectory + "/", req.files, callback);
 			} else {
 				callback();
 			}
 		},
 		function(callback){
-			dbOperations.dbUpdateTask(req.db.get('album'), {_id:req.params.id}, {$set:updatedEntry}, callback);
+			dbTask.dbUpdateTask(req.db.get('album'), {_id:req.params.id}, {$set:updatedEntry}, callback);
 		}
 	], function(err){
-		finalTasks.redirect(err, res, '/adminAlbums');
+		finalTask.redirect(err, res, '/adminAlbums');
 	});
 });
 
