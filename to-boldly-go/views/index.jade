@@ -10,7 +10,7 @@ block content
 		div(id='newestAlbum' class="tile-container")
 			- for(var i = 0; i < albums.length; i++){
 				div(id=albums[i].albumTitle.split(' ').join('-') class="square")
-					a(class='square-anchor' href='/album-single/' + albums[i].albumTitle.split(' ').join('-'))
+					a(class='square-anchor' href='/album/' + albums[i].albumTitle.split(' ').join('-'))
 						div(class="box-inner")
 							img(src=albums[i].photos[0].photo class="image")
 							div(class="overlay-bottom")

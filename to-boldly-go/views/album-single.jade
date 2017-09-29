@@ -12,17 +12,19 @@ block content
 				- var date = new Date(album.publishedDate);
 				<span>Published on: #{date.toISOString().split('T')[0]}</span>
 			div(class='album-detail')
-				span(class='album-attribute') Date Travelled: 
+				span(class='album-attribute') Travelled on: 
 					span(class='attribute') #{album.albumDate}
-				span(class='album-attribute') Region: 
+				span(class='album-attribute') <i class='fa fa-globe'></i> 
 					span(class='attribute') 
 						a(class='cursor' href="/region/" + album.region.split(' ').join('-')) #{album.region}
-				span(class='album-attribute') Country: 
+				span(class='album-attribute') <i class='fa fa-flag'></i>  
 					span(class='attribute') 
 						a(class='cursor' href="/country/" + album.country.split(' ').join('-')) #{album.country}
-				span(class='album-attribute') Tags: 
-					span(class='attribute') 
-						a(class='cursor' href="/category/" + album.albumCategory.split(' ').join('-')) #{album.albumCategory}
+				span(class='album-attribute') <i class='fa fa-tags'></i>  
+					- for(var i = 0; i < album.albumCategory.length; i++){
+						span(class='attribute') 
+							a(class='cursor' href="/category/" + album.albumCategory[i].split(' ').join('-')) #{album.albumCategory[i]}
+					- }
 		div(class='thumbnail-container')
 			img(class="thumbnail cursor" src=album.photos[0].photo onclick="openModal('modal'); currentSlide(1)")
 			div()

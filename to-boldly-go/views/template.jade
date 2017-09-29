@@ -42,7 +42,7 @@ html
 							<span class='nav-text'> Categories </span><span class="arrow">&#x25BD;</span>
 							div(id='categories' class="dropdown-content")
 								- for(var i = 0; i < locals.categories.length; i++){
-									span(class='link')#[a(href="/category/" + locals.categories[i].name.split(' ').join('-')) #{locals.categories[i].name}]
+									a(class='link' href="/category/" + locals.categories[i].name.split(' ').join('-')) #{locals.categories[i].name}
 								- }
 						li(class='menu-right')
 							<i class='fa fa-search search-icon'></i>

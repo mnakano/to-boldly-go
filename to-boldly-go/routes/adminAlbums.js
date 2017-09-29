@@ -21,7 +21,7 @@ function(req, res){
 	async.waterfall([
 		function(callback){
 			var options = {sort : {albumTitle : 1}};
-			dbTask.dbFindDocumentsTask(req.db.get('album'), null, options, callback);
+			dbTask.findMany('album', null, options, callback);
 		}
 	], function(err, results, message){
 		finalTask.render(err, res, 'albums', results, message, 'admin-album-list');
@@ -39,10 +39,10 @@ function(req, res){
 	async.series([
 		function(callback){
 			var keys = {_id : req.params.id};
-			dbTask.dbDeleteTask(req.db.get('album'), keys, callback);
+			dbTask.deleteDoc('album', keys, callback);
 		},
 		function(callback){
-			dirTask.deleteDirectoryTask('./public/images/albums/' + req.params.title, callback);
+			dirTask.deleteDir('./public/images/albums/' + req.params.title, callback);
 		}
 	], function(err){
 		finalTask.redirect(err, res, '/adminAlbums');
@@ -58,13 +58,13 @@ upload.array('photo'), function(req, res){
 	//handle directory creation and photo relocation in series.
 	async.series([
 		function(callback){
-			dirTask.createDirectoryTask('./public' + newEntry.photoDirectory, callback);
+			dirTask.createDir('./public' + newEntry.photoDirectory, callback);
 		},
 		function(callback){
-			dirTask.movePhotosTask(req.files[0].destination + '/', './public' + newEntry.photoDirectory + "/", req.files, callback);
+			dirTask.movePhotos(req.files[0].destination + '/', './public' + newEntry.photoDirectory + "/", req.files, callback);
 		},
 		function(callback){
-			dbTask.dbInsertTask(req.db.get('album'), newEntry, callback);
+			dbTask.insert('album', newEntry, callback);
 		}
 	], function(err){
 		finalTask.redirect(err, res, '/adminAlbums');
@@ -72,18 +72,14 @@ upload.array('photo'), function(req, res){
 });
 
 /*GET an album data to edit form*/
-router.get('/editAlbumForm/:id', //isAuthenticated, 
+router.get('/editAlbum/:id', //isAuthenticated, 
 function(req, res){
-	var db = req.db;
-	var albums = db.get('album');
-	albums.findOne({_id:req.params.id}, function(err, doc){
-		if(err){
-			res.send("There was a problem finding the record.");
-		}else{
-			res.render('album-edit-form', {
-				'album' : doc
-			});
+	async.waterfall([
+		function(callback){
+			dbTask.findOne('album', {_id : req.params.id}, null, callback);
 		}
+	], function(err, result, message){
+		finalTask.renderSingle(err, res, result, message, 'album-edit-form');
 	});
 });
 
@@ -104,7 +100,7 @@ upload.array('photo'), function(req, res){
 			if(req.body.albumTitle != req.body.albumTitleOld){
 				var albumFolder = req.body.albumTitleOld.split(' ').join('-');
 				var photoDirectoryOld = "/images/albums/" + albumFolder;
-				dirTask.renameDirectoryTask('./public' + photoDirectoryOld , './public' + updatedEntry.photoDirectory, callback);
+				dirTask.renameDir('./public' + photoDirectoryOld , './public' + updatedEntry.photoDirectory, callback);
 			} else {
 				callback();
 			}
@@ -114,17 +110,17 @@ upload.array('photo'), function(req, res){
 			for(var i = 0; i < updatedEntry.photos.length; i++){
 				photos.push(updatedEntry.photos[i].photo.split("/").slice(-1)[0]);
 			}
-			dirTask.deleteRemovedPhotosTask('./public' + updatedEntry.photoDirectory + "/", photos, callback);
+			dirTask.deleteRemovedPhoto('./public' + updatedEntry.photoDirectory + "/", photos, callback);
 		},
 		function(callback){
 			if(req.files.length){
-				dirTask.movePhotosTask(req.files[0].destination + "/", './public' + updatedEntry.photoDirectory + "/", req.files, callback);
+				dirTask.movePhotos(req.files[0].destination + "/", './public' + updatedEntry.photoDirectory + "/", req.files, callback);
 			} else {
 				callback();
 			}
 		},
 		function(callback){
-			dbTask.dbUpdateTask(req.db.get('album'), {_id:req.params.id}, {$set:updatedEntry}, callback);
+			dbTask.update('album', {_id:req.params.id}, {$set:updatedEntry}, callback);
 		}
 	], function(err){
 		finalTask.redirect(err, res, '/adminAlbums');

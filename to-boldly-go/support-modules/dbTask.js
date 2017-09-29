@@ -1,8 +1,11 @@
+var mongoUtil = require('../db/mongoUtil');
+var _db = mongoUtil.getDb();
+
 module.exports = {
 	
-	dbFindDocumentsTask: function(collection, keys, options, callback){
+	findMany: function(collection, keys, options, callback){
 		var message = '';
-		collection.find(keys, options, function(err, results){
+		_db.get(collection).find(keys, options, function(err, results){
 			if(err){
 				callback(err);
 			}
@@ -13,24 +16,21 @@ module.exports = {
 		});
 	},
 	
-	dbFindOneDocumentTask: function(collections, keys, options, callback){
+	findOne: function(collection, keys, options, callback){
 		var message = '';
-		collection.findOne(keys, function(err, result){
+		_db.get(collection).findOne(keys, options, function(err, result){
 			if(err){
-				console.log(err);
 				callback(err);
 			}
 			if(!result){
-				console.log('no result');
 				message = 'No document found';
 			}
-			console.log('found result');
 			callback(null, result, message);
 		});
 	},
 	
-	dbDeleteTask: function(collection, keys, callback){
-		collection.remove(keys, function(err){
+	deleteDoc: function(collection, keys, callback){
+		_db.get(collection).remove(keys, function(err){
 			if(err){
 				callback(err);
 			}
@@ -38,8 +38,8 @@ module.exports = {
 		});
 	},
 	
-	dbInsertTask: function(collection, entry, callback){
-		collection.insert(entry, function(err, doc){
+	insert: function(collection, entry, callback){
+		_db.get(collection).insert(entry, function(err, doc){
 			if(err){
 				callback(err);
 			}
@@ -47,8 +47,8 @@ module.exports = {
 		});
 	},
 
-	dbUpdateTask: function(collection, id, entry, callback){
-		collection.update(id, entry, function(err){
+	update: function(collection, id, entry, callback){
+		_db.get(collection).update(id, entry, function(err){
 			if(err){
 				callback(err);
 			}

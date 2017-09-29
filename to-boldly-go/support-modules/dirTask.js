@@ -3,7 +3,7 @@ var rimraf = require('rimraf');
 var fs = require('fs');
 
 module.exports = {
-	createDirectoryTask: function(directory, callback){
+	createDir: function(directory, callback){
 		mkdirp(directory, function(err){
 			if(err){
 				callback(err);
@@ -13,7 +13,7 @@ module.exports = {
 		});
 	},
 
-	deleteDirectoryTask: function(directory, callback){
+	deleteDir: function(directory, callback){
 		rimraf(directory, function(err){
 			if(err){
 				callback(err);
@@ -23,7 +23,7 @@ module.exports = {
 		});
 	},
 	
-	renameDirectoryTask: function(oldDirectory, newDirectory, callback){
+	renameDir: function(oldDirectory, newDirectory, callback){
 		fs.rename(oldDirectory, newDirectory, function(err){
 			if(err){
 				callback(err)
@@ -33,7 +33,7 @@ module.exports = {
 		});
 	},
 
-	movePhotosTask: function(oldPath, newPath, files, callback){
+	movePhotos: function(oldPath, newPath, files, callback){
 		for(var i = 0; i < files.length; i++){
 			fs.rename(oldPath + files[i].originalname, newPath + files[i].originalname, function(err){
 				if(err){
@@ -45,7 +45,17 @@ module.exports = {
 		callback();
 	},
 
-	deletePhotosTask: function(directory, callback){
+	deletePhoto: function(path, callback){
+		fs.unlink(path, function(err){
+			if(err){
+				callback(err);
+			}
+			console.log('photo has been deleted.');
+			callback();
+		});
+	},
+	
+	deletePhotos: function(directory, callback){
 		fs.readdir(directory, function(err, files){
 			if(err){
 				callback(err);
@@ -62,7 +72,7 @@ module.exports = {
 		});
 	},
 	
-	deleteRemovedPhotosTask: function(directory, photos, callback){
+	deleteRemovedPhotos: function(directory, photos, callback){
 		fs.readdir(directory, function(err, files){
 			if(err){
 				callback(err);
