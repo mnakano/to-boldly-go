@@ -9,11 +9,11 @@ Features for the viewers:
    * Responsive front-end.
 
 Features for the administrator
-	* Log in to the Admin menu with credentials.
-	* Register a new user.
-	* Add, Edit and Delete a photo album.
-	* Add and Delete album tags.
+   * Log in to the Admin menu with credentials.
+   * Register a new user.
+   * Add, Edit and Delete a photo album.
+   * Add and Delete album tags.
 
 Future Implementations
-	* Sort albums by different attributes such as date.
-	* Improve the back end architecture.
+   * Sort albums by different attributes such as date.
+   * Improve the back end architecture.
