@@ -110,7 +110,7 @@ upload.array('photo'), function(req, res){
 			for(var i = 0; i < updatedEntry.photos.length; i++){
 				photos.push(updatedEntry.photos[i].photo.split("/").slice(-1)[0]);
 			}
-			dirTask.deleteRemovedPhoto('./public' + updatedEntry.photoDirectory + "/", photos, callback);
+			dirTask.deleteRemovedPhotos('./public' + updatedEntry.photoDirectory + "/", photos, callback);
 		},
 		function(callback){
 			if(req.files.length){

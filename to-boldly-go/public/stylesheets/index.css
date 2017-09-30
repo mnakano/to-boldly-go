@@ -3,6 +3,47 @@
 	margin-left: auto;
 	margin-right: auto;
 	padding-bottom: 30px;
-	font-size: 20px;
+	font-size: 17px;
 	line-height: 150%;
+}
+
+.thumbnail-container {
+	margin-bottom: 20px;
+	text-align: center;
+}
+
+.thumbnail {
+	width: 100%;
+}
+
+#author-text ul{
+	margin-left: 2%;
+}
+
+h1{
+	font-size: 1.5em;
+}
+
+@media only screen and (min-width: 650px){
+	.thumbnail-container{
+		width: 25%;
+		margin-right:20px;
+		float: left;
+	}
+	
+	.text-block{
+		font-size: 20px;
+	}
+	
+	#author-content{
+		margin-bottom: 100px;
+	}
+	
+	#author-text ul{
+		margin-left: 28%;
+	}
+	
+	h1{
+		font-size: 2.0em;
+	}
 }
