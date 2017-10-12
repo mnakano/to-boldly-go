@@ -121,6 +121,18 @@
 	display: none;
 }
 
+#search-field input{
+	border-radius: 4px;
+	border: 1px solid #cccccc;
+}
+
+#search-field button{
+	background-color: transparent;
+	border: none;
+	color: #ffffff;
+	cursor: pointer;
+}
+
 @media only screen and (min-width: 650px){
 	.menu-bar{	
 		height: 70px;
