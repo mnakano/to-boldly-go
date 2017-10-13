@@ -126,7 +126,7 @@
 
 @media only screen and (min-width: 650px){
 	.modal{
-		padding-top: 45px;
+		padding-top: 20px;
 	}
 	
 	.modal-content{
@@ -142,8 +142,14 @@
 		font-size: 35px;
 	}
 	
+	#slide-header{
+		margin-left: 0%;
+	}
+	
 	#slide-header-content{
-		width: 52%;	
+		width: 60%;
+		margin-left: auto;
+		margin-right: auto;
 	}
 	
 	#slide-title{
@@ -156,27 +162,37 @@
 	}
 	
 	.photo-wrapper{
-		float: left;
-		width: 54%;
-		height: 90%;
-		margin-left: 3%;
-		margin-right: 3%;
+		width: 60%;
+		margin-left: auto;
+		margin-right: auto;
 	}
 	
 	.photo-description{
-		width: 36%;
-		height: 90%;
-		overflow: hidden;
+		position: absolute;
+		left: 20%;
+		bottom: 0%;
+		background-color: #000000;
+		opacity: 0;
+		width: 60%;
+		height: 15%;
+		transition: .5s ease;
+	}
+
+	.slides:hover .photo-description{
+		opacity: 0.8;
 	}
 	
 	.photo-text{
-		width: 95%;
+		padding-top: 1%;
+		width: 98%;
 		font-size: 15px;
 	}
 	
 	.slide-arrow{
-		clear: both;
-		padding-top: 5px;
+		position: absolute;
+		top: 50%;
+		left: 18%;
+		width: 64%;
 	}
 }
 
