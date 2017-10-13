@@ -16,52 +16,43 @@ router.get('/', function(req, res) {
 	});
 });
 
-router.get('/region/:region', function(req, res, next) {
+router.get('/filter/:filterType/:keyword?', function(req, res, next){
+	var keyword;
+	var keys;
+	var options;
+	var search = false;
 	async.waterfall([
 		function(callback){
-			var keys = {region : req.params.region.split('-').join(' ')};
-			var options = {sort : {albumDate : -1}};
+			switch(req.params.filterType){
+				case "region":
+					keys = {region : req.params.keyword.split('-').join(' ')};
+					options = {sort : {albumDate : -1}};
+					keyword = req.params.keyword;
+					break;
+				case "country":
+					keys = {country : req.params.keyword.split('-').join(' ')};
+					options = {sort : {albumDate : -1}};
+					keyword = req.params.keyword;
+					break;
+				case "category":
+					keys = {albumCategory : req.params.keyword.split('-').join(' ')};
+					options = {sort : {albumDate : -1}};
+					keyword = req.params.keyword;
+					break;
+				case "search":
+					keys = {$text:{$search:req.query['search']}};
+					options = {sort : {publishedDate : -1}};
+					search = true;
+					keyword = req.query['search'];
+					break;
+			}
+			callback();
+		},
+		function(callback){
 			dbTask.findMany('album', keys, options, callback);
 		}
 	], function(err, results, message){
-		finalTask.render(err, res, req.params.region, results, message, 'album-list')
-	});
-});
-
-router.get('/category/:category', function(req, res, next) {
-	async.waterfall([
-		function(callback){
-			var keys = {albumCategory : req.params.category.split('-').join(' ')};
-			var options = {sort : {albumDate : -1}};
-			dbTask.findMany('album', keys, options, callback);
-		}
-	], function(err, results, message){
-		finalTask.render(err, res, req.params.category, results, message, 'album-list')
-	});
-});
-
-router.get('/country/:country', function(req, res, next) {
-	async.waterfall([
-		function(callback){
-			var keys = {country : req.params.country.split('-').join(' ')};
-			var options = {sort : {albumDate : -1}};
-			dbTask.findMany('album', keys, options, callback);
-		}
-	], function(err, results, message){
-		finalTask.render(err, res, req.params.country, results, message, 'album-list')
-	});
-});
-
-router.get('/search', function(req, res, next){
-	var search = req.query['search'];
-	async.waterfall([
-		function(callback){
-			var keys = {$text:{$search:search}};
-			var options = {sort : {publishedDate : -1}};
-			dbTask.findMany('album', keys, options, callback);
-		}
-	], function(err, results, message){
-		finalTask.render(err, res, search, results, message, 'album-list', true)
+		finalTask.render(err, res, keyword, results, message, 'album-list', search)
 	});
 });
 

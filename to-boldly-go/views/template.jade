@@ -30,11 +30,11 @@ html
 							<span class='nav-text'> Regions </span><span class="arrow">&#x25BD;</span>
 							div(id='regions' class="dropdown-content")
 								- for(var i = 0; i < locals.regions.length; i++){
-									span(class='link')#[a(href="/region/" + locals.regions[i].name.split(' ').join('-')) #{locals.regions[i].name}] #[span(class="expand arrow")&#x25BD;]
+									span(class='link')#[a(href="/filter/region/" + locals.regions[i].name.split(' ').join('-')) #{locals.regions[i].name}] #[span(class="expand arrow")&#x25BD;]
 									div(class='countries')
 										- locals.regions[i].countries.sort()
 										- for(var k = 0; k < locals.regions[i].countries.length; k++){
-											a(href="/country/" + locals.regions[i].countries[k].split(' ').join('-')) #{locals.regions[i].countries[k]}
+											a(href="/filter/country/" + locals.regions[i].countries[k].split(' ').join('-')) #{locals.regions[i].countries[k]}
 										- }
 								- }
 						li
@@ -42,12 +42,12 @@ html
 							<span class='nav-text'> Categories </span><span class="arrow">&#x25BD;</span>
 							div(id='categories' class="dropdown-content")
 								- for(var i = 0; i < locals.categories.length; i++){
-									a(class='link' href="/category/" + locals.categories[i].name.split(' ').join('-')) #{locals.categories[i].name}
+									a(class='link' href="/filter/category/" + locals.categories[i].name.split(' ').join('-')) #{locals.categories[i].name}
 								- }
 						li(class='menu-right')
 							<i class='fa fa-search search-icon'></i>
 						div(id='search-field')
-							form(method='GET', action='/search')
+							form(method='GET', action='/filter/search')
 								input(type='text' name='search')
 								button(type='submit')
 									<i class='fa fa-search'></i>

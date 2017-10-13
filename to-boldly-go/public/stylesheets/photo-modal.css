@@ -157,14 +157,14 @@
 	
 	.photo-wrapper{
 		float: left;
-		width: 50%;
+		width: 54%;
 		height: 90%;
 		margin-left: 3%;
 		margin-right: 3%;
 	}
 	
 	.photo-description{
-		width: 41%;
+		width: 36%;
 		height: 90%;
 		overflow: hidden;
 	}
@@ -176,7 +176,7 @@
 	
 	.slide-arrow{
 		clear: both;
-		padding-top: 20px;
+		padding-top: 5px;
 	}
 }
 
