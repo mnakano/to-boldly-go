@@ -1,13 +1,14 @@
 var LocalStrategy = require('passport-local').Strategy;
 var bCrypt = require('bcrypt-nodejs');
+var dbTask = require('../support-modules/dbTask');
 
 module.exports = function(passport){
 	passport.use('login', new LocalStrategy({
 			passReqToCallback : true
 		},
 		function(req, username, password, done){
-			var collection = req.db.get('user');
-			collection.findOne({username:username}, function(err, user){
+			var user = dbTask.getCollection('user');
+			user.findOne({username:username}, function(err, user){
 				if(err){
 					return done(err);
 				}

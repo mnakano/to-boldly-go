@@ -54,5 +54,9 @@ module.exports = {
 			}
 			callback();
 		});
+	},
+	
+	getCollection: function(collectionName){
+		return _db.get(collectionName);
 	}
 }

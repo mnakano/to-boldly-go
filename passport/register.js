@@ -6,8 +6,8 @@ module.exports = function(passport){
 			passReqToCallback : true
 		},
 		function(req, username, password, done){
-			var collection = req.db.get('user');
-			collection.findOne({username:username}, function(err, user){
+			var user = dbTask.getCollection('user');
+			user.findOne({username:username}, function(err, user){
 				if(err){
 					console.log('Error in Registration: ' + err);
 					return done(err);
@@ -20,7 +20,7 @@ module.exports = function(passport){
 						'username' : username,
 						'password' : createHash(password)
 					}
-					collection.insert(user, function(err, result){
+					user.insert(user, function(err, result){
 						if(err){
 							console.log('Error in saving user: ' + username);
 							return done(null, false);
