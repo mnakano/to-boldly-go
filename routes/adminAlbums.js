@@ -16,8 +16,7 @@ var isAuthenticated = function(req, res, next){
 	res.redirect('/');
 }
 
-router.get('/', //isAuthenticated, 
-function(req, res){
+router.get('/', isAuthenticated, function(req, res){
 	async.waterfall([
 		function(callback){
 			var options = {sort : {albumTitle : 1}};
@@ -29,13 +28,11 @@ function(req, res){
 });
 
 /*GET new album entry page*/
-router.get('/newAlbum', //isAuthenticated, 
-function(req, res){
+router.get('/newAlbum', isAuthenticated, function(req, res){
 	res.render('album-new');
 });
 
-router.get('/deleteAlbum/:id/:title', //isAuthenticated, 
-function(req, res){
+router.get('/deleteAlbum/:id/:title', isAuthenticated, function(req, res){
 	async.series([
 		function(callback){
 			var keys = {_id : req.params.id};
@@ -50,8 +47,7 @@ function(req, res){
 });
 
 /*POST to Add Album Service*/
-router.post('/addAlbum', //isAuthenticated, 
-upload.array('photo'), function(req, res){
+router.post('/addAlbum', isAuthenticated, upload.array('photo'), function(req, res){
 	//set request values and return a DB entry.
 	var newEntry = dbEntry.createDBEntry(req);
 	
@@ -72,8 +68,7 @@ upload.array('photo'), function(req, res){
 });
 
 /*GET an album data to edit form*/
-router.get('/editAlbum/:id', //isAuthenticated, 
-function(req, res){
+router.get('/editAlbum/:id', isAuthenticated, function(req, res){
 	async.waterfall([
 		function(callback){
 			dbTask.findOne('album', {_id : req.params.id}, null, callback);
@@ -84,8 +79,7 @@ function(req, res){
 });
 
 /*UPDATE an album data*/
-router.post('/editAlbum/:id', //isAuthenticated, 
-upload.array('photo'), function(req, res){
+router.post('/editAlbum/:id', isAuthenticated, upload.array('photo'), function(req, res){
 	
 	//set request values and return a DB entry.
 	var updatedEntry;

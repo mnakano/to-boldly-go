@@ -16,18 +16,15 @@ var isAuthenticated = function(req, res, next){
 	res.redirect('/');
 }
 
-router.get('/', //isAuthenticated, 
-function(req, res) {
+router.get('/', isAuthenticated, function(req, res) {
 	res.render('album-tags-list', {title:'To Boldly Go'});
 });
 
-router.get('/newTag', //isAuthenticated, 
-function(req, res){
+router.get('/newTag', isAuthenticated, function(req, res){
 	res.render('album-tags-new', {title:'To Boldly Go'})
 });
 
-router.post('/addAlbumTag', //isAuthenticated, 
-upload.single('photo'), function(req, res){
+router.post('/addAlbumTag', isAuthenticated, upload.single('photo'), function(req, res){
 	var newEntry;
 	async.series([
 		function(callback){
@@ -67,8 +64,7 @@ upload.single('photo'), function(req, res){
 	});
 });
 
-router.get('/deleteTag/:tagType/:tagName/:region?', //isAuthenticated, 
-function(req, res){
+router.get('/deleteTag/:tagType/:tagName/:region?', isAuthenticated, function(req, res){
 	async.series([
 		function(callback){
 			if(req.params.tagType == 'regions'){
