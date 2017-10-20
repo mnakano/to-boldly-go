@@ -6,7 +6,7 @@ var dbTask = require('../support-modules/dbTask');
 var dbEntry = require('../support-modules/dbEntry');
 var finalTask = require('../support-modules/finalTask');
 
-var upload = s3Task.getUploadInstance(s3Task.tmpPrefix);
+var upload = s3Task.getUploadInstance();
 
 var isAuthenticated = function(req, res, next){
 	if(req.isAuthenticated()){
@@ -57,7 +57,7 @@ upload.array('photo'), function(req, res){
 	//handle directory creation and photo relocation in series.
 	async.series([
 		function(callback){
-			s3Task.movePhotos(s3Task.bucketName, s3Task.tmpPrefix, newEntry.photoDirectory, callback);
+			s3Task.movePhotos('tmp/', newEntry.photoDirectory, callback);
 		},
 		function(callback){
 			dbTask.insert('album', newEntry, callback);
