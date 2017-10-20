@@ -6,10 +6,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 //assigning database
-/*var mongo = require('mongodb');
-var monk = require('monk');
-var dbConfig = require('./config/db');
-var db = monk(dbConfig.url);*/
 var mongoUtil = require('./db/mongoUtil');
 mongoUtil.connectToDb();
 var db = mongoUtil.getDb();
@@ -70,12 +66,6 @@ var initPassport = require('./passport/init');
 initPassport(passport);
 
 var adminAuth = require('./routes/adminAuth')(passport);
-
-//Make the db accessible to the router
-/*app.use(function(req, res, next){
-	req.db = db;
-	next();
-});*/
 
 //routes
 app.use('/', index);

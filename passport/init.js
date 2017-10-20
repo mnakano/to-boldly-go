@@ -2,10 +2,9 @@ var login = require('./login');
 var register = require('./register');
 
 //assigning database
-var mongo = require('mongodb');
-var monk = require('monk');
-var dbConfig = require('../config/db');
-var db = monk(dbConfig.url);
+var mongoUtil = require('../db/mongoUtil');
+mongoUtil.connectToDb();
+var db = mongoUtil.getDb();
 
 module.exports = function(passport){
 	passport.serializeUser(function(user, done){
