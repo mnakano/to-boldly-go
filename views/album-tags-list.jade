@@ -7,12 +7,12 @@ block content
 		="Album Tags"
 	div(class="admin-content-wrapper")
 		h2
-			="Regions"
+			="Regions and Countries"
 		table(class='admin-table')
 			- for(var i = 0; i < locals.regions.length; i++){
 				- var region = locals.regions[i].name.split(' ').join('-');
 				tr
-					td(class='list-name')
+					td(class='list-name region')
 						=locals.regions[i].name
 					td
 						img(class='tag-image' src="https://s3.amazonaws.com/toboldlygo-assets/tagPhotos/" + region + ".jpg")
@@ -21,7 +21,7 @@ block content
 					- for(var k = 0; k < locals.regions[i].countries.length; k++){
 						- var country = locals.regions[i].countries[k].split(' ').join('-');
 						tr
-							td(class='list-name')
+							td(class='list-name country')
 								=locals.regions[i].countries[k]
 							td
 								img(class='tag-image' src="https://s3.amazonaws.com/toboldlygo-assets/tagPhotos/" + country + ".jpg")

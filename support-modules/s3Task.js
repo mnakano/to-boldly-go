@@ -2,7 +2,6 @@ var async = require('async');
 var aws = require('aws-sdk');
 var multer = require('multer');
 var multerS3 = require('multer-s3');
-const PREFIX = 'tmp/';
 const BUCKET_NAME = process.env.S3_BUCKET_NAME;
 
 aws.config.region = 'us-east-1';

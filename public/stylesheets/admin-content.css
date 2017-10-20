@@ -43,6 +43,14 @@
 	padding-right: 10px;
 }
 
+.region{
+	font-weight: bold;
+}
+
+.country{
+	padding-left: 50px;
+}
+
 #menu-header h1{
 	float: left;
 	padding-right: 3%;
