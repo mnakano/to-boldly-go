@@ -16,17 +16,17 @@ block content
 					span(class='attribute') #{album.albumDate}
 				span(class='album-attribute') <i class='fa fa-globe'></i> 
 					span(class='attribute') 
-						a(class='cursor' href="/region/" + album.region.split(' ').join('-')) #{album.region}
+						a(class='cursor' href="/filter/region/" + album.region.split(' ').join('-')) #{album.region}
 				span(class='album-attribute') <i class='fa fa-flag'></i>  
 					span(class='attribute') 
-						a(class='cursor' href="/country/" + album.country.split(' ').join('-')) #{album.country}
+						a(class='cursor' href="/filter/country/" + album.country.split(' ').join('-')) #{album.country}
 				span(class='album-attribute') <i class='fa fa-tags'></i>  
 					- for(var i = 0; i < album.albumCategory.length; i++){
 						span(class='attribute') 
-							a(class='cursor' href="/category/" + album.albumCategory[i].split(' ').join('-')) #{album.albumCategory[i]}
+							a(class='cursor' href="/filter/category/" + album.albumCategory[i].split(' ').join('-')) #{album.albumCategory[i]}
 					- }
 		div(class='thumbnail-container')
-			img(class="thumbnail cursor" src=album.photos[0].photo onclick="openModal('modal'); currentSlide(1)")
+			img(class="thumbnail cursor" src="https://s3.amazonaws.com/toboldlygo-assets/" + album.photoDirectory + album.photos[0].photo onclick="openModal('modal'); currentSlide(1)")
 			div()
 				a(class='cursor' onclick="openModal('modal'); currentSlide(1)") View Photos
 		div(class='journal')
@@ -43,7 +43,7 @@ block content
 			- for(var i = 0; i < album.photos.length; i++){
 				div(class="slides")
 					div(class="photo-wrapper")
-						img(src=album.photos[i].photo onclick="plusSlides(1)")
+						img(src="https://s3.amazonaws.com/toboldlygo-assets/" + album.photoDirectory + album.photos[i].photo onclick="plusSlides(1)")
 					div(class="photo-description")
 						div(class="photo-text")=album.photos[i].photoDescription
 			- }

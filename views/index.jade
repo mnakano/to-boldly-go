@@ -14,7 +14,7 @@ block content
 				div(id=albums[i].albumTitle.split(' ').join('-') class="square")
 					a(class='square-anchor' href='/album/' + albums[i].albumTitle.split(' ').join('-'))
 						div(class="box-inner")
-							img(src=albums[i].photos[0].photo class="image")
+							img(src="https://s3.amazonaws.com/toboldlygo-assets/" + albums[i].photoDirectory + albums[i].photos[0].photo class="image")
 							div(class="overlay-bottom")
 								div(class="overlay-text")=albums[i].albumTitle
 			- }
@@ -37,7 +37,7 @@ block content
 		h1 About the Author
 	div(id='author-content' class='text-block')
 		div(class='thumbnail-container')
-			img(class='thumbnail' src='/images/header/author.jpg')
+			img(class='thumbnail' src='https://s3.amazonaws.com/toboldlygo-assets/header/author.jpg')
 		div(id='author-text')
 			="My name is Minoru Nakano, currently based in Vancouver, BC, Canada."
 			br

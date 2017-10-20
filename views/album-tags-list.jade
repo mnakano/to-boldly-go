@@ -15,7 +15,7 @@ block content
 					td(class='list-name')
 						=locals.regions[i].name
 					td
-						img(class='tag-image' src="/images/tagPhotos/" + region + ".jpg")
+						img(class='tag-image' src="https://s3.amazonaws.com/toboldlygo-assets/tagPhotos/" + region + ".jpg")
 					td
 						a(href="/adminAlbumTags/deleteTag/regions/#{region}")="Delete"
 					- for(var k = 0; k < locals.regions[i].countries.length; k++){
@@ -24,7 +24,7 @@ block content
 							td(class='list-name')
 								=locals.regions[i].countries[k]
 							td
-								img(class='tag-image' src="/images/tagPhotos/" + country + ".jpg")
+								img(class='tag-image' src="https://s3.amazonaws.com/toboldlygo-assets/tagPhotos/" + country + ".jpg")
 							td
 								a(href="/adminAlbumTags/deleteTag/countries/#{country}/#{region}")="Delete"
 					- }
@@ -38,7 +38,7 @@ block content
 					td(class='list-name')
 						=locals.categories[i].name
 					td
-						img(class='tag-image' src="/images/tagPhotos/" + category + ".jpg")
+						img(class='tag-image' src="https://s3.amazonaws.com/toboldlygo-assets/tagPhotos/" + category + ".jpg")
 					td
 						a(href="/adminAlbumTags/deleteTag/categories/#{category}")="Delete"
 			- }

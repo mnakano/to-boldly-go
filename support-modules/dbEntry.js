@@ -7,15 +7,15 @@ module.exports = {
 		var categoryArray = [];
 		
 		//build photo directory
-		var photoDirectory = "/images/albums/" + req.body.albumTitle.split(' ').join('-');
+		var photoDirectory = "albums/" + req.body.albumTitle.split(' ').join('-') + '/';
 		var descriptions = req.body.photoDescription;
 		
 		if(req.files.length > 1){	
 			for(var i = 0; i < req.files.length; i++){
-				photoArray.push({"photo" : photoDirectory + "/" + req.files[i].originalname, "photoDescription" : descriptions[i]});
+				photoArray.push({"photo" : req.files[i].originalname, "photoDescription" : descriptions[i]});
 			}
 		}else{
-			photoArray.push({"photo" : photoDirectory + "/" + req.files[0].originalname, "photoDescription" : descriptions});
+			photoArray.push({"photo" : req.files[0].originalname, "photoDescription" : descriptions});
 		}
 		
 		if(req.body.albumCategory instanceof Array){
@@ -49,7 +49,7 @@ module.exports = {
 		var categoryArray = [];
 		
 		//build photo directory
-		var photoDirectory = "/images/albums/" + req.body.albumTitle.split(' ').join('-');
+		var photoDirectory = "albums/" + req.body.albumTitle.split(' ').join('-') + '/';
 		
 		//set photo location and description
 		var checkboxArray = [];
@@ -74,11 +74,11 @@ module.exports = {
 		var descArrayIndex = 0;
 		if(req.body.currentPhoto instanceof Array){
 			for(var i = 0; i < req.body.currentPhoto.length; i++){
-				photoArray.push({"photo" : photoDirectory + "/" + req.body.currentPhoto[i], "photoDescription" : descriptionArray[descArrayIndex]});
+				photoArray.push({"photo" : req.body.currentPhoto[i], "photoDescription" : descriptionArray[descArrayIndex]});
 				descArrayIndex++;
 			}
 		} else {
-			photoArray.push({"photo" : photoDirectory + "/" + req.body.currentPhoto, "photoDescription" : descriptionArray[descArrayIndex]});
+			photoArray.push({"photo" : req.body.currentPhoto, "photoDescription" : descriptionArray[descArrayIndex]});
 		}	
 		//replace old photo with new photo from file array by comparing the checkbox values
 		if(req.files.length){
@@ -86,14 +86,14 @@ module.exports = {
 			for(var i = 0; i < checkboxArray.length; i++){
 				if(checkboxArray[i] == 0){
 					//replace the current photo with file photo
-					photoArray[i] = {"photo" : photoDirectory + "/" + req.files[index].originalname, "photoDescription" : descriptionArray[i]}
+					photoArray[i] = {"photo" : req.files[index].originalname, "photoDescription" : descriptionArray[i]}
 					index++;
 				}
 			}
 			//append newly uploaded photos if there are any
 			if(req.files.length > index){
 				for(var i = index; i < req.files.length; i++){
-					photoArray.push({"photo" : photoDirectory + "/" + req.files[i].originalname, "photoDescription" : descriptionArray[descArrayIndex]});
+					photoArray.push({"photo" : req.files[i].originalname, "photoDescription" : descriptionArray[descArrayIndex]});
 					descArrayIndex++;
 				}
 			}

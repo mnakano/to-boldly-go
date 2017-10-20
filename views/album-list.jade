@@ -13,14 +13,14 @@ block content
 			- if(!search){
 				div(id='tag-title' class="rectangle")
 						div(class="box-inner-rectangle")
-							img(src="/images/tagPhotos/" + tagName + ".jpg" class="image portrait")
+							img(src="https://s3.amazonaws.com/toboldlygo-assets/tagPhotos/" + tagName + ".jpg" class="image portrait")
 							div(class="tag-title")=tagName.split('-').join(' ')
 			- }
 			- for(var i = 0; i < albums.length; i++){
 				div(id=albums[i].albumTitle.split(' ').join('-') class="square")
 					a(class='square-anchor' href='/album/' + albums[i].albumTitle.split(' ').join('-'))
 						div(class="box-inner")
-							img(src=albums[i].photos[0].photo class="image")
+							img(src="https://s3.amazonaws.com/toboldlygo-assets/" + albums[i].photoDirectory + albums[i].photos[0].photo class="image")
 							div(class="overlay-bottom")
 								div(class="overlay-text")=albums[i].albumTitle
 			- }	

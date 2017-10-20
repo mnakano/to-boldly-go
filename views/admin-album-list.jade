@@ -12,7 +12,7 @@ block content
 					td(class='list-name')
 						=albums[i].albumTitle
 					td
-						img(class='tag-image' src="#{albums[i].photos[0].photo}")
+						img(class='tag-image' src="https://s3.amazonaws.com/toboldlygo-assets/" + albums[i].photoDirectory + albums[i].photos[0].photo)
 					td
 						a(href="/adminAlbums/deleteAlbum/#{albums[i]._id}/#{albums[i].albumTitle.split(' ').join('-')}") Delete
 					td

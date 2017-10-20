@@ -1,13 +1,12 @@
 var express = require('express');
 var async = require('async');
 var router = express.Router();
-var dirTask = require('../support-modules/dirTask');
-var multiFormTask = require('../support-modules/multiFormTask');
+var s3Task = require('../support-modules/s3Task');
 var dbTask = require('../support-modules/dbTask');
 var dbEntry = require('../support-modules/dbEntry');
 var finalTask = require('../support-modules/finalTask');
 
-var upload = multiFormTask.getUploadInstance('./public/images/tmp/');
+var upload = s3Task.getUploadInstance(s3Task.tmpPrefix);
 
 var isAuthenticated = function(req, res, next){
 	if(req.isAuthenticated()){
@@ -16,7 +15,8 @@ var isAuthenticated = function(req, res, next){
 	res.redirect('/');
 }
 
-router.get('/', isAuthenticated, function(req, res){
+router.get('/', //isAuthenticated, 
+function(req, res){
 	async.waterfall([
 		function(callback){
 			var options = {sort : {albumTitle : 1}};
@@ -28,11 +28,13 @@ router.get('/', isAuthenticated, function(req, res){
 });
 
 /*GET new album entry page*/
-router.get('/newAlbum', isAuthenticated, function(req, res){
+router.get('/newAlbum', //isAuthenticated, 
+function(req, res){
 	res.render('album-new');
 });
 
-router.get('/deleteAlbum/:id/:title', isAuthenticated, function(req, res){
+router.get('/deleteAlbum/:id/:title', //isAuthenticated, 
+function(req, res){
 	async.series([
 		function(callback){
 			var keys = {_id : req.params.id};
@@ -47,17 +49,15 @@ router.get('/deleteAlbum/:id/:title', isAuthenticated, function(req, res){
 });
 
 /*POST to Add Album Service*/
-router.post('/addAlbum', isAuthenticated, upload.array('photo'), function(req, res){
+router.post('/addAlbum', //isAuthenticated, 
+upload.array('photo'), function(req, res){
 	//set request values and return a DB entry.
 	var newEntry = dbEntry.createDBEntry(req);
 	
 	//handle directory creation and photo relocation in series.
 	async.series([
 		function(callback){
-			dirTask.createDir('./public' + newEntry.photoDirectory, callback);
-		},
-		function(callback){
-			dirTask.movePhotos(req.files[0].destination + '/', './public' + newEntry.photoDirectory + "/", req.files, callback);
+			s3Task.movePhotos(s3Task.bucketName, s3Task.tmpPrefix, newEntry.photoDirectory, callback);
 		},
 		function(callback){
 			dbTask.insert('album', newEntry, callback);
@@ -68,7 +68,8 @@ router.post('/addAlbum', isAuthenticated, upload.array('photo'), function(req, r
 });
 
 /*GET an album data to edit form*/
-router.get('/editAlbum/:id', isAuthenticated, function(req, res){
+router.get('/editAlbum/:id', //isAuthenticated, 
+function(req, res){
 	async.waterfall([
 		function(callback){
 			dbTask.findOne('album', {_id : req.params.id}, null, callback);
@@ -79,7 +80,8 @@ router.get('/editAlbum/:id', isAuthenticated, function(req, res){
 });
 
 /*UPDATE an album data*/
-router.post('/editAlbum/:id', isAuthenticated, upload.array('photo'), function(req, res){
+router.post('/editAlbum/:id', //isAuthenticated, 
+upload.array('photo'), function(req, res){
 	
 	//set request values and return a DB entry.
 	var updatedEntry;
