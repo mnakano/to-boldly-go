@@ -1,6 +1,11 @@
 # to-boldly-go
 A journal and photo-sharing website.
-This is an on-going personal project using NodeJS and Express with Pug(Jade) as front end.
+This is an on-going personal project using the following technologies:
+   * Framework: NodeJS, Expres
+   * Front-end: Jade(Pug)
+   * Database: Mongo, hosted on mLab
+   * AWS S3 for static asset storage
+   * Environment: Heroku
 
 Features for the viewers:
    * View a photo album which includes journal entry and related photos.
