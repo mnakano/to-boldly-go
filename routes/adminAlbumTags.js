@@ -1,13 +1,12 @@
 var express = require('express');
 var async = require('async');
 var router = express.Router();
-var multiFormTask = require('../support-modules/multiFormTask');
+var s3Task = require('../support-modules/s3Task');
 var dbTask = require('../support-modules/dbTask');
 var dbEntry = require('../support-modules/dbEntry');
-var dirTask = require('../support-modules/dirTask');
 var finalTask = require('../support-modules/finalTask');
 
-var upload = multiFormTask.getUploadInstance('./public/images/tagPhotos/');
+var upload = s3Task.getUploadInstance('tagPhotos/');
 
 var isAuthenticated = function(req, res, next){
 	if(req.isAuthenticated()){
@@ -87,7 +86,7 @@ router.get('/deleteTag/:tagType/:tagName/:region?', isAuthenticated, function(re
 			}	
 		},
 		function(callback){
-			dirTask.deletePhoto('./public/images/tagPhotos/' + req.params.tagName + '.jpg', callback);
+			s3Task.deletePhoto('tagPhotos/' + req.params.tagName + '.jpg', callback);
 		}
 	], function(err){
 		finalTask.redirect(err, res, '/adminAlbumTags');

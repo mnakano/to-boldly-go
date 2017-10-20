@@ -6,7 +6,7 @@ var dbTask = require('../support-modules/dbTask');
 var dbEntry = require('../support-modules/dbEntry');
 var finalTask = require('../support-modules/finalTask');
 
-var upload = s3Task.getUploadInstance();
+var upload = s3Task.getUploadInstance('tmp/');
 
 var isAuthenticated = function(req, res, next){
 	if(req.isAuthenticated()){
@@ -15,8 +15,7 @@ var isAuthenticated = function(req, res, next){
 	res.redirect('/');
 }
 
-router.get('/', //isAuthenticated, 
-function(req, res){
+router.get('/', isAuthenticated, function(req, res){
 	async.waterfall([
 		function(callback){
 			var options = {sort : {albumTitle : 1}};
@@ -28,20 +27,18 @@ function(req, res){
 });
 
 /*GET new album entry page*/
-router.get('/newAlbum', //isAuthenticated, 
-function(req, res){
+router.get('/newAlbum', isAuthenticated, function(req, res){
 	res.render('album-new');
 });
 
-router.get('/deleteAlbum/:id/:title', //isAuthenticated, 
-function(req, res){
+router.get('/deleteAlbum/:id/:title', isAuthenticated, function(req, res){
 	async.series([
 		function(callback){
 			var keys = {_id : req.params.id};
 			dbTask.deleteDoc('album', keys, callback);
 		},
 		function(callback){
-			dirTask.deleteDir('./public/images/albums/' + req.params.title, callback);
+			s3Task.deletePhotos('albums/' + req.params.title + '/', callback);
 		}
 	], function(err){
 		finalTask.redirect(err, res, '/adminAlbums');
@@ -49,8 +46,7 @@ function(req, res){
 });
 
 /*POST to Add Album Service*/
-router.post('/addAlbum', //isAuthenticated, 
-upload.array('photo'), function(req, res){
+router.post('/addAlbum', isAuthenticated, upload.array('photo'), function(req, res){
 	//set request values and return a DB entry.
 	var newEntry = dbEntry.createDBEntry(req);
 	
@@ -68,8 +64,7 @@ upload.array('photo'), function(req, res){
 });
 
 /*GET an album data to edit form*/
-router.get('/editAlbum/:id', //isAuthenticated, 
-function(req, res){
+router.get('/editAlbum/:id', isAuthenticated, function(req, res){
 	async.waterfall([
 		function(callback){
 			dbTask.findOne('album', {_id : req.params.id}, null, callback);
@@ -80,37 +75,32 @@ function(req, res){
 });
 
 /*UPDATE an album data*/
-router.post('/editAlbum/:id', //isAuthenticated, 
-upload.array('photo'), function(req, res){
+router.post('/editAlbum/:id', isAuthenticated, upload.array('photo'), function(req, res){
 	
 	//set request values and return a DB entry.
-	var updatedEntry;
-
+	var updatedEntry = dbEntry.createDBEditEntry(req);;
+	var albumFolder = req.body.albumTitleOld.split(' ').join('-');
+	var photoDirectoryOld = "albums/" + albumFolder + '/';
+	
 	//handle directory and photo updates.
 	async.series([
 		function(callback){
-			updatedEntry = dbEntry.createDBEditEntry(req);
-			callback();
+			var photos = [];
+			for(var i = 0; i < updatedEntry.photos.length; i++){
+				photos.push(photoDirectoryOld + updatedEntry.photos[i].photo);
+			}
+			s3Task.deleteRemovedPhotos(photoDirectoryOld, photos, callback);
 		},
 		function(callback){
 			if(req.body.albumTitle != req.body.albumTitleOld){
-				var albumFolder = req.body.albumTitleOld.split(' ').join('-');
-				var photoDirectoryOld = "/images/albums/" + albumFolder;
-				dirTask.renameDir('./public' + photoDirectoryOld , './public' + updatedEntry.photoDirectory, callback);
+				s3Task.movePhotos(photoDirectoryOld, updatedEntry.photoDirectory, callback);
 			} else {
 				callback();
 			}
 		},
 		function(callback){
-			var photos = [];
-			for(var i = 0; i < updatedEntry.photos.length; i++){
-				photos.push(updatedEntry.photos[i].photo.split("/").slice(-1)[0]);
-			}
-			dirTask.deleteRemovedPhotos('./public' + updatedEntry.photoDirectory + "/", photos, callback);
-		},
-		function(callback){
 			if(req.files.length){
-				dirTask.movePhotos(req.files[0].destination + "/", './public' + updatedEntry.photoDirectory + "/", req.files, callback);
+				s3Task.movePhotos('tmp/', updatedEntry.photoDirectory, callback);
 			} else {
 				callback();
 			}

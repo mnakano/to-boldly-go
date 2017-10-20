@@ -29,7 +29,7 @@ function deleteObjects(deleteParams){
 		if(deleteError){
 			console.log(deleteError);
 		}
-		console.log('Copied files deleted.');
+		console.log('Files deleted.');
 	})
 }
 
@@ -62,14 +62,59 @@ module.exports = {
 		callback();
 	},
 	
-	getUploadInstance: function(){
+	deletePhoto: function(objectPath, callback){
+		var deleteParams = {Bucket:BUCKET_NAME, Delete:{Objects:[{Key:objectPath}]}};
+		deleteObjects(deleteParams);
+		callback();
+	},
+	
+	deletePhotos: function(deletePath, callback){
+		var listParams = {Bucket:BUCKET_NAME, Delimiter:'/', Prefix:deletePath};
+		s3.listObjects(listParams, function(err, data){
+			if(err){
+				callback(err);
+			}
+			if(data.Contents.length){
+				var deleteParams = {Bucket:BUCKET_NAME, Delete:{Objects:[]}};
+				data.Contents.forEach(function(content){
+					deleteParams.Delete.Objects.push({Key:content.Key});
+				});
+				deleteObjects(deleteParams);
+			}
+		});
+		callback();
+	},
+	
+	deleteRemovedPhotos: function(deletePath, photos, callback){
+		var listParams = {Bucket:BUCKET_NAME, Delimiter:'/', Prefix:deletePath};
+		s3.listObjects(listParams, function(err, data){
+			if(err){
+				callback(err);
+			}
+			if(data.Contents.length){
+				var deleteParams = {Bucket:BUCKET_NAME, Delete:{Objects:[]}};
+				for(var i = 0; i < data.Contents.length; i++){
+					if(photos.indexOf(data.Contents[i].Key) < 0){
+						deleteParams.Delete.Objects.push({Key:data.Contents[i].Key});
+					}
+				}
+				if(deleteParams.Delete.Objects.length){
+					deleteObjects(deleteParams);
+				}	
+			}
+		});
+		callback();
+	},
+	
+	getUploadInstance: function(prefix){
 		return multer({
 			storage: multerS3({
 				s3:s3,
 				bucket:BUCKET_NAME,
 				key:function(req, file, cb){
-					cb(null, PREFIX + file.originalname);
-				}
+					cb(null, prefix + file.originalname);
+				},
+				acl:'public-read'
 			})
 		});
 	}
